@@ -1,0 +1,140 @@
+    stl topics:
+1) Alogrithms
+2) Containers
+3) Functions
+4) Iterators 
+
+
+** PAIRS **
+*) pair<int, int> p = {1, 7};
+    // Access
+p.first --> {1}
+p.second --> {7}
+
+*) Nested PAIRS
+pair<int, pair<int, int>> p = {4, {56, 89}};
+// Access
+p.first --> {4}
+p.second.first --> {56}
+p.second.second --> {89}
+
+*) Array PAIRS
+pair<int, int> arr[] = {{1, 3}, {4, 7}, {7, 9}};
+// Access
+arr[0].first-- > {1} arr[2].second-- > {9}
+
+**VECTORS **
+vector<int> v;  --> creates empty conatiner
+
+// Insert the elements in vector
+v.push_back(20); -- > {20} insert the element by 1 
+v.emplace_back(30);-- > {30}
+
+// vector pair
+vector<pair<int, int>> vpr;
+
+
+// Insert the push in vector
+vpr.push_back({20, 56});    {20, 56} 
+vpr.emplace_back(88, 45);   {88, 45} -- > automatically consider it as pair
+
+// instances by size
+         size, number
+vector<int> v(5, 27) -- > {27, 27, 27, 27, 27}
+
+vector<int> v(5);  --> delacre by garbage value
+
+
+//copy the vector to another vector
+vector<int> v1(v)  --> forms another conatiner not the copy
+
+
+
+// Access
+v --> {20, 10, 15, 5, 7}
+
+
+*) like array 
+cout<<v[0]<<endl;
+cout << v.at[0] << endl;
+
+
+// Iterators in Vector by v.begin --> it posint to the memory not the element
+vector<int>::iterator it = v.begin();
+it++;
+cout << *(it) << endl;
+
+it = it + 2;
+cout << *(it) << endl;
+
+*) vector<int>::iterator it = v.end();  --> {1, 2,3} ^ there not at end if u want to acces end val do it--
+*) vector<int>::iterator it = v.rend(); --> reverse end  ^ {1, 2, 3}  there not at start if u want to acces start val do it++
+*) vector<int>::iterator it = v.rbegin();  -- > {1, 2, 3 ^ } pts at end if u want to acces nxt val do it++
+
+cout<< v.back() << endl;   {1, 2, 3 ^}
+
+
+// Access the array
+// Print the vetors using array
+for (int i = 0; i < n; i++)
+{
+    cout << v[i] << " ";
+}
+
+
+// Print the vetors using Iterators
+for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
+{
+    cout << *(it) << " ";
+}
+
+// shortcut for Printing the vetors using Iterators
+for(auto it = v.begib(); it != v.end(); it++){
+    cout<<*(it)<<" "
+}
+
+// forEach loop
+for(auto it : v){
+    cout<<it<<" "
+}
+
+
+// delete VECTORS
+v.erase(v.begin()+1);      {1,2 ,3} --> {1, 3}
+
+//delete PAIRS
+{start include, end is not included}
+v.erase(v.begin()+1, v.begin()+3);  {1,2^ ,3,4^,5} --> {1,4, 5}
+
+
+
+// Insert Functions
+vector<int> v(2, 100) --> {100, 100}
+
+v.insert(v.begin(), 300)   --> {300, 100, 100}
+v.insert(v.begin()+1, 2, 10);   --> {300, 10, 10, 100, 100}
+
+
+insert to another vector
+vetor<int> copy(2, 50);  --> {2, 50}
+v.inert(v.begin(), copy.begin(), copy.end())  --> {50, 50, 300, 10, 10, 100, 100}
+
+
+//size of vector
+cout<<v.sixe()<<endl; --> {20,4} = 2
+
+// pop element out
+v.pop_back()  --> {20} pops one element from end
+
+//swap element
+v1 = {1,2,3}
+v2 = {6, 7}
+v1.swap(v2)  -->  v1 =  {6, 7} //  v2 = {1, 2, 3} 
+
+// erase entire vector
+v.clear();
+
+
+// check vector is empty or not
+cout<<v.empty()<<endl;  --> empty or not
+
