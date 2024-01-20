@@ -5,7 +5,7 @@
 4) Iterators 
 
 
-** PAIRS **
+******************************* PAIRS ****************************
 *) pair<int, int> p = {1, 7};
     // Access
 p.first --> {1}
@@ -23,7 +23,9 @@ pair<int, int> arr[] = {{1, 3}, {4, 7}, {7, 9}};
 // Access
 arr[0].first-- > {1} arr[2].second-- > {9}
 
-**VECTORS **
+************************************ VECTORS *******************************************
+
+
 vector<int> v;  --> creates empty conatiner
 
 // Insert the elements in vector
@@ -138,3 +140,67 @@ v.clear();
 // check vector is empty or not
 cout<<v.empty()<<endl;  --> empty or not
 
+
+
+
+
+
+************************************ LIST *******************************************
+same as Vectors but can insert elements from front and back
+list<int> ls;
+
+// Insert
+ls.push_back(30);  --> {30}
+ls.emplace_back(40);  {30, 40}
+
+
+ls.push_front(11); --> {11, 30, 40}
+ls.emplace_front(20);  --> {20, 11, 30, 40}
+
+
+
+************************************ STACK *******************************************
+
+// declare
+stack<int> st;
+//Insert
+st.push(1);   --> {1}
+st.push(3);   --> {3, 1}
+st.emplace(4);  --> {4, 3, 1}
+
+// fetch top stack element
+cout<<st.top();
+
+// fetch size stack
+cout<<st.size();
+
+// check for the empty stack
+cout<<st.empty();
+
+// swap stack elements
+stack<int> st1, st2;
+st1.swap(st2);
+
+
+
+************************************ DEQUE *******************************************
+deque<int> dq;
+
+//Insert at back
+
+dq.push_back(1);  --> {1}
+dq.emplace_back(98);  -->{1, 98}
+
+//Insert at front
+
+dq.push_front(11);   --> {11, 1,98}
+dq.emplace_front(36);  --> {36, 11, 1, 98}
+
+//delete at front/back
+
+dq.pop_back();  --> {36, 11, 1}
+dq.pop_front();  --> {36, 11, 1};
+
+
+dq.back();
+dq.front();

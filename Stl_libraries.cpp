@@ -248,10 +248,192 @@ void explainVectors()
     {
         cout << clrv1 << " ";
     }
-        cout << endl;
+    cout << endl;
 
     // check vector is empty or not
-    cout <<"Empty vector or not: "<<v1.empty() << endl;
+    cout << "Empty vector or not: " << v1.empty() << endl;
+}
+
+void explainList()
+{
+    list<int> ls;
+    ls.push_back(33);
+    ls.emplace_back(56);
+    ls.push_front(209);
+    ls.emplace_front(111);
+
+    cout << endl;
+    cout << "push_back list: ";
+    for (auto clrv1 : ls)
+    {
+        cout << clrv1 << " ";
+    }
+
+    cout << endl;
+    cout << "emplace_back list: ";
+    for (auto clrv1 : ls)
+    {
+        cout << clrv1 << " ";
+    }
+
+    cout << endl;
+    cout << "push_front list: ";
+    for (auto clrv1 : ls)
+    {
+        cout << clrv1 << " ";
+    }
+
+    cout << endl;
+    cout << "emplace_front list: ";
+    for (auto clrv1 : ls)
+    {
+        cout << clrv1 << " ";
+    }
+
+    cout << endl;
+
+    cout << "Size of the list: " << ls.size() << endl;
+}
+
+void explainSatck()
+{
+    stack<int> st;
+
+    st.push(1);
+    st.push(34);
+    st.push(89);
+    st.push(29);
+    st.emplace(200);
+
+    // fetch top stack element
+    cout << "Stack top: " << st.top() << endl;
+
+    // fetch size stack
+    cout << "Stack Size: " << st.size() << endl;
+
+    // check for the empty stack
+    cout << "Stack Empty: " << st.empty() << endl;
+
+    // Access Stack elements
+    cout << "Stack elements st: ";
+    while (!st.empty())
+    {
+        cout << st.top() << " ";
+        st.pop();
+    }
+
+    cout << endl;
+
+    // stack<int> st1;
+
+    // st1.push(23);
+    // st1.push(56);
+    // st1.push(66);
+    // st1.emplace(567);
+
+    // // Access Stack elements
+    // cout << "Stack elements st1: ";
+    // while (!st1.empty())
+    // {
+    //     cout << st1.top() << " ";
+    //     st1.pop();
+    // }
+
+    cout << endl;
+
+    // Swap the contents of st and st1
+    stack<int> st1;
+    stack<int> st2;
+
+    st1.push(1);
+    st1.push(34);
+    st1.push(78);
+
+    st2.push(10);
+    st2.push(22);
+    st2.push(89);
+
+    cout << "Before Swap elements: " << endl;
+
+    // Store elements in temporary containers for printing
+    stack<int> tempSt1 = st1;
+    stack<int> tempSt2 = st2;
+
+    cout << "Stack elements st1: ";
+    while (!tempSt1.empty())
+    {
+        cout << tempSt1.top() << " ";
+        tempSt1.pop();
+    }
+
+    cout << endl;
+
+    cout << "Stack elements st2: ";
+    while (!tempSt2.empty())
+    {
+        cout << tempSt2.top() << " ";
+        tempSt2.pop();
+    }
+
+    st1.swap(st2);
+    cout << endl;
+
+    cout << "After Swap elements: " << endl;
+    cout << "Stack elements st1: ";
+    while (!st1.empty())
+    {
+        cout << st1.top() << " ";
+        st1.pop();
+    }
+
+    cout << endl;
+
+    cout << "Stack elements st2: ";
+    while (!st2.empty())
+    {
+        cout << st2.top() << " ";
+        st2.pop();
+    }
+}
+
+void explainDeque(){
+    deque<int> dq;
+
+    dq.push_back(99);
+    dq.emplace_back(25);
+    dq.push_front(67);
+    dq.emplace_front(56);
+
+
+    cout << "Deque elements dq: ";
+    for (auto dqlp : dq)
+    {
+        cout << dqlp << " ";
+    }
+
+    cout << endl;
+
+    dq.pop_back();
+    dq.pop_front();
+
+    cout << "Deque pop dq: ";
+    for (auto dqlp : dq)
+    {
+        cout << dqlp << " ";
+    }
+        cout << endl;
+
+    dq.front();
+    dq.back();
+
+    cout << "Deque front/back dq: ";
+    for (auto dqlp : dq)
+    {
+        cout << dqlp << " ";
+    }
+
+// 34:30
+
 }
 
 int main()
@@ -262,9 +444,10 @@ int main()
     // cout << "Sum: " << sum(4, 8);
     // cout << endl;
     // explainPAir();
-    explainVectors();
-
-
+    // explainVectors();
+    // explainList();
+    // explainSatck();
+    explainDeque();
 
     // 30:23
 
