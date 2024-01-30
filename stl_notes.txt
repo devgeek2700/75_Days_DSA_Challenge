@@ -1,8 +1,8 @@
     stl topics:
 1) Alogrithms
-2) Containers
-3) Functions
-4) Iterators 
+2) Containers  --> DONE
+3) Functions   --> X
+4) Iterators   --> DONE
 
 
 ******************************* PAIRS ****************************
@@ -204,3 +204,245 @@ dq.pop_front();  --> {36, 11, 1};
 
 dq.back();
 dq.front();
+
+
+
+************************************ QUEUE *******************************************
+queue<int> a;
+
+/Insert
+q.push(1); -->{1}
+q.push(10);  -->{1, 10}
+q.push(78);  --> {1, 10 , 78}
+q.emplace(55);   --> {1, 10 , 78, 55}
+
+// Opeations
+q.back() += 5;
+
+cout<<"back: "<<q.back();   --> {60}
+
+now queue is --> {1, 10 , 78, 60}
+
+
+// Insert front
+cout<<q.front;  --> 1
+
+// Delete
+q.pop();  --> {10, 78, 60}
+
+cout<<q.front;  --> 10
+
+
+
+************************************ PRIORITY QUEUE *******************************************
+priority_queue<int> pq;
+
+
+//Insert
+
+pq.push(3);  --> {3} 
+pq.push(39); --> {39, 3}
+pq.push(23);  --> {23, 39, 3}
+pq.push(883);  --> {883, 23, 39, 3}
+pq.emplace(6);  --> {883, 23, 39, 6, 3}
+
+// top
+cout<<pq.top();  --> 883
+
+//pop
+pq.pop();  --> 883
+
+// pq is: --> {23, 39, 6, 3}
+
+
+    // Set Minimum number priority    --> min heap
+
+    priority_queue<int, vector<int>, greater<int>> minpq;
+
+    minpq.push(257);  --> {257}
+    minpq.push(4);   --> {4, 257}
+    minpq.push(890);  --> {4, 257, 890}
+    minpq.push(7);   --> {4,7, 257, 890}
+    minpq.emplace(1000);  --> {4,7, 257, 890, 1000}
+
+
+    cout<<minpq.top();   --> 4
+
+
+
+************************************ SET  *******************************************
+
+set<int> st;    --> stores in sorted order and unique
+
+st.insert(55);    --> {55}
+st.insert(283);   --> {55, 283}
+st.insert(6);     --> {6, 55, 283}
+st.insert(6);     --> {6, 55, 283}
+st.insert(89);    --> {6, 55,89, 283}
+st.emplace(1);     --> {1, 6, 55,89, 283}
+
+
+// begin(), end(), rbegin(), rend(), size()
+//empty() and swap() are same as those above
+
+
+// if elements present
+auto it = st.find(89);   --> 3    (0- n-1) return index
+
+// if elements  NOT present
+auto it = st.find(100);   --> 3    (0- n-1) return index n
+
+
+//Delete
+st.erase(1);
+
+
+auto it = it.find(100);
+st.erase(it);
+
+
+// Count
+
+int cnt = st.count(6);  --> present return 1 or 0
+
+
+st1 = {1,2 ,3,4, 5}
+auto it1 = st1.find(2);
+auto it2 = st1.find(4);
+st1.erase(it1, it2)    --> {1, 4, 5}
+
+
+auto it = st.lower_bound(2);  --> If the specified value is equal to an element in the set, it returns an iterator pointing to that element
+auto it = st.upper_bound(3);  -->  If the specified value is equal to an element in the set, it returns an iterator pointing to the element just after that element.
+
+or else return end() If the specified value is not equal to an element in the set
+
+
+
+************************************ MULTISET  *******************************************
+
+mutltiset<int> ms;    --> stores in sorted order and not unique 
+
+//Insert
+ms.insert(1);   --> {1}
+ms.insert(13);    --> {1, 13}
+ms.insert(15);     --> {1, 13, 15}
+ms.insert(15);    --> {1, 13, 15, 15}
+ms.emplace(105);    --> {1, 13, 15, 15, 105}
+
+// erase
+
+
+all 15'swill be erased 
+ms.erase(15)     --> {1, 13, 105}
+
+only a single one erased
+ms.erase(ms.find(15))   --> {1, 13, 15, 105}
+
+between range
+ms.erase(ms.find(15), ms.find(15)+2);
+
+
+// Count
+auto cnt = ms.count(15);
+
+
+
+************************************ UNORDERED SET  *******************************************
+unordered set<int> os;    --> stores not in sorted order and  unique 
+
+
+all the operations are same only lowerbound and upper bound will not work
+
+
+
+************************************ MAP  *******************************************
+
+map<int, int> map;   --> stores in Key-Value pairs  --> unique keys in sorted order
+map<int, pair<int, int>> mapp;   
+map<pair<int, int>, int> pmap;
+
+
+//Insert 
+map[1] = 2;   -->  {1k : 2v}
+map.emplace({2, 6})   --> {{1k : 2v},  {2k : 6v}}
+map.insert({3, 65})   --> {{1k : 2v},{2k : 6v},{3k : 65v}}
+
+
+// Access
+for(auto it:map){
+    cout<<it.first<<" "<<it.second<<endl; 
+}
+
+
+cout<<map[2]<<end;
+
+
+// find
+// present
+auto it = map.find(2);
+cout<<*(it).second;    
+
+// not present
+auto it = map.lower_bound(2)
+auto it = map.upper_bound(3)
+
+
+erase, swap, size, empty are same
+
+
+************************************ MULTIMAP  *******************************************
+same as map but stores duplicate keys and sorted
+
+
+************************************ UNORDERED MAP  *******************************************
+same as map but not stores duplicate keys and not sorted
+
+
+************************************ EXPLAIN Alogrithms  *******************************************
+             included   excluded
+(1)   for array --> sort(a, a+n)    --> a --> 1st it and a+n --> last
+
+(2)   for vectors --> sort(v.begin(), v.end())    --> a --> 1st it and a+n --> last
+
+(3)   sort btween range --> sort(a+2, a+4)
+
+(4)   sort in descenfing order --> sort(a, a+n, greater<int>)
+
+
+
+bool comp(pair<int, int> p1, pair<int, int> p2){
+    if(p1.second <  p2.second){
+        return true;
+    }
+
+    if(p1.second >  p2.second){
+        return false;
+    }
+
+    if(p1.first >  p2.first){
+        return false;
+    }
+}
+
+
+(5)   pair<int, int> a[] = {{1,2}, {3,4}, {5,6}};
+      sort(a, a+n, comp)
+      // sort it according to second element increasing order
+      // if second element is same then sort
+      // it according to first element but in descending order
+
+(6)   int num = 7;
+      int cnt = __builtin_popcount();   return no of 1's in binary form
+
+      long long num = 766247345798572037894376;
+      int cnt = __builtin_popcountll();   return no of 1's in binary form
+
+
+(7)   string s = '123';
+      do{
+          cout<<s<<endl;
+      }while(next_permtation(s.begin(), s.end()));  --> returna all the permutato=ion of teh string
+
+
+(8)   int maxi = *max_element(a, a+n);  -->   return maximum element in the array
