@@ -161,9 +161,45 @@ vector<int> reverseArray(int n, vector<int> &nums)
     return nums;
 }
 
+bool isPalindrome(int start, string &str)
+{
+    int n = str.size();
+
+    if (start >= n / 2)
+    {
+        return true;
+    }
+
+    if (str[start] != str[n - start - 1])
+    {
+        return false;
+    }
+
+    return isPalindrome(start + 1, str);
+}
+
+int printFibonacciSeries(int n)
+{
+    if (n == 0 || n == 1)
+    {
+        return n;
+    }
+
+    return printFibonacciSeries(n - 1) + printFibonacciSeries(n - 2);
+}
+
+void generateFibonacciNumbers(int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        cout << printFibonacciSeries(i) << " ";
+    }
+}
+
 int main()
 {
-    int n = 6;
+    int n = 10;
+    string str = "abcd";
 
     // print();
 
@@ -196,21 +232,25 @@ int main()
     //     cout << it << " ";
     // }
 
-    vector<int> nums(n);
+    // vector<int> nums(n);
 
-    cout << "Enter " << n << " elements for the vector:" << endl;
-    for (int i = 0; i < n; ++i)
-    {
-        cin >> nums[i];
-    }
+    // cout << "Enter " << n << " elements for the vector:" << endl;
+    // for (int i = 0; i < n; ++i)
+    // {
+    //     cin >> nums[i];
+    // }
 
-    reverseArray(n, nums);
+    // reverseArray(n, nums);
 
-    cout << "Reversed vector: ";
-    for (int i = 0; i < n; ++i)
-    {
-        cout << nums[i] << " ";
-    }
+    // cout << "Reversed vector: ";
+    // for (int i = 0; i < n; ++i)
+    // {
+    //     cout << nums[i] << " ";
+    // }
+
+    // cout << "Palindrome String or not?: " << (isPalindrome(0, str) ? "Yes" : "No") << endl;
+    cout << "Fibonacci Numbers of " << n << " are: ";
+    generateFibonacciNumbers(n);
 
     return 0;
 }
