@@ -105,6 +105,58 @@ void printQuickSort(int arr[], int low, int high) // TC --> O(log2(n))   SC --> 
     }
 }
 
+// Recursive Bubble Sort
+void recursiveBubbleSort(vector<int> &arr, int n, int i)
+{
+    if (n == 1 || i >= n - 1)
+    {
+        return;
+    }
+
+    for (int j = 0; j < n - i - 1; j++)
+    {
+        if (arr[j] > arr[j + 1])
+        {
+            swap(arr[j], arr[j + 1]);
+        }
+    }
+    recursiveBubbleSort(arr, n, i + 1);
+}
+
+void bubbleSort(vector<int> &arr, int n)
+{
+
+    recursiveBubbleSort(arr, n, 0);
+}
+
+// Recursive Insertion Sort
+#include <bits/stdc++.h>
+
+void recursiveInsertionSort(int arr[], int n, int i)
+{
+    if (i >= n - 1)
+    {
+        return;
+    }
+
+    for (int j = i + 1; j > 0; j--)
+    {
+        if (arr[j] < arr[j - 1])
+        {
+            int temp = arr[j];
+            arr[j] = arr[j - 1];
+            arr[j - 1] = temp;
+        }
+    }
+
+    recursiveInsertionSort(arr, n, i + 1);
+}
+
+void insertionSort(int arr[], int n)
+{
+    recursiveInsertionSort(arr, n, 0);
+}
+
 int main()
 {
     int n;
