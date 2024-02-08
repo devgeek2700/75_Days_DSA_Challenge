@@ -176,6 +176,198 @@ int linearSearch(int n, int num, vector<int> &arr)
     return -1;
 }
 
+//   Merge 2 Sorted Array
+
+vector<int> sortedArrayMergetwoArray(vector<int> a, vector<int> b)
+{
+    vector<int> answerArr;
+    int n = a.size();
+    int m = b.size();
+
+    int i = 0, j = 0;
+    while (i < n && j < m)
+    {
+        if (a[i] < b[j])
+        {
+            answerArr.push_back(a[i]);
+            i++;
+        }
+        if (b[j] < a[i])
+        {
+            answerArr.push_back(b[j]);
+            j++;
+        }
+        if (a[i] == b[j])
+        {
+            answerArr.push_back(a[i]);
+            i++;
+            j++;
+        }
+    }
+
+    while (i < n)
+    {
+        answerArr.push_back(a[i]);
+        i++;
+    }
+
+    while (j < m)
+    {
+        answerArr.push_back(b[j]);
+        j++;
+    }
+
+    sort(answerArr.begin(), answerArr.end());
+
+    // check for duplicate elements
+
+    answerArr.erase(unique(answerArr.begin(), answerArr.end()), answerArr.end());
+
+    return answerArr;
+}
+
+// Missing Number in an Array
+
+int missingNumber(vector<int> &nums)
+{
+    sort(nums.begin(), nums.end());
+    int n = nums.size();
+
+    for (int i = 0; i < n; i++)
+    {
+        if (nums[i] != i)
+        {
+            return i;
+        }
+    }
+}
+
+// Maximum consecutive one’s
+
+int findMaxConsecutiveOnes(vector<int> &nums)
+{
+    int n = nums.size();
+    int count = 0;
+    int maxval = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (nums[i] == 1)
+        {
+            count++;
+        }
+        else
+        {
+            maxval = max(maxval, count);
+            count = 0;
+        }
+    }
+
+    maxval = max(maxval, count);
+
+    return maxval;
+}
+
+//  Find The Single Element
+
+int getSingleElement(vector<int> &arr)
+{
+    map<int, int> map;
+    // Store the values and their counts
+    for (int it : arr)
+    {
+        map[it]++;
+    }
+
+    // Find the values with the count that is 1
+    for (auto pair : map)
+    {
+        if (pair.second == 1)
+        {
+            return pair.first;
+        }
+    }
+}
+
+//  Longest Subarray With Sum K  --> Brute Approach
+
+// int longestSubarrayWithSumK(vector<int> a, long long k)
+// {
+//     int maxlen = 0;
+//     for (int i = 0; i < a.size(); i++)
+//     {
+//         int sum = 0;
+//         for (int j = i; j < a.size(); j++)
+//         {
+//             sum += a[j];
+//             if (sum == k)
+//             {
+//                 maxlen = max(maxlen, j - i + 1);
+//             }
+//         }
+//     }
+//     return maxlen;
+// }
+
+// Longest Subarray with given Sum K(Positives) --> Better Approach --> postivies, zeos, negatives
+
+int longestSubarrayWithSumK(vector<int> nums, long long k) // TC --> O(n*logn) ord MAp , O(n*1) --> unordMap
+{
+
+     int maxlen = 0;
+    int sum = nums[0];
+    int right = 0;
+    int left = 0;
+    int n = nums.size();
+
+    while (right < n)
+    {
+        while (left <= right && sum > k)
+        {
+            sum -= nums[left];
+            left++;
+        }
+        if (sum == k)
+        {
+            maxlen = max(maxlen, right - left + 1);
+        }
+        right++;
+        if (right < n)
+        {
+            sum += nums[right];
+        }
+    }
+    return maxlen;
+
+}
+
+// Longest Subarray with sum K | [Postives and Negatives]
+int getLongestSubarrayposandneg(vector<int> &a, int k)
+{
+   map<long long, int> prefSumMap;
+    long long sum = 0;
+    int maxlen = 0;
+    for (int i = 0; i < a.size(); i++)
+    {
+        sum += a[i];
+        if (sum == k)
+        {
+            maxlen = max(maxlen, i + 1);
+        }
+        long long rem = sum - k;
+        if (prefSumMap.find(rem) != prefSumMap.end())
+        {
+            int len = i - prefSumMap[rem];
+            maxlen = max(maxlen, len);
+        }
+        if (prefSumMap.find(sum) == prefSumMap.end())
+        {
+            prefSumMap[sum] = i;
+        }
+    }
+    return maxlen;
+}
+
 int main()
 {
     // int n;
@@ -198,13 +390,21 @@ int main()
 
     // cout << "Largest Element in an Array: " << LargestElementArray(arr, n) << endl;
 
-    vector<int> varr = {2, 5, 6, 2};
+    vector<int> varr = {-1, 0, 1, 1, -1, -1, 0};
+    int k = 0;
+    // vector<int> barr = {2 ,3 ,4 ,6, 7};
 
-    cout << "Vectors Values: ";
+    cout << "Vectors Values a1: ";
     for (auto it : varr)
     {
         cout << it << " ";
     }
+    // cout << endl;
+    // cout << "Vectors Values a2: ";
+    // for (auto it : barr)
+    // {
+    //     cout << it << " ";
+    // }
 
     // auto result = getSecondOrderElements(5, varr);
     // auto answer = isSorted(5, varr);
@@ -213,8 +413,14 @@ int main()
     // int k = 3;
     // auto result = rotateArraybyktimes(varr, k);
     // auto result = moveZeros(5, varr);
-    int num = 20;
-    auto result = linearSearch(4, num, varr);
+    // int num = 20;
+    // auto result = linearSearch(4, num, varr);
+    // auto result = sortedArrayMergetwoArray(varr, barr);
+    // auto result = missingNumber(varr);
+    // auto result = findMaxConsecutiveOnes(varr);
+    // auto result = getSingleElement(varr);
+    // auto result = longestSubarrayWithSumK(varr, k);
+    auto result = getLongestSubarrayposandneg(varr, k);
 
     // Accessing the result vector of pairs
     // cout << "\nSecond smallest and second largest: " << result[0] << " and " << result[1] << endl;
@@ -234,6 +440,19 @@ int main()
     //     cout << it << " ";
     // }
 
-    cout << "Linear Search: " << result << endl;
+    // cout << "Linear Search: " << result << endl;
+
+    // cout << "Merge 2 Sortedin Final Array: ";
+    // for (auto it : result)
+    // {
+    //     cout << it << " ";
+    // }
+
+    // cout << "Number in the range that is Missing is: " << result << endl;
+    // cout << "Maximum consecutive ones: " << result << endl;
+    // cout << " Find The Single Element: " << result << endl;
+    // cout << " Longest Subarray With Sum K: " << result << endl;
+    cout << " Longest Subarray[pos&neg] With Sum K: " << result << endl;
+
     return 0;
 }
