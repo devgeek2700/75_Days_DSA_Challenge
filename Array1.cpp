@@ -314,7 +314,7 @@ int getSingleElement(vector<int> &arr)
 int longestSubarrayWithSumK(vector<int> nums, long long k) // TC --> O(n*logn) ord MAp , O(n*1) --> unordMap
 {
 
-     int maxlen = 0;
+    int maxlen = 0;
     int sum = nums[0];
     int right = 0;
     int left = 0;
@@ -338,13 +338,12 @@ int longestSubarrayWithSumK(vector<int> nums, long long k) // TC --> O(n*logn) o
         }
     }
     return maxlen;
-
 }
 
 // Longest Subarray with sum K | [Postives and Negatives]
 int getLongestSubarrayposandneg(vector<int> &a, int k)
 {
-   map<long long, int> prefSumMap;
+    map<long long, int> prefSumMap;
     long long sum = 0;
     int maxlen = 0;
     for (int i = 0; i < a.size(); i++)
@@ -366,6 +365,116 @@ int getLongestSubarrayposandneg(vector<int> &a, int k)
         }
     }
     return maxlen;
+}
+
+//  Two Sum Array
+
+string TwoSum(int n, vector<int> book, int target)
+{
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i; j < n; j++)
+        {
+            if (book[i] + book[j] == target)
+            {
+                return "YES";
+            }
+        }
+    }
+    return "NO";
+}
+
+//  Sort An Array of 0s, 1s and 2s
+// MTD-1
+// void sortArray0_1_2(vector<int> &arr, int n)
+// {
+//     sort(arr.begin(), arr.end());
+// }
+
+// MTD-2   --> TC = O(n)
+// void sortArray0_1_2(vector<int> &arr, int n)
+// {
+//     int count0 = 0;
+//     int count1 = 0;
+//     int count2 = 0;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         if (arr[i] == 0)
+//         {
+//             count0++;
+//         }
+//         if (arr[i] == 1)
+//         {
+//             count1++;
+//         }
+//         if (arr[i] == 2)
+//         {
+//             count2++;
+//         }
+//     }
+
+//     for (int i = 0; i < count0; i++)
+//     {
+//         arr[i] = 0;
+//     }
+//     for (int i = count0; i < count0 + count1; i++)
+//     {
+//         arr[i] = 1;
+//     }
+//     for (int i = count0 + count1; i < n; i++)
+//     {
+//         arr[i] = 2;
+//     }
+// }
+
+// MTD-3 using Ductch national flag Algorithm  {Optimal} --> TC = O(n)
+void sortArray0_1_2(vector<int> &arr, int n)
+{
+    int low = 0;
+    int mid = 0;
+    int high = n - 1;
+
+    while (mid <= high)
+    {
+        if (arr[mid] == 0)
+        {
+            swap(arr[mid], arr[low]);
+            low++;
+            mid++;
+        }
+        else if (arr[mid] == 1)
+        {
+            mid++;
+        }
+        else
+        {
+            swap(arr[mid], arr[high]);
+            high--;
+        }
+    }
+}
+
+//  Majority Element appears more than 'n' / 2 times.
+
+int majorityElement(vector<int> v)
+{
+    int n = v.size();
+    map<int, int> map;
+
+    // stores the count of the every elements
+    for (auto it : v)
+    {
+        map[it]++;
+    }
+
+    for (auto pair : map)
+    {
+        if (pair.second > n / 2)
+        {
+            return pair.first;
+        }
+    }
 }
 
 int main()
@@ -390,8 +499,8 @@ int main()
 
     // cout << "Largest Element in an Array: " << LargestElementArray(arr, n) << endl;
 
-    vector<int> varr = {-1, 0, 1, 1, -1, -1, 0};
-    int k = 0;
+    vector<int> varr = {-1, -1, -1, 0, 0, 0};
+    int target = 2;
     // vector<int> barr = {2 ,3 ,4 ,6, 7};
 
     cout << "Vectors Values a1: ";
@@ -420,7 +529,10 @@ int main()
     // auto result = findMaxConsecutiveOnes(varr);
     // auto result = getSingleElement(varr);
     // auto result = longestSubarrayWithSumK(varr, k);
-    auto result = getLongestSubarrayposandneg(varr, k);
+    // auto result = getLongestSubarrayposandneg(varr, k);
+    // auto result = TwoSum(7, varr, target);
+    // sortArray0_1_2(varr, varr.size());
+    auto result = majorityElement(varr);
 
     // Accessing the result vector of pairs
     // cout << "\nSecond smallest and second largest: " << result[0] << " and " << result[1] << endl;
@@ -452,7 +564,15 @@ int main()
     // cout << "Maximum consecutive ones: " << result << endl;
     // cout << " Find The Single Element: " << result << endl;
     // cout << " Longest Subarray With Sum K: " << result << endl;
-    cout << " Longest Subarray[pos&neg] With Sum K: " << result << endl;
+    // cout << " Longest Subarray[pos&neg] With Sum K: " << result << endl;
+    // cout << "Two Sum: " << result << endl;
+    // cout << "Sort An Array of 0s, 1s and 2s: ";
+    // for (auto it : varr)
+    // {
+    //     cout << it << " ";
+    // }
+
+    cout << "Majority element of the array: " << result << endl;
 
     return 0;
 }
