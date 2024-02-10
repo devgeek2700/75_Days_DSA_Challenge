@@ -477,6 +477,45 @@ int majorityElement(vector<int> v)
     }
 }
 
+//  Maximum Subarray Sum
+// MTD:-
+// long long maxSubarraySum(vector<int> arr, int n)
+// {
+//     long long sum = arr[0];
+//     long long maxVal = arr[0];
+//     for (int i = 1; i < n; i++)
+//     {
+//         sum = max((long long)arr[i], sum + arr[i]);
+//         maxVal = max(sum, maxVal);
+//     }
+//     return maxVal;
+// }
+
+// Mtd-2 using Kadane's Algorithm  --> TC --> O(n)
+long long maxSubarraySum(vector<int> arr, int n)
+{
+    long long sum = 0;
+    long long maxVal = arr[0];
+    for (int i = 0; i < n; i++)
+    {
+        sum += arr[i];
+        maxVal = max(maxVal, sum);
+        if (sum < 0)
+        {
+            sum = 0;
+        }
+    }
+
+    if (maxVal > 0)
+    {
+        return maxVal;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 int main()
 {
     // int n;
@@ -499,7 +538,7 @@ int main()
 
     // cout << "Largest Element in an Array: " << LargestElementArray(arr, n) << endl;
 
-    vector<int> varr = {-1, -1, -1, 0, 0, 0};
+    vector<int> varr = {-3, -5, -6};
     int target = 2;
     // vector<int> barr = {2 ,3 ,4 ,6, 7};
 
@@ -532,7 +571,8 @@ int main()
     // auto result = getLongestSubarrayposandneg(varr, k);
     // auto result = TwoSum(7, varr, target);
     // sortArray0_1_2(varr, varr.size());
-    auto result = majorityElement(varr);
+    // auto result = majorityElement(varr);
+    long long result = maxSubarraySum(varr, varr.size());
 
     // Accessing the result vector of pairs
     // cout << "\nSecond smallest and second largest: " << result[0] << " and " << result[1] << endl;
@@ -572,7 +612,8 @@ int main()
     //     cout << it << " ";
     // }
 
-    cout << "Majority element of the array: " << result << endl;
+    // cout << "Majority element of the array: " << result << endl;
+    cout << "Maximum Subarray Sum: " << result << endl;
 
     return 0;
 }
