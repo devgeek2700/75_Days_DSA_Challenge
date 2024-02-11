@@ -516,6 +516,64 @@ long long maxSubarraySum(vector<int> arr, int n)
     }
 }
 
+// Rearrange Array Elements by Sign
+// MTD-1  --> CN   TC --> O(n^2)
+vector<int> alternateNumbers(vector<int> &a)
+{
+    int n = a.size();
+    vector<int> PostArr;
+    vector<int> NegArr;
+    vector<int> finalArr(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        if (a[i] > 0)
+        {
+            PostArr.push_back(a[i]);
+        }
+        else
+        {
+            NegArr.push_back(a[i]);
+        }
+    }
+
+    for (int i = 0; i < n / 2; i++)
+    {
+        finalArr[2 * i] = PostArr[i];
+        finalArr[2 * i + 1] = NegArr[i];
+    }
+    return finalArr;
+}
+
+
+
+// MTD-2  --> Leetcode same number -->n/2
+// vector<int> alternateNumbers(vector<int> &a)
+// {
+//     int n = a.size();
+//     vector<int> Answer(n, 0);
+//     int posIdx = 0;
+//     int NegIdx = 1;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         if (a[i] < 0)
+//         {
+//             Answer[NegIdx++] = a[i];
+//             NegIdx += 2;
+//         }
+//         else
+//         {
+//             Answer[posIdx++] = a[i];
+//             posIdx += 2;
+//         }
+//     }
+//     return Answer;
+// }
+
+
+
+
 int main()
 {
     // int n;
@@ -538,7 +596,7 @@ int main()
 
     // cout << "Largest Element in an Array: " << LargestElementArray(arr, n) << endl;
 
-    vector<int> varr = {-3, -5, -6};
+    vector<int> varr = {-1,1 };
     int target = 2;
     // vector<int> barr = {2 ,3 ,4 ,6, 7};
 
@@ -572,7 +630,9 @@ int main()
     // auto result = TwoSum(7, varr, target);
     // sortArray0_1_2(varr, varr.size());
     // auto result = majorityElement(varr);
-    long long result = maxSubarraySum(varr, varr.size());
+    // long long result = maxSubarraySum(varr, varr.size());
+    // auto result = alternateNumbers(varr);
+    vector<int> merged = alternateNumbers(varr);
 
     // Accessing the result vector of pairs
     // cout << "\nSecond smallest and second largest: " << result[0] << " and " << result[1] << endl;
@@ -613,7 +673,13 @@ int main()
     // }
 
     // cout << "Majority element of the array: " << result << endl;
-    cout << "Maximum Subarray Sum: " << result << endl;
+    // cout << "Maximum Subarray Sum: " << result << endl;
+
+    cout << "Rearrange Array Elements by Sign: ";
+    for (auto it : merged)
+    {
+        cout << it << " ";
+    }
 
     return 0;
 }
