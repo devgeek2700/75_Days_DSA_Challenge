@@ -545,8 +545,6 @@ vector<int> alternateNumbers(vector<int> &a)
     return finalArr;
 }
 
-
-
 // MTD-2  --> Leetcode same number -->n/2
 // vector<int> alternateNumbers(vector<int> &a)
 // {
@@ -571,8 +569,106 @@ vector<int> alternateNumbers(vector<int> &a)
 //     return Answer;
 // }
 
+//  Longest Successive Elements
+
+// Mtd-1   TC --> O(n^2)
+bool searchElement(vector<int> &a, int key)
+{
+    for (int i = 0; i < a.size(); i++)
+    {
+        if (a[i] == key)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+// int longestSuccessiveElements(vector<int> &a)
+// {
+//     int n = a.size();
+//     int maxlen = 1;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         int findVal = a[i];
+//         int count = 1;
+
+//         while ((searchElement(a, findVal + 1) == true))
+//         {
+//             findVal += 1;
+//             count++;
+//         }
+
+//         maxlen = max(maxlen, count);
+//     }
+
+//     return maxlen;
+// }
 
 
+// Mtd-2   TC --> O(n)
+
+// int longestSuccessiveElements(vector<int> &a)
+// {
+//     sort(a.begin(), a.end());
+//     int maxlen = 1;
+//     int lastsamllest = INT_MIN;
+//     int curCount = 0;
+//     int n = a.size();
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         if (a[i] - 1 == lastsamllest)
+//         {
+//             curCount++;
+//             lastsamllest = a[i];
+//         }
+//         else if (a[i] != lastsamllest)
+//         {
+//             curCount = 1;
+//             lastsamllest = a[i];
+//         }
+//         maxlen = max(maxlen, curCount);
+//     }
+//     return maxlen;
+// }
+
+// Mtd-3 using set   TC -->
+
+int longestSuccessiveElements(vector<int> &a)
+{
+    int n = a.size();
+    if (n == 0)
+    {
+        return 0;
+    }
+
+    int maxlen = 0;
+    unordered_set<int> st;
+
+    for (int i = 0; i < n; i++)
+    {
+        st.insert(a[i]);
+    }
+
+    for (auto it : st)
+    {
+        if (st.find(it - 1) == st.end())
+        {
+            int count = 1;
+            int x = it;
+            while (st.find(x + 1) != st.end())
+            {
+                x += 1;
+                count++;
+            }
+            maxlen = max(maxlen, count);
+        }
+    }
+
+    return maxlen;
+}
 
 int main()
 {
@@ -596,7 +692,8 @@ int main()
 
     // cout << "Largest Element in an Array: " << LargestElementArray(arr, n) << endl;
 
-    vector<int> varr = {-1,1 };
+    // vector<int> varr = {15, 6, 2, 1, 16, 4, 2, 29, 9, 12, 8, 5, 14, 21, 8, 12, 17, 16, 6, 26, 3};
+    vector<int> varr = {100, 4, 200, 1, 3, 2};
     int target = 2;
     // vector<int> barr = {2 ,3 ,4 ,6, 7};
 
@@ -632,7 +729,8 @@ int main()
     // auto result = majorityElement(varr);
     // long long result = maxSubarraySum(varr, varr.size());
     // auto result = alternateNumbers(varr);
-    vector<int> merged = alternateNumbers(varr);
+    // vector<int> merged = alternateNumbers(varr);
+    auto result = longestSuccessiveElements(varr);
 
     // Accessing the result vector of pairs
     // cout << "\nSecond smallest and second largest: " << result[0] << " and " << result[1] << endl;
@@ -675,11 +773,12 @@ int main()
     // cout << "Majority element of the array: " << result << endl;
     // cout << "Maximum Subarray Sum: " << result << endl;
 
-    cout << "Rearrange Array Elements by Sign: ";
-    for (auto it : merged)
-    {
-        cout << it << " ";
-    }
+    // cout << "Rearrange Array Elements by Sign: ";
+    // for (auto it : merged)
+    // {
+    //     cout << it << " ";
+    // }
 
+    cout << "Longest Successive Elements: " << result << endl;
     return 0;
 }
