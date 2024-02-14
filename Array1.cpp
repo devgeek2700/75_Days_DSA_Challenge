@@ -606,7 +606,6 @@ bool searchElement(vector<int> &a, int key)
 //     return maxlen;
 // }
 
-
 // Mtd-2   TC --> O(n)
 
 // int longestSuccessiveElements(vector<int> &a)
@@ -670,6 +669,57 @@ int longestSuccessiveElements(vector<int> &a)
     return maxlen;
 }
 
+//  Superior Elements
+// Mtd-1    TC --> O(n^2)
+// vector<int> superiorElements(vector<int> &a)
+// {
+//     int n = a.size();
+//     vector<int> ans;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         bool leader = true;
+//         for (int j = i + 1; j < n; j++)
+//         {
+//             if (a[j] >= a[i])
+//             {
+//                 leader = false;
+//                 break;
+//             }
+//         }
+//         if (leader == true)
+//         {
+//             ans.push_back(a[i]);
+//         }
+//     }
+
+//     sort(ans.begin(), ans.end());
+
+//     return ans;
+// }
+
+// Mtd-2    TC --> O(nlogn)
+
+vector<int> superiorElements(vector<int> &a)
+{
+    int n = a.size();
+    vector<int> ans;
+    int maxVal = INT_MIN;
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if (a[i] > maxVal)
+        {
+            ans.push_back(a[i]);
+        }
+        maxVal = max(maxVal, a[i]);
+    }
+
+    sort(ans.begin(), ans.end());
+
+    return ans;
+}
+
 int main()
 {
     // int n;
@@ -693,7 +743,7 @@ int main()
     // cout << "Largest Element in an Array: " << LargestElementArray(arr, n) << endl;
 
     // vector<int> varr = {15, 6, 2, 1, 16, 4, 2, 29, 9, 12, 8, 5, 14, 21, 8, 12, 17, 16, 6, 26, 3};
-    vector<int> varr = {100, 4, 200, 1, 3, 2};
+    vector<int> varr = {10, 22, 12, 3, 0, 6};
     int target = 2;
     // vector<int> barr = {2 ,3 ,4 ,6, 7};
 
@@ -730,7 +780,8 @@ int main()
     // long long result = maxSubarraySum(varr, varr.size());
     // auto result = alternateNumbers(varr);
     // vector<int> merged = alternateNumbers(varr);
-    auto result = longestSuccessiveElements(varr);
+    // auto result = longestSuccessiveElements(varr);
+    auto result = superiorElements(varr);
 
     // Accessing the result vector of pairs
     // cout << "\nSecond smallest and second largest: " << result[0] << " and " << result[1] << endl;
@@ -779,6 +830,12 @@ int main()
     //     cout << it << " ";
     // }
 
-    cout << "Longest Successive Elements: " << result << endl;
+    // cout << "Longest Successive Elements: " << result << endl;
+
+    cout << " Superior Elements: ";
+    for (auto it : result)
+    {
+        cout << it << " ";
+    }
     return 0;
 }
