@@ -818,23 +818,29 @@ void recurnextPermutation(vector<int> &ds, vector<int> &A, vector<vector<int>> &
 // }
 
 // MTD-3    --> Optimal
-vector<int> nextGreaterPermutation(vector<int> &A) {
+vector<int> nextGreaterPermutation(vector<int> &A)
+{
     int idx = -1;
     int n = A.size();
-    for (int i = n - 2; i >= 0; i--) {
-        if (A[i] < A[i + 1]) {
+    for (int i = n - 2; i >= 0; i--)
+    {
+        if (A[i] < A[i + 1])
+        {
             idx = i;
             break;
         }
     }
 
-    if (idx == -1) {
+    if (idx == -1)
+    {
         reverse(A.begin(), A.end());
         return A;
     }
 
-    for (int i = n - 1; i > idx; i--) {
-        if (A[i] > A[idx]) {
+    for (int i = n - 1; i > idx; i--)
+    {
+        if (A[i] > A[idx])
+        {
             swap(A[i], A[idx]);
             break;
         }
@@ -845,149 +851,167 @@ vector<int> nextGreaterPermutation(vector<int> &A) {
     return A;
 }
 
+//  Best time to buy and sell stock
 
+int bestTimeToBuyAndSellStock(vector<int> &prices)
+{
+    int minVal = prices[0];
+    int profit = 0;
+    int n = prices.size();
 
-
-
-    int main()
+    for (int i = 1; i < n; i++)
     {
-        // int n;
-        // cout << "n: ";
-        // cin >> n;
-
-        // int arr[n];
-        // cout << "Array Values: ";
-        // for (int i = 0; i < n; i++)
-        // {
-        //     cin >> arr[i];
-        // }
-
-        // cout << "Display Array Values: ";
-        // for (int i = 0; i < n; i++)
-        // {
-        //     cout << arr[i] << " ";
-        // }
-        // cout << endl;
-
-        // cout << "Largest Element in an Array: " << LargestElementArray(arr, n) << endl;
-
-        // vector<int> varr = {15, 6, 2, 1, 16, 4, 2, 29, 9, 12, 8, 5, 14, 21, 8, 12, 17, 16, 6, 26, 3};
-        vector<int> varr = {6, 10, 8, 13, 13};
-        int target = 2;
-        // vector<int> barr = {2 ,3 ,4 ,6, 7};
-
-        cout << "Vector Values: ";
-        for (auto it : varr)
-        {
-            cout << it << " ";
-        }
-        cout << endl;
-        // cout << endl;
-        // cout << "Vectors Values a2: ";
-        // for (auto it : barr)
-        // {
-        //     cout << it << " ";
-        // }
-
-        // auto result = getSecondOrderElements(5, varr);
-        // auto answer = isSorted(5, varr);
-        // auto result = removeDuplicates(varr, 9);
-        // auto result = rotateArrayleft(varr, 5);
-        // int k = 3;
-        // auto result = rotateArraybyktimes(varr, k);
-        // auto result = moveZeros(5, varr);
-        // int num = 20;
-        // auto result = linearSearch(4, num, varr);
-        // auto result = sortedArrayMergetwoArray(varr, barr);
-        // auto result = missingNumber(varr);
-        // auto result = findMaxConsecutiveOnes(varr);
-        // auto result = getSingleElement(varr);
-        // auto result = longestSubarrayWithSumK(varr, k);
-        // auto result = getLongestSubarrayposandneg(varr, k);
-        // auto result = TwoSum(7, varr, target);
-        // sortArray0_1_2(varr, varr.size());
-        // auto result = majorityElement(varr);
-        // long long result = maxSubarraySum(varr, varr.size());
-        // auto result = alternateNumbers(varr);
-        // vector<int> merged = alternateNumbers(varr);
-        // auto result = longestSuccessiveElements(varr);
-        // auto result = superiorElements(varr);
-        // auto result = allPermutation(varr);
-        auto result = nextGreaterPermutation(varr);
-
-        // Accessing the result vector of pairs
-        // cout << "\nSecond smallest and second largest: " << result[0] << " and " << result[1] << endl;
-        cout << endl;
-        // cout << " Check Sorted Array: " << (answer ? "Yes" : "No") << endl;
-        // cout << "Remove Duplicates from Sorted Array: " <<result<< endl;
-        // cout << "Rotate array K Times: ";
-
-        // for (auto it : result)
-        // {
-        //     cout << it << " ";
-        // }
-
-        // cout << "Move Zero's to End: ";
-        // for (auto it : result)
-        // {
-        //     cout << it << " ";
-        // }
-
-        // cout << "Linear Search: " << result << endl;
-
-        // cout << "Merge 2 Sortedin Final Array: ";
-        // for (auto it : result)
-        // {
-        //     cout << it << " ";
-        // }
-
-        // cout << "Number in the range that is Missing is: " << result << endl;
-        // cout << "Maximum consecutive ones: " << result << endl;
-        // cout << " Find The Single Element: " << result << endl;
-        // cout << " Longest Subarray With Sum K: " << result << endl;
-        // cout << " Longest Subarray[pos&neg] With Sum K: " << result << endl;
-        // cout << "Two Sum: " << result << endl;
-        // cout << "Sort An Array of 0s, 1s and 2s: ";
-        // for (auto it : varr)
-        // {
-        //     cout << it << " ";
-        // }
-
-        // cout << "Majority element of the array: " << result << endl;
-        // cout << "Maximum Subarray Sum: " << result << endl;
-
-        // cout << "Rearrange Array Elements by Sign: ";
-        // for (auto it : merged)
-        // {
-        //     cout << it << " ";
-        // }
-
-        // cout << "Longest Successive Elements: " << result << endl;
-
-        // cout << " Superior Elements: ";
-        // for (auto it : result)
-        // {
-        //     cout << it << " ";
-        // }
-
-        //   cout << "All Permutations: ";
-        // for (auto vec : result)
-        // {
-        //     cout << "[ ";
-        //     for (auto num : vec)
-        //     {
-        //         cout << num << " ";
-        //     }
-        //     cout << "], ";
-        // }
-        // cout << endl;
-
-        cout << "Next Greater Permutation: ";
-        for (auto it : result)
-        {
-            cout << it << " ";
-        }
-        cout << endl;
-
-        return 0;
+        int cost = prices[i] - minVal;
+        profit = max(profit, cost);
+        minVal = min(minVal, prices[i]);
     }
+    return profit;
+}
+
+
+
+int main()
+{
+    // int n;
+    // cout << "n: ";
+    // cin >> n;
+
+    // int arr[n];
+    // cout << "Array Values: ";
+    // for (int i = 0; i < n; i++)
+    // {
+    //     cin >> arr[i];
+    // }
+
+    // cout << "Display Array Values: ";
+    // for (int i = 0; i < n; i++)
+    // {
+    //     cout << arr[i] << " ";
+    // }
+    // cout << endl;
+
+    // cout << "Largest Element in an Array: " << LargestElementArray(arr, n) << endl;
+
+    // vector<int> varr = {15, 6, 2, 1, 16, 4, 2, 29, 9, 12, 8, 5, 14, 21, 8, 12, 17, 16, 6, 26, 3};
+    vector<int> varr = {5, 4 ,3, 2, 1};
+    int target = 2;
+    // vector<int> barr = {2 ,3 ,4 ,6, 7};
+
+    cout << "Vector Values: ";
+    for (auto it : varr)
+    {
+        cout << it << " ";
+    }
+    cout << endl;
+    // cout << endl;
+    // cout << "Vectors Values a2: ";
+    // for (auto it : barr)
+    // {
+    //     cout << it << " ";
+    // }
+
+    // auto result = getSecondOrderElements(5, varr);
+    // auto answer = isSorted(5, varr);
+    // auto result = removeDuplicates(varr, 9);
+    // auto result = rotateArrayleft(varr, 5);
+    // int k = 3;
+    // auto result = rotateArraybyktimes(varr, k);
+    // auto result = moveZeros(5, varr);
+    // int num = 20;
+    // auto result = linearSearch(4, num, varr);
+    // auto result = sortedArrayMergetwoArray(varr, barr);
+    // auto result = missingNumber(varr);
+    // auto result = findMaxConsecutiveOnes(varr);
+    // auto result = getSingleElement(varr);
+    // auto result = longestSubarrayWithSumK(varr, k);
+    // auto result = getLongestSubarrayposandneg(varr, k);
+    // auto result = TwoSum(7, varr, target);
+    // sortArray0_1_2(varr, varr.size());
+    // auto result = majorityElement(varr);
+    // long long result = maxSubarraySum(varr, varr.size());
+    // auto result = alternateNumbers(varr);
+    // vector<int> merged = alternateNumbers(varr);
+    // auto result = longestSuccessiveElements(varr);
+    // auto result = superiorElements(varr);
+    // auto result = allPermutation(varr);
+    // auto result = nextGreaterPermutation(varr);
+    auto result = bestTimeToBuyAndSellStock(varr);
+
+    // Accessing the result vector of pairs
+    // cout << "\nSecond smallest and second largest: " << result[0] << " and " << result[1] << endl;
+    cout << endl;
+    // cout << " Check Sorted Array: " << (answer ? "Yes" : "No") << endl;
+    // cout << "Remove Duplicates from Sorted Array: " <<result<< endl;
+    // cout << "Rotate array K Times: ";
+
+    // for (auto it : result)
+    // {
+    //     cout << it << " ";
+    // }
+
+    // cout << "Move Zero's to End: ";
+    // for (auto it : result)
+    // {
+    //     cout << it << " ";
+    // }
+
+    // cout << "Linear Search: " << result << endl;
+
+    // cout << "Merge 2 Sortedin Final Array: ";
+    // for (auto it : result)
+    // {
+    //     cout << it << " ";
+    // }
+
+    // cout << "Number in the range that is Missing is: " << result << endl;
+    // cout << "Maximum consecutive ones: " << result << endl;
+    // cout << " Find The Single Element: " << result << endl;
+    // cout << " Longest Subarray With Sum K: " << result << endl;
+    // cout << " Longest Subarray[pos&neg] With Sum K: " << result << endl;
+    // cout << "Two Sum: " << result << endl;
+    // cout << "Sort An Array of 0s, 1s and 2s: ";
+    // for (auto it : varr)
+    // {
+    //     cout << it << " ";
+    // }
+
+    // cout << "Majority element of the array: " << result << endl;
+    // cout << "Maximum Subarray Sum: " << result << endl;
+
+    // cout << "Rearrange Array Elements by Sign: ";
+    // for (auto it : merged)
+    // {
+    //     cout << it << " ";
+    // }
+
+    // cout << "Longest Successive Elements: " << result << endl;
+
+    // cout << " Superior Elements: ";
+    // for (auto it : result)
+    // {
+    //     cout << it << " ";
+    // }
+
+    //   cout << "All Permutations: ";
+    // for (auto vec : result)
+    // {
+    //     cout << "[ ";
+    //     for (auto num : vec)
+    //     {
+    //         cout << num << " ";
+    //     }
+    //     cout << "], ";
+    // }
+    // cout << endl;
+
+    // cout << "Next Greater Permutation: ";
+    // for (auto it : result)
+    // {
+    //     cout << it << " ";
+    // }
+    // cout << endl;
+
+    cout << "Best time to buy and sell stock: " << result << endl;
+
+    return 0;
+}
