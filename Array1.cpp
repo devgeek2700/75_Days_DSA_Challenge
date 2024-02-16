@@ -863,9 +863,52 @@ int bestTimeToBuyAndSellStock(vector<int> &prices)
     {
         int cost = prices[i] - minVal;
         profit = max(profit, cost);
-        minVal = min(minVal, prices[i]);
+        minVal = min(minVal, prices[i]); // using DP bcoz remaining the min value to sell it
     }
     return profit;
+}
+
+//  Rotate The Matrix
+
+// Mtd-1 using Extra Space TC --> O(n^2)
+// void rotateMatrix(vector<vector<int>> &mat)
+// {
+//     int n = mat.size();
+//     vector<vector<int>> ansMatrix(n, vector<int>(n));
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         for (int j = 0; j < n; j++)
+//         {
+//             ansMatrix[j][n - 1 - i] = mat[i][j];
+//         }
+//     }
+
+//     mat = ansMatrix;
+// }
+
+// Mtd-2  TC --> O(n^2)
+void rotateMatrix(vector<vector<int>> &mat)
+{
+
+    int n = mat.size();
+
+    // 1) transpose the matrix
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            swap(mat[i][j], mat[j][i]);
+        }
+    }
+
+    // 2) then reverse the row
+
+    for (int i = 0; i < n; i++)
+    {
+        reverse(mat[i].begin(), mat[i].end());
+    }
 }
 
 
@@ -893,16 +936,26 @@ int main()
     // cout << "Largest Element in an Array: " << LargestElementArray(arr, n) << endl;
 
     // vector<int> varr = {15, 6, 2, 1, 16, 4, 2, 29, 9, 12, 8, 5, 14, 21, 8, 12, 17, 16, 6, 26, 3};
-    vector<int> varr = {5, 4 ,3, 2, 1};
-    int target = 2;
+    // vector<int> varr = {5, 4 ,3, 2, 1};
+    vector<vector<int>> matrix = {
+        {1, 5, 9, 13},
+        {14, 15, 16, 17},
+        {19, 20, 21, 50},
+        {59, 60, 71, 80}
+    };
+
     // vector<int> barr = {2 ,3 ,4 ,6, 7};
 
-    cout << "Vector Values: ";
-    for (auto it : varr)
+    cout << "Vector Values: " << endl;
+    for (const auto &row : matrix)
     {
-        cout << it << " ";
+        for (int element : row)
+        {
+            cout << element << " ";
+        }
+        cout << endl;
     }
-    cout << endl;
+
     // cout << endl;
     // cout << "Vectors Values a2: ";
     // for (auto it : barr)
@@ -935,7 +988,9 @@ int main()
     // auto result = superiorElements(varr);
     // auto result = allPermutation(varr);
     // auto result = nextGreaterPermutation(varr);
-    auto result = bestTimeToBuyAndSellStock(varr);
+    // auto result = bestTimeToBuyAndSellStock(varr);
+    // rotateMatrix(matrix);
+    auto result = spiralMatrix(matrix);
 
     // Accessing the result vector of pairs
     // cout << "\nSecond smallest and second largest: " << result[0] << " and " << result[1] << endl;
@@ -1011,7 +1066,24 @@ int main()
     // }
     // cout << endl;
 
-    cout << "Best time to buy and sell stock: " << result << endl;
+    // cout << "Best time to buy and sell stock: " << result << endl;
+
+    // cout << " Rotate The Matrix: " << endl;
+    // for (const auto &row : matrix)
+    // {
+    //     for (int element : row)
+    //     {
+    //         std::cout << element << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
+
+    cout << " Spiral Matrix Elements: ";
+    for (auto it : result)
+    {
+        cout << it << " ";
+    }
+    cout << endl;
 
     return 0;
 }
