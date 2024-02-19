@@ -959,6 +959,24 @@ vector<int> spiralMatrix(vector<vector<int>> &MATRIX)
     return ans;
 }
 
+
+//  Count All Subarrays With Given Sum
+int findAllSubarraysWithGivenSum(vector < int > & arr, int k) {
+    int n = arr.size();
+    int count = 0;
+    for (int i = 0; i < n; i++) {
+        int sum = 0;
+        for (int j = i; j < n; j++) {
+            sum += arr[j];
+            if (sum == k) {
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
+
 int main()
 {
     // int n;
@@ -982,32 +1000,33 @@ int main()
     // cout << "Largest Element in an Array: " << LargestElementArray(arr, n) << endl;
 
     // vector<int> varr = {15, 6, 2, 1, 16, 4, 2, 29, 9, 12, 8, 5, 14, 21, 8, 12, 17, 16, 6, 26, 3};
-    // vector<int> varr = {5, 4 ,3, 2, 1};
-    vector<vector<int>> matrix = {
-        {1, 5, 9, 13},
-        {14, 15, 16, 17},
-        {19, 20, 21, 50},
-        {59, 60, 71, 80}
-    };
+    vector<int> varr = {3, 1, 2, 4};
+    int k = 6;
+    // vector<vector<int>> matrix = {
+    //     {1, 5, 9, 13},
+    //     {14, 15, 16, 17},
+    //     {19, 20, 21, 50},
+    //     {59, 60, 71, 80}
+    // };
     
     // vector<int> barr = {2 ,3 ,4 ,6, 7};
 
-    cout << "Vector Values: " << endl;
-    for (const auto &row : matrix)
-    {
-        for (int element : row)
-        {
-            cout << element << " ";
-        }
-        cout << endl;
-    }
-
-    // cout << endl;
-    // cout << "Vectors Values a2: ";
-    // for (auto it : barr)
+    // cout << "Vector Values: " << endl;
+    // for (const auto &row : matrix)
     // {
-    //     cout << it << " ";
+    //     for (int element : row)
+    //     {
+    //         cout << element << " ";
+    //     }
+    //     cout << endl;
     // }
+
+    cout << endl;
+    cout << "Vectors Values a2: ";
+    for (auto it : varr)
+    {
+        cout << it << " ";
+    }
 
     // auto result = getSecondOrderElements(5, varr);
     // auto answer = isSorted(5, varr);
@@ -1036,7 +1055,8 @@ int main()
     // auto result = nextGreaterPermutation(varr);
     // auto result = bestTimeToBuyAndSellStock(varr);
     // rotateMatrix(matrix);
-    auto result = spiralMatrix(matrix);
+    // auto result = spiralMatrix(matrix);
+    auto result = findAllSubarraysWithGivenSum(varr, k);
 
     // Accessing the result vector of pairs
     // cout << "\nSecond smallest and second largest: " << result[0] << " and " << result[1] << endl;
@@ -1124,12 +1144,16 @@ int main()
     //     std::cout << std::endl;
     // }
 
-    cout << " Spiral Matrix Elements: ";
-    for (auto it : result)
-    {
-        cout << it << " ";
-    }
-    cout << endl;
+    // cout << " Spiral Matrix Elements: ";
+    // for (auto it : result)
+    // {
+    //     cout << it << " ";
+    // }
+    // cout << endl;
+
+
+        cout << "Count of Subarrays With Given Sum: " << result << endl;
+
 
     return 0;
 }
