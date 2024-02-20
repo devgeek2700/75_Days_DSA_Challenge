@@ -1009,6 +1009,72 @@ vector<vector<int>> pascalTriangle(int N)
     return triangle;
 }
 
+// majority Element
+
+vector<int> majorityElement(vector<int> v)
+{
+    vector<int> result;
+    if (v.empty())
+        return result;
+
+    int candidate1 = INT_MIN, candidate2 = INT_MIN;
+    int count1 = 0, count2 = 0;
+
+    // Step 1: Finding potential candidates for majority elements
+    for (int num : v)
+    {
+        if (num == candidate1)
+        {
+            count1++;
+        }
+        else if (num == candidate2)
+        {
+            count2++;
+        }
+        else if (count1 == 0)
+        {
+            candidate1 = num;
+            count1 = 1;
+        }
+        else if (count2 == 0)
+        {
+            candidate2 = num;
+            count2 = 1;
+        }
+        else
+        {
+            count1--;
+            count2--;
+        }
+    }
+
+    // Step 2: Counting occurrences of potential candidates
+    count1 = count2 = 0;
+    for (int num : v)
+    {
+        if (num == candidate1)
+        {
+            count1++;
+        }
+        else if (num == candidate2)
+        {
+            count2++;
+        }
+    }
+
+    // Step 3: Checking if potential candidates are majority elements
+    if (count1 > v.size() / 3)
+    {
+        result.push_back(candidate1);
+    }
+    if (count2 > v.size() / 3)
+    {
+        result.push_back(candidate2);
+    }
+
+    sort(result.begin(), result.end());
+    return result;
+}
 int main()
 {
     // int n;
@@ -1053,8 +1119,7 @@ int main()
     //     cout << endl;
     // }
 
-    cout << endl;
-    cout << "Vectors Values a2: ";
+    cout << "Vector Values: ";
     for (auto it : varr)
     {
         cout << it << " ";
@@ -1089,7 +1154,8 @@ int main()
     // rotateMatrix(matrix);
     // auto result = spiralMatrix(matrix);
     // auto result = findAllSubarraysWithGivenSum(varr, k);
-    auto result = pascalTriangle(5);
+    // auto result = pascalTriangle(5);
+    auto result = majorityElement(varr);
 
     // Accessing the result vector of pairs
     // cout << "\nSecond smallest and second largest: " << result[0] << " and " << result[1] << endl;
@@ -1186,15 +1252,16 @@ int main()
 
     // cout << "Count of Subarrays With Given Sum: " << result << endl;
     // Printing Pascal’s Triangle
-    cout << "Print Pascal’s Triangle:" << endl;
-    for (const auto &row : result)
-    {
-        for (int num : row)
-        {
-            cout << num << " ";
-        }
-        cout << endl;
-    }
+    // cout << "Print Pascal’s Triangle:" << endl;
+    // for (const auto &row : result)
+    // {
+    //     for (int num : row)
+    //     {
+    //         cout << num << " ";
+    //     }
+    //     cout << endl;
+    // }
 
+    cout << "majority Element: " << result << endl;
     return 0;
 }
