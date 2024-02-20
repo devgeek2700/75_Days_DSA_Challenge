@@ -959,16 +959,19 @@ vector<int> spiralMatrix(vector<vector<int>> &MATRIX)
     return ans;
 }
 
-
 //  Count All Subarrays With Given Sum
-int findAllSubarraysWithGivenSum(vector < int > & arr, int k) {
+int findAllSubarraysWithGivenSum(vector<int> &arr, int k)
+{
     int n = arr.size();
     int count = 0;
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         int sum = 0;
-        for (int j = i; j < n; j++) {
+        for (int j = i; j < n; j++)
+        {
             sum += arr[j];
-            if (sum == k) {
+            if (sum == k)
+            {
                 count++;
             }
         }
@@ -976,6 +979,35 @@ int findAllSubarraysWithGivenSum(vector < int > & arr, int k) {
     return count;
 }
 
+//  Print Pascal’s Triangle
+
+vector<vector<int>> pascalTriangle(int N)
+{
+    vector<vector<int>> triangle;
+
+    // Base case: N = 0
+    if (N <= 0)
+        return triangle;
+
+    triangle.push_back({1}); // First row
+
+    for (int row = 1; row < N; row++)
+    {
+        vector<int> currentRow;
+        currentRow.push_back(1); // First element of the row
+
+        for (int col = 1; col < row; col++)
+        {
+            int val = triangle[row - 1][col - 1] + triangle[row - 1][col];
+            currentRow.push_back(val);
+        }
+
+        currentRow.push_back(1); // Last element of the row
+        triangle.push_back(currentRow);
+    }
+
+    return triangle;
+}
 
 int main()
 {
@@ -1008,7 +1040,7 @@ int main()
     //     {19, 20, 21, 50},
     //     {59, 60, 71, 80}
     // };
-    
+
     // vector<int> barr = {2 ,3 ,4 ,6, 7};
 
     // cout << "Vector Values: " << endl;
@@ -1056,7 +1088,8 @@ int main()
     // auto result = bestTimeToBuyAndSellStock(varr);
     // rotateMatrix(matrix);
     // auto result = spiralMatrix(matrix);
-    auto result = findAllSubarraysWithGivenSum(varr, k);
+    // auto result = findAllSubarraysWithGivenSum(varr, k);
+    auto result = pascalTriangle(5);
 
     // Accessing the result vector of pairs
     // cout << "\nSecond smallest and second largest: " << result[0] << " and " << result[1] << endl;
@@ -1151,9 +1184,17 @@ int main()
     // }
     // cout << endl;
 
-
-        cout << "Count of Subarrays With Given Sum: " << result << endl;
-
+    // cout << "Count of Subarrays With Given Sum: " << result << endl;
+    // Printing Pascal’s Triangle
+    cout << "Print Pascal’s Triangle:" << endl;
+    for (const auto &row : result)
+    {
+        for (int num : row)
+        {
+            cout << num << " ";
+        }
+        cout << endl;
+    }
 
     return 0;
 }
