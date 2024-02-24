@@ -1152,6 +1152,32 @@ vector<vector<int>> fourSum(vector<int>& nums, int target) {
     return result;
 }
 
+//day 33
+
+//  Longest Subarray With Zero Sum
+
+
+int getLongestZeroSumSubarrayLength(vector<int>& arr) {
+    unordered_map<int, int> prefixSumIndex; // Map to store prefix sum and its index
+    int maxLength = 0;
+    int prefixSum = 0;
+
+    // Initialize prefixSumIndex with prefix sum 0 at index -1 (dummy index)
+    prefixSumIndex[0] = -1;
+
+    for (int i = 0; i < arr.size(); ++i) {
+        prefixSum += arr[i];
+        // If prefix sum is seen before, update maxLength
+        if (prefixSumIndex.find(prefixSum) != prefixSumIndex.end()) {
+            maxLength = max(maxLength, i - prefixSumIndex[prefixSum]);
+        } else { // Otherwise, store prefix sum with its index
+            prefixSumIndex[prefixSum] = i;
+        }
+    }
+
+    return maxLength;
+}
+
 int main()
 {
     // int n;
