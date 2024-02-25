@@ -1178,6 +1178,37 @@ int getLongestZeroSumSubarrayLength(vector<int>& arr) {
     return maxLength;
 }
 
+// merge Overlapping Intervals
+
+vector<vector<int>> mergeOverlappingIntervals(vector<vector<int>>& arr) {
+    if (arr.empty()) return {};
+
+    // Sort intervals based on their start times
+    sort(arr.begin(), arr.end(), [](const vector<int>& a, const vector<int>& b) {
+        return a[0] < b[0];
+    });
+
+    vector<vector<int>> mergedIntervals;
+    mergedIntervals.push_back(arr[0]); // Add the first interval
+
+    for (int i = 1; i < arr.size(); ++i) {
+        int curStart = arr[i][0];
+        int curEnd = arr[i][1];
+
+        // Check for overlap with the last merged interval
+        int lastEnd = mergedIntervals.back()[1];
+        if (curStart <= lastEnd) {
+            // Overlap found, merge intervals
+            mergedIntervals.back()[1] = max(lastEnd, curEnd);
+        } else {
+            // No overlap, add current interval to mergedIntervals
+            mergedIntervals.push_back(arr[i]);
+        }
+    }
+
+    return mergedIntervals;
+}
+
 int main()
 {
     // int n;
