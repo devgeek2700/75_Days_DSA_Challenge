@@ -1258,6 +1258,32 @@ int numberOfInversions(vector<int>& arr, int n) {
     return mergeSort(arr, temp, 0, n - 1);
 }
 
+
+//  Merge Two Sorted Arrays Without Extra Space
+
+
+void mergeTwoSortedArraysWithoutExtraSpace(vector<long long> &a, vector<long long> &b){
+	   // Declare 2 pointers:
+    int left = a.size() - 1;
+    int right = 0;
+
+    // Swap the elements until a[left] is smaller than b[right]:
+    while (left >= 0 && right < b.size()) {
+        if (a[left] > b[right]) {
+            swap(a[left], b[right]);
+            left--, right++;
+        } else {
+            break;
+        }
+    }
+
+    // Sort a and b individually:
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+	
+}
+
+
 int main()
 {
     // int n;
