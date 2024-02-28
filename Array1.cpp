@@ -980,6 +980,19 @@ int findAllSubarraysWithGivenSum(vector<int> &arr, int k)
 }
 
 //  Print Pascal’s Triangle
+// type of question asked
+// 1) print the element row and column of that place
+// 2) print the Nth row of the traingle
+// 3) print the entire tree of the pascal triangle
+
+
+// 1) print the element row and column of that place
+// nCn = n!/n!*(n-r)!
+// 7C3 = 7*6*5/1*2*3  -> formula
+
+vector<vector<int>> pascalTriangle(int Row, int Column){
+
+}
 
 vector<vector<int>> pascalTriangle(int N)
 {
@@ -1009,279 +1022,279 @@ vector<vector<int>> pascalTriangle(int N)
     return triangle;
 }
 
-// majority Element
+// // majority Element
 
-vector<int> majorityElement(vector<int> v)
-{
-    vector<int> result;
-    if (v.empty())
-        return result;
+// vector<int> majorityElement(vector<int> v)
+// {
+//     vector<int> result;
+//     if (v.empty())
+//         return result;
 
-    int candidate1 = INT_MIN, candidate2 = INT_MIN;
-    int count1 = 0, count2 = 0;
+//     int candidate1 = INT_MIN, candidate2 = INT_MIN;
+//     int count1 = 0, count2 = 0;
 
-    // Step 1: Finding potential candidates for majority elements
-    for (int num : v)
-    {
-        if (num == candidate1)
-        {
-            count1++;
-        }
-        else if (num == candidate2)
-        {
-            count2++;
-        }
-        else if (count1 == 0)
-        {
-            candidate1 = num;
-            count1 = 1;
-        }
-        else if (count2 == 0)
-        {
-            candidate2 = num;
-            count2 = 1;
-        }
-        else
-        {
-            count1--;
-            count2--;
-        }
-    }
+//     // Step 1: Finding potential candidates for majority elements
+//     for (int num : v)
+//     {
+//         if (num == candidate1)
+//         {
+//             count1++;
+//         }
+//         else if (num == candidate2)
+//         {
+//             count2++;
+//         }
+//         else if (count1 == 0)
+//         {
+//             candidate1 = num;
+//             count1 = 1;
+//         }
+//         else if (count2 == 0)
+//         {
+//             candidate2 = num;
+//             count2 = 1;
+//         }
+//         else
+//         {
+//             count1--;
+//             count2--;
+//         }
+//     }
 
-    // Step 2: Counting occurrences of potential candidates
-    count1 = count2 = 0;
-    for (int num : v)
-    {
-        if (num == candidate1)
-        {
-            count1++;
-        }
-        else if (num == candidate2)
-        {
-            count2++;
-        }
-    }
+//     // Step 2: Counting occurrences of potential candidates
+//     count1 = count2 = 0;
+//     for (int num : v)
+//     {
+//         if (num == candidate1)
+//         {
+//             count1++;
+//         }
+//         else if (num == candidate2)
+//         {
+//             count2++;
+//         }
+//     }
 
-    // Step 3: Checking if potential candidates are majority elements
-    if (count1 > v.size() / 3)
-    {
-        result.push_back(candidate1);
-    }
-    if (count2 > v.size() / 3)
-    {
-        result.push_back(candidate2);
-    }
+//     // Step 3: Checking if potential candidates are majority elements
+//     if (count1 > v.size() / 3)
+//     {
+//         result.push_back(candidate1);
+//     }
+//     if (count2 > v.size() / 3)
+//     {
+//         result.push_back(candidate2);
+//     }
 
-    sort(result.begin(), result.end());
-    return result;
-}
+//     sort(result.begin(), result.end());
+//     return result;
+// }
 
-// three sum
+// // three sum
 
-vector<vector<int>> triplet(int n, vector<int> &arr)
-{
-    vector<vector<int>> result;
+// vector<vector<int>> triplet(int n, vector<int> &arr)
+// {
+//     vector<vector<int>> result;
 
-    // Sorting the array to easily handle duplicates and to use two-pointer technique.
-    sort(arr.begin(), arr.end());
+//     // Sorting the array to easily handle duplicates and to use two-pointer technique.
+//     sort(arr.begin(), arr.end());
 
-    for (int i = 0; i < n - 2; ++i) {
-        // To handle duplicates, we skip elements if they are the same as the previous one.
-        if (i == 0 || (i > 0 && arr[i] != arr[i - 1])) {
-            int left = i + 1, right = n - 1;
-            int target = -arr[i]; // Required sum to form the triplet
+//     for (int i = 0; i < n - 2; ++i) {
+//         // To handle duplicates, we skip elements if they are the same as the previous one.
+//         if (i == 0 || (i > 0 && arr[i] != arr[i - 1])) {
+//             int left = i + 1, right = n - 1;
+//             int target = -arr[i]; // Required sum to form the triplet
 
-            while (left < right) {
-                int sum = arr[left] + arr[right];
+//             while (left < right) {
+//                 int sum = arr[left] + arr[right];
 
-                if (sum == target) {
-                    result.push_back({arr[i], arr[left], arr[right]});
-                    // Handling duplicates
-                    while (left < right && arr[left] == arr[left + 1]) left++;
-                    while (left < right && arr[right] == arr[right - 1]) right--;
-                    left++;
-                    right--;
-                } else if (sum < target) {
-                    left++;
-                } else {
-                    right--;
-                }
-            }
-        }
-    }
+//                 if (sum == target) {
+//                     result.push_back({arr[i], arr[left], arr[right]});
+//                     // Handling duplicates
+//                     while (left < right && arr[left] == arr[left + 1]) left++;
+//                     while (left < right && arr[right] == arr[right - 1]) right--;
+//                     left++;
+//                     right--;
+//                 } else if (sum < target) {
+//                     left++;
+//                 } else {
+//                     right--;
+//                 }
+//             }
+//         }
+//     }
 
-    return result;
-}
+//     return result;
+// }
 
-// four sum
+// // four sum
 
-vector<vector<int>> fourSum(vector<int>& nums, int target) {
-    vector<vector<int>> result;
-    int n = nums.size();
-    sort(nums.begin(), nums.end());
+// vector<vector<int>> fourSum(vector<int>& nums, int target) {
+//     vector<vector<int>> result;
+//     int n = nums.size();
+//     sort(nums.begin(), nums.end());
 
-    for (int i = 0; i < n - 3; ++i) {
-        // Avoid duplicate quadruplets
-        if (i > 0 && nums[i] == nums[i - 1]) continue;
+//     for (int i = 0; i < n - 3; ++i) {
+//         // Avoid duplicate quadruplets
+//         if (i > 0 && nums[i] == nums[i - 1]) continue;
 
-        for (int j = i + 1; j < n - 2; ++j) {
-            // Avoid duplicate quadruplets
-            if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+//         for (int j = i + 1; j < n - 2; ++j) {
+//             // Avoid duplicate quadruplets
+//             if (j > i + 1 && nums[j] == nums[j - 1]) continue;
 
-            int left = j + 1, right = n - 1;
-            int remaining = target - nums[i] - nums[j];
+//             int left = j + 1, right = n - 1;
+//             int remaining = target - nums[i] - nums[j];
 
-            while (left < right) {
-                int sum = nums[left] + nums[right];
-                if (sum == remaining) {
-                    result.push_back({nums[i], nums[j], nums[left], nums[right]});
-                    // Avoid duplicate quadruplets
-                    while (left < right && nums[left] == nums[left + 1]) left++;
-                    while (left < right && nums[right] == nums[right - 1]) right--;
-                    left++;
-                    right--;
-                } else if (sum < remaining) {
-                    left++;
-                } else {
-                    right--;
-                }
-            }
-        }
-    }
+//             while (left < right) {
+//                 int sum = nums[left] + nums[right];
+//                 if (sum == remaining) {
+//                     result.push_back({nums[i], nums[j], nums[left], nums[right]});
+//                     // Avoid duplicate quadruplets
+//                     while (left < right && nums[left] == nums[left + 1]) left++;
+//                     while (left < right && nums[right] == nums[right - 1]) right--;
+//                     left++;
+//                     right--;
+//                 } else if (sum < remaining) {
+//                     left++;
+//                 } else {
+//                     right--;
+//                 }
+//             }
+//         }
+//     }
 
-    return result;
-}
+//     return result;
+// }
 
-//day 33
+// //day 33
 
-//  Longest Subarray With Zero Sum
-
-
-int getLongestZeroSumSubarrayLength(vector<int>& arr) {
-    unordered_map<int, int> prefixSumIndex; // Map to store prefix sum and its index
-    int maxLength = 0;
-    int prefixSum = 0;
-
-    // Initialize prefixSumIndex with prefix sum 0 at index -1 (dummy index)
-    prefixSumIndex[0] = -1;
-
-    for (int i = 0; i < arr.size(); ++i) {
-        prefixSum += arr[i];
-        // If prefix sum is seen before, update maxLength
-        if (prefixSumIndex.find(prefixSum) != prefixSumIndex.end()) {
-            maxLength = max(maxLength, i - prefixSumIndex[prefixSum]);
-        } else { // Otherwise, store prefix sum with its index
-            prefixSumIndex[prefixSum] = i;
-        }
-    }
-
-    return maxLength;
-}
-
-// merge Overlapping Intervals
-
-vector<vector<int>> mergeOverlappingIntervals(vector<vector<int>>& arr) {
-    if (arr.empty()) return {};
-
-    // Sort intervals based on their start times
-    sort(arr.begin(), arr.end(), [](const vector<int>& a, const vector<int>& b) {
-        return a[0] < b[0];
-    });
-
-    vector<vector<int>> mergedIntervals;
-    mergedIntervals.push_back(arr[0]); // Add the first interval
-
-    for (int i = 1; i < arr.size(); ++i) {
-        int curStart = arr[i][0];
-        int curEnd = arr[i][1];
-
-        // Check for overlap with the last merged interval
-        int lastEnd = mergedIntervals.back()[1];
-        if (curStart <= lastEnd) {
-            // Overlap found, merge intervals
-            mergedIntervals.back()[1] = max(lastEnd, curEnd);
-        } else {
-            // No overlap, add current interval to mergedIntervals
-            mergedIntervals.push_back(arr[i]);
-        }
-    }
-
-    return mergedIntervals;
-}
+// //  Longest Subarray With Zero Sum
 
 
-//  Number of Inversions
+// int getLongestZeroSumSubarrayLength(vector<int>& arr) {
+//     unordered_map<int, int> prefixSumIndex; // Map to store prefix sum and its index
+//     int maxLength = 0;
+//     int prefixSum = 0;
 
-long long merge(vector<int>& arr, vector<int>& temp, int left, int mid, int right) {
-    int i = left;
-    int j = mid;
-    int k = left;
-    long long inversions = 0;
+//     // Initialize prefixSumIndex with prefix sum 0 at index -1 (dummy index)
+//     prefixSumIndex[0] = -1;
 
-    while (i < mid && j <= right) {
-        if (arr[i] <= arr[j]) {
-            temp[k++] = arr[i++];
-        } else {
-            temp[k++] = arr[j++];
-            inversions += mid - i;
-        }
-    }
+//     for (int i = 0; i < arr.size(); ++i) {
+//         prefixSum += arr[i];
+//         // If prefix sum is seen before, update maxLength
+//         if (prefixSumIndex.find(prefixSum) != prefixSumIndex.end()) {
+//             maxLength = max(maxLength, i - prefixSumIndex[prefixSum]);
+//         } else { // Otherwise, store prefix sum with its index
+//             prefixSumIndex[prefixSum] = i;
+//         }
+//     }
 
-    while (i < mid) {
-        temp[k++] = arr[i++];
-    }
+//     return maxLength;
+// }
 
-    while (j <= right) {
-        temp[k++] = arr[j++];
-    }
+// // merge Overlapping Intervals
 
-    for (i = left; i <= right; ++i) {
-        arr[i] = temp[i];
-    }
+// vector<vector<int>> mergeOverlappingIntervals(vector<vector<int>>& arr) {
+//     if (arr.empty()) return {};
 
-    return inversions;
-}
+//     // Sort intervals based on their start times
+//     sort(arr.begin(), arr.end(), [](const vector<int>& a, const vector<int>& b) {
+//         return a[0] < b[0];
+//     });
 
-long long mergeSort(vector<int>& arr, vector<int>& temp, int left, int right) {
-    long long inversions = 0;
-    if (right > left) {
-        int mid = left + (right - left) / 2;
-        inversions += mergeSort(arr, temp, left, mid);
-        inversions += mergeSort(arr, temp, mid + 1, right);
-        inversions += merge(arr, temp, left, mid + 1, right);
-    }
-    return inversions;
-}
+//     vector<vector<int>> mergedIntervals;
+//     mergedIntervals.push_back(arr[0]); // Add the first interval
 
-int numberOfInversions(vector<int>& arr, int n) {
-    vector<int> temp(n);
-    return mergeSort(arr, temp, 0, n - 1);
-}
+//     for (int i = 1; i < arr.size(); ++i) {
+//         int curStart = arr[i][0];
+//         int curEnd = arr[i][1];
 
+//         // Check for overlap with the last merged interval
+//         int lastEnd = mergedIntervals.back()[1];
+//         if (curStart <= lastEnd) {
+//             // Overlap found, merge intervals
+//             mergedIntervals.back()[1] = max(lastEnd, curEnd);
+//         } else {
+//             // No overlap, add current interval to mergedIntervals
+//             mergedIntervals.push_back(arr[i]);
+//         }
+//     }
 
-//  Merge Two Sorted Arrays Without Extra Space
+//     return mergedIntervals;
+// }
 
 
-void mergeTwoSortedArraysWithoutExtraSpace(vector<long long> &a, vector<long long> &b){
-	   // Declare 2 pointers:
-    int left = a.size() - 1;
-    int right = 0;
+// //  Number of Inversions
 
-    // Swap the elements until a[left] is smaller than b[right]:
-    while (left >= 0 && right < b.size()) {
-        if (a[left] > b[right]) {
-            swap(a[left], b[right]);
-            left--, right++;
-        } else {
-            break;
-        }
-    }
+// long long merge(vector<int>& arr, vector<int>& temp, int left, int mid, int right) {
+//     int i = left;
+//     int j = mid;
+//     int k = left;
+//     long long inversions = 0;
 
-    // Sort a and b individually:
-    sort(a.begin(), a.end());
-    sort(b.begin(), b.end());
+//     while (i < mid && j <= right) {
+//         if (arr[i] <= arr[j]) {
+//             temp[k++] = arr[i++];
+//         } else {
+//             temp[k++] = arr[j++];
+//             inversions += mid - i;
+//         }
+//     }
+
+//     while (i < mid) {
+//         temp[k++] = arr[i++];
+//     }
+
+//     while (j <= right) {
+//         temp[k++] = arr[j++];
+//     }
+
+//     for (i = left; i <= right; ++i) {
+//         arr[i] = temp[i];
+//     }
+
+//     return inversions;
+// }
+
+// long long mergeSort(vector<int>& arr, vector<int>& temp, int left, int right) {
+//     long long inversions = 0;
+//     if (right > left) {
+//         int mid = left + (right - left) / 2;
+//         inversions += mergeSort(arr, temp, left, mid);
+//         inversions += mergeSort(arr, temp, mid + 1, right);
+//         inversions += merge(arr, temp, left, mid + 1, right);
+//     }
+//     return inversions;
+// }
+
+// int numberOfInversions(vector<int>& arr, int n) {
+//     vector<int> temp(n);
+//     return mergeSort(arr, temp, 0, n - 1);
+// }
+
+
+// //  Merge Two Sorted Arrays Without Extra Space
+
+
+// void mergeTwoSortedArraysWithoutExtraSpace(vector<long long> &a, vector<long long> &b){
+// 	   // Declare 2 pointers:
+//     int left = a.size() - 1;
+//     int right = 0;
+
+//     // Swap the elements until a[left] is smaller than b[right]:
+//     while (left >= 0 && right < b.size()) {
+//         if (a[left] > b[right]) {
+//             swap(a[left], b[right]);
+//             left--, right++;
+//         } else {
+//             break;
+//         }
+//     }
+
+//     // Sort a and b individually:
+//     sort(a.begin(), a.end());
+//     sort(b.begin(), b.end());
 	
-}
+// }
 
 
 int main()
@@ -1363,8 +1376,8 @@ int main()
     // rotateMatrix(matrix);
     // auto result = spiralMatrix(matrix);
     // auto result = findAllSubarraysWithGivenSum(varr, k);
-    // auto result = pascalTriangle(5);
-    auto result = majorityElement(varr);
+    auto result = pascalTriangle(5, 2);
+    // auto result = majorityElement(varr);
 
     // Accessing the result vector of pairs
     // cout << "\nSecond smallest and second largest: " << result[0] << " and " << result[1] << endl;
@@ -1460,7 +1473,9 @@ int main()
     // cout << endl;
 
     // cout << "Count of Subarrays With Given Sum: " << result << endl;
+
     // Printing Pascal’s Triangle
+    cout << "the element row and column using Pascal:"<<result << endl;
     // cout << "Print Pascal’s Triangle:" << endl;
     // for (const auto &row : result)
     // {
@@ -1471,6 +1486,6 @@ int main()
     //     cout << endl;
     // }
 
-    cout << "majority Element: " << result << endl;
+    // cout << "majority Element: " << result << endl;
     return 0;
 }
