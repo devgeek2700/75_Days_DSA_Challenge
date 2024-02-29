@@ -120,6 +120,60 @@ vector<vector<int>> generatepascalTriangle(int N)
     return triangle;
 }
 
+//  Majority Element greater than floor(N / 3)
+
+vector<int> majorityElement(vector<int> v)
+{
+    int n = v.size();
+    vector<int> answer;
+    map<int, int> map;
+
+    for (auto it : v)
+    {
+        map[it]++;
+    }
+
+    int floorVal = floor(n / 3);
+    for (auto val : map)
+    {
+        if (val.second > floorVal)
+        {
+            answer.push_back(val.first);
+        }
+    }
+    return answer;
+}
+
+//  Three Sum
+
+vector<vector<int>> triplet(int n, vector<int> &arr)
+{
+    vector<vector<int>> tripletValues;
+    set<vector<int>> st;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            for (int k = j + 1; k < n; k++)
+            {
+                if (arr[i] + arr[j] + arr[k] == 0)
+                {
+                    vector<int> currVal = {arr[i], arr[j], arr[k]};
+                    sort(currVal.begin(), currVal.end());
+                    st.insert(currVal);
+                }
+            }
+        }
+    }
+
+    for (const auto val : st)
+    {
+        tripletValues.push_back(val);
+    }
+
+    return tripletValues;
+}
+
 int main()
 {
 
@@ -128,6 +182,13 @@ int main()
     // cin >> n;
     // cout << "Enter the number of columns (m): ";
     // cin >> m;
+    vector<int> varr = {0, 0 ,0, 0};
+    cout << "Vector Values: ";
+    for (auto it : varr)
+    {
+        cout << it << " ";
+    }
+    cout << endl;
 
     // Input matrix
     // vector<vector<int>> matrix(n, vector<int>(m));
@@ -152,11 +213,13 @@ int main()
     // }
 
     //    zeroMatrix(matrix, n, m);
-    int n = 1;
-    int r = 2;
-    int c = 2;
+    // int n = 1;
+    // int r = 2;
+    // int c = 2;
     // int result = pascalTriangleRownCol(n - 1, r - 1);
-    auto result = generatepascalTriangle(n);
+    // auto result = generatepascalTriangle(n);
+    // auto result = majorityElement(varr);
+    auto result = triplet(varr.size(), varr);
 
     // cout << "Set Zero Matrix for" << n << "x" << m << " is:" << endl;
     // for (int i = 0; i < n; ++i)
@@ -169,19 +232,36 @@ int main()
     // }
 
     // cout << "the element row and column using Pascal: " << result << endl;
-    cout << "the Nth row of the traingle: ";
-    pascalTriangleprintRow(n - 1);
-    cout << endl;
+    // cout << "the Nth row of the traingle: ";
+    // pascalTriangleprintRow(n - 1);
+    // cout << endl;
 
-    cout << "Print Pascal’s Triangle:" << endl;
-    for (const auto &row : result)
-    {
-        for (int num : row)
-        {
+    // cout << "Print Pascal’s Triangle:" << endl;
+    // for (const auto &row : result)
+    // {
+    //     for (int num : row)
+    //     {
+    //         cout << num << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    // cout << " Majority Element of floor n/3: ";
+    // for (auto it : result)
+    // {
+    //     cout << it << " ";
+    // }
+    // cout << endl;
+
+    cout << "Three Sum: ";
+    cout << "Three Sum: ";
+    for (const auto &triplet : result) {
+        for (int num : triplet) {
             cout << num << " ";
         }
-        cout << endl;
+        cout << "| ";
     }
+    cout << endl;
 
     return 0;
 }
