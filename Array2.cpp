@@ -145,33 +145,250 @@ vector<int> majorityElement(vector<int> v)
 }
 
 //  Three Sum
+// brute force soln
+// vector<vector<int>> triplet(int n, vector<int> &arr) // TC --> O(n^3)
+// {
+//     vector<vector<int>> tripletValues;
+//     set<vector<int>> st;
+//     for (int i = 0; i < n; i++)
+//     {
+//         for (int j = i + 1; j < n; j++)
+//         {
+//             for (int k = j + 1; k < n; k++)
+//             {
+//                 if (arr[i] + arr[j] + arr[k] == 0)
+//                 {
+//                     vector<int> currVal = {arr[i], arr[j], arr[k]};
+//                     sort(currVal.begin(), currVal.end());
+//                     st.insert(currVal);
+//                 }
+//             }
+//         }
+//     }
 
+//     for (const auto val : st)
+//     {
+//         tripletValues.push_back(val);
+//     }
+
+//     return tripletValues;
+// }
+
+// better soln
+// vector<vector<int>> triplet(int n, vector<int> &arr) // TC --> O(n^2)   SC --> O(n)
+// {
+//     vector<vector<int>> tripletValues;
+//     set<vector<int>> st;
+//     for (int i = 0; i < n; i++)
+//     {
+//         set<int> hashset;
+//         for (int j = i + 1; j < n; j++)
+//         {
+//             int third = -(arr[i] + arr[j]);
+//             if (hashset.find(third) != hashset.end())
+//             {
+//                 vector<int> currVal = {arr[i], arr[j], third};
+//                 sort(currVal.begin(), currVal.end());
+//                 st.insert(currVal);
+//             }
+//             hashset.insert(arr[j]);
+//         }
+//     }
+
+//     for (const auto val : st)
+//     {
+//         tripletValues.push_back(val);
+//     }
+
+//     return tripletValues;
+// }
+
+// Optimal soln
 vector<vector<int>> triplet(int n, vector<int> &arr)
-{
+{ // TC --> O(nlogn)*O(n^2)
     vector<vector<int>> tripletValues;
-    set<vector<int>> st;
+    sort(arr.begin(), arr.end());
+
     for (int i = 0; i < n; i++)
     {
-        for (int j = i + 1; j < n; j++)
+        if (i > 0 && arr[i] == arr[i - 1])
         {
-            for (int k = j + 1; k < n; k++)
+            continue;
+        }
+
+        int j = i + 1;
+        int k = n - 1;
+        while (j < k)
+        {
+            int sum = arr[i] + arr[j] + arr[k];
+            if (sum < 0)
             {
-                if (arr[i] + arr[j] + arr[k] == 0)
+                j++;
+            }
+            else if (sum > 0)
+            {
+                k--;
+            }
+            else
+            {
+                vector<int> currVal = {arr[i], arr[j], arr[k]};
+                tripletValues.push_back(currVal);
+                j++;
+                k--;
+
+                while (j < k && arr[j] == arr[j - 1])
                 {
-                    vector<int> currVal = {arr[i], arr[j], arr[k]};
-                    sort(currVal.begin(), currVal.end());
-                    st.insert(currVal);
+                    j++;
+                }
+                while (j < k && arr[k] == arr[k + 1])
+                {
+                    k--;
                 }
             }
         }
     }
 
-    for (const auto val : st)
+    return tripletValues;
+}
+
+// Four Sum
+// brute force
+// vector<vector<int>> fourSum(vector<int> &arr, int target) // TC --> O(n^4)
+// {
+//     int n = arr.size();
+//     vector<vector<int>> quadruplets;
+//     set<vector<int>> st;
+//     int count = 0;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         for (int j = i + 1; j < n; j++)
+//         {
+//             for (int k = j + 1; k < n; k++)
+//             {
+//                 for (int l = k + 1; l < n; l++)
+//                 {
+//                     if (arr[i] + arr[j] + arr[k] + arr[l] == target)
+//                     {
+//                         vector<int> currVal = {arr[i], arr[j], arr[k], arr[l]};
+//                         sort(currVal.begin(), currVal.end());
+//                         st.insert(currVal);
+//                     }
+//                 }
+//             }
+//         }
+//     }
+
+//     for (const auto val : st)
+//     {
+//         quadruplets.push_back(val);
+//     }
+
+//     return quadruplets;
+// }
+
+// optimal soln
+vector<vector<int>> fourSum(vector<int> &arr, int target)
+{
+    int n = arr.size();
+    vector<vector<int>> quadruplets;
+    sort(arr.begin(), arr.end());
+
+    for (int i = 0; i < n; i++)
     {
-        tripletValues.push_back(val);
+        if (i > 0 && arr[i] == arr[i - 1])
+        {
+            continue;
+        }
+
+        for (int j = i + 1; j < n; j++)
+        {
+            if (j > i + 1 && arr[j] == arr[j - 1])
+            {
+                continue;
+            }
+
+            int k = j + 1;
+            int l = n - 1;
+
+            while (k < l)
+            {
+                int sum = arr[i] + arr[j] + arr[k] + arr[l];
+                if (sum < target)
+                {
+                    k++;
+                }
+                else if (sum > target)
+                {
+                    l--;
+                }
+                else
+                {
+                    quadruplets.push_back({arr[i], arr[j], arr[k], arr[l]});
+                    k++;
+                    l--;
+
+                    while (k < l && arr[k] == arr[k - 1])
+                    {
+                        k++;
+                    }
+                    while (k < l && arr[l] == arr[l + 1])
+                    {
+                        l--;
+                    }
+                }
+            }
+        }
     }
 
-    return tripletValues;
+    return quadruplets;
+}
+
+//  Longest Subarray With Zero Sum
+
+// int getLongestZeroSumSubarrayLength(vector<int> &arr){
+// 	int maxlen = 0;
+//     int n = arr.size();
+//     for (int i = 0; i < n; i++) {
+//         int sum = 0;
+//         for (int j = i; j < n; j++) {
+//             sum += arr[j];
+//             if (sum == 0) {
+//                 maxlen = max(maxlen, j - i + 1);
+//             }
+//         }
+//     }
+//     return maxlen;
+
+// }
+
+// optimal soln
+int getLongestZeroSumSubarrayLength(vector<int> &arr)
+{ // TC --> O(nlogn)  SC --> O(n)
+    int maxlen = 0;
+    int sum = 0;
+    int n = arr.size();
+    unordered_map<int, int> umap;
+    for (int i = 0; i < n; i++)
+    {
+        sum += arr[i];
+        if (sum == 0)
+        {
+            maxlen = i + 1;
+        }
+        else
+        {
+            if (umap.find(sum) != umap.end())
+            {
+                maxlen = max(maxlen, i - umap[sum]);
+            }
+            else
+            {
+                umap[sum] = i;
+            }
+        }
+    }
+    return maxlen;
 }
 
 int main()
@@ -182,7 +399,8 @@ int main()
     // cin >> n;
     // cout << "Enter the number of columns (m): ";
     // cin >> m;
-    vector<int> varr = {0, 0 ,0, 0};
+    vector<int> varr = {1, 1};
+    int target = 0;
     cout << "Vector Values: ";
     for (auto it : varr)
     {
@@ -219,7 +437,9 @@ int main()
     // int result = pascalTriangleRownCol(n - 1, r - 1);
     // auto result = generatepascalTriangle(n);
     // auto result = majorityElement(varr);
-    auto result = triplet(varr.size(), varr);
+    // auto result = triplet(varr.size(), varr);
+    // auto result = fourSum(varr, target);
+    auto result = getLongestZeroSumSubarrayLength(varr);
 
     // cout << "Set Zero Matrix for" << n << "x" << m << " is:" << endl;
     // for (int i = 0; i < n; ++i)
@@ -253,15 +473,30 @@ int main()
     // }
     // cout << endl;
 
-    cout << "Three Sum: ";
-    cout << "Three Sum: ";
-    for (const auto &triplet : result) {
-        for (int num : triplet) {
-            cout << num << " ";
-        }
-        cout << "| ";
-    }
-    cout << endl;
+    // cout << "Three Sum: ";
+    // for (const auto &triplet : result)
+    // {
+    //     for (int num : triplet)
+    //     {
+    //         cout << num << " ";
+    //     }
+    //     cout << "| ";
+    // }
+    // cout << endl;
 
+    // cout << "Four Sum: ";
+    // for (auto &quad : result)
+    // {
+    //     cout << "[ ";
+    //     for (auto num : quad)
+    //     {
+    //         cout << num << " ";
+    //     }
+    //     cout << "] ";
+    // }
+    // cout << endl;
+
+    // cout << "Four Sum Count is: " << result.size() << endl;
+    cout << " Longest Subarray With Zero Sum: " << result << endl;
     return 0;
 }
