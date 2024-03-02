@@ -1155,17 +1155,6 @@ int main()
 
     // cout << "Count of Subarrays With Given Sum: " << result << endl;
 
-    // Printing Pascal’s Triangle
-    // cout << "the element row and column using Pascal:"<<result << endl;
-    // cout << "Print Pascal’s Triangle:" << endl;
-    // for (const auto &row : result)
-    // {
-    //     for (int num : row)
-    //     {
-    //         cout << num << " ";
-    //     }
-    //     cout << endl;
-    // }
 
     // cout << "majority Element: " << result << endl;
     return 0;
