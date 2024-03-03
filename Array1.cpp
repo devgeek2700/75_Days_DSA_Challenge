@@ -980,6 +980,19 @@ int findAllSubarraysWithGivenSum(vector<int> &arr, int k)
 }
 
 
+void pascalTriangleprintRow(int N)
+{ // TC --> O(N) SC --> O(1)
+    int res = 1;
+    cout << res << " ";
+
+    for (int i = 1; i < N; i++)
+    {
+        res = res * (N - i);
+        res = res / i;
+        cout << res << " ";
+    }
+}
+
 int main()
 {
     // int n;
