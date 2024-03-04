@@ -391,6 +391,10 @@ int getLongestZeroSumSubarrayLength(vector<int> &arr)
     return maxlen;
 }
 
+int subarraysWithSumK(vector < int > a, int b) {
+    
+}
+
 int main()
 {
 
