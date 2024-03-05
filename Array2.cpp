@@ -395,6 +395,10 @@ int subarraysWithSumK(vector < int > a, int b) {
     
 }
 
+int subarraysWithSumK1(vector < int > a, int b) {
+    
+}
+
 int main()
 {
 
