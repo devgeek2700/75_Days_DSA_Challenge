@@ -391,23 +391,170 @@ int getLongestZeroSumSubarrayLength(vector<int> &arr)
     return maxlen;
 }
 
-int subarraysWithSumK(vector<int> arr, int b)
+//  Subarrays with XOR ‘K’
+
+// int subarraysWithSumK(vector<int> arr, int b)  // TC  --> O(n^2)
+// {
+//     int n = arr.size();
+//     int count = 0;
+//     for (int i = 0; i < n; i++)
+//     {
+//         int Xor = 0;
+//         for (int j = i; j < n; j++)
+//         {
+//             Xor = Xor ^ arr[j];
+//             if (Xor == b)
+//             {
+//                 count++;
+//             }
+//         }
+//     }
+//     return count;
+// }
+
+int subarraysWithSumK(vector<int> arr, int b) // TC  --> O(n)*nlogn   SC --> O(n)
 {
     int n = arr.size();
     int count = 0;
+    int xr = 0;
+    map<int, int> mapp;
+    mapp[xr]++; // {0,1}
+
     for (int i = 0; i < n; i++)
     {
-        int Xor = 0;
-        for (int j = i; j < n; j++)
-        {
-            Xor = Xor ^ arr[j];
-            if (Xor == b)
-            {
-                count++;
-            }
-        }
+        xr = xr ^ arr[i];
+        int x = xr ^ b;
+        count += mapp[x];
+        mapp[xr]++;
     }
     return count;
+}
+
+//  Merge All Overlapping Intervals
+
+// vector<vector<int>> mergeOverlappingIntervals(vector<vector<int>> &arr)
+// { // TC --> O(nlogn)+O(2n)
+//     int n = arr.size();
+//     sort(arr.begin(), arr.end());
+
+//     vector<vector<int>> ans;
+
+//     for (int i = 0; i < n; i++)
+//     {
+//         int start = arr[i][0];
+//         int end = arr[i][1];
+//         if (!ans.empty() && end <= ans.back()[1])
+//         {
+//             continue;
+//         }
+//         for (int j = i + 1; j < n; j++)
+//         {
+//             if (arr[j][0] <= end)
+//             {
+//                 end = max(arr[j][1], end);
+//             }
+//             else
+//             {
+//                 break;
+//             }
+//         }
+//         ans.push_back({start, end});
+//     }
+
+//     return ans;
+// }
+
+// Optimal soln
+vector<vector<int>> mergeOverlappingIntervals(vector<vector<int>> &arr)
+{ // TC --> O(nlogn)    SC --> )(n)
+    int n = arr.size();
+    sort(arr.begin(), arr.end());
+    vector<vector<int>> ans;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (ans.empty() || arr[i][0] > ans.back()[1])
+        {
+            ans.push_back(arr[i]);
+        }
+        else
+        {
+            ans.back()[1] = max(ans.back()[1], arr[i][1]);
+        }
+    }
+
+    return ans;
+}
+
+//  Merge Two Sorted Arrays Without Extra Space
+// void mergeTwoSortedArraysWithoutExtraSpace(vector<long long> &a, vector<long long> &b)
+// {  // TC--> O(n+m)+O(n+m)   SC --> O(n+m)
+//     int n = a.size();
+//     int m = b.size();
+//     int left = 0;
+//     int right = 0;
+//     int index = 0;
+//     long long temp[n + m];
+
+//     while (left < n && right < m)
+//     {
+//         if (a[left] <= b[right])
+//         {
+//             temp[index] = a[left];
+//             left++;
+//             index++;
+//         }
+//         else
+//         {
+//             temp[index] = b[right];
+//             right++;
+//             index++;
+//         }
+//     }
+
+//     while (left < n)
+//     {
+//         temp[index++] = a[left++];
+//     }
+
+//     while (right < m)
+//     {
+//         temp[index++] = b[right++];
+//     }
+
+//     for (int i = 0; i < n+m; i++)
+//     {
+//         if (i < n)
+//         {
+//             a[i] = temp[i];
+//         }
+//         else
+//         {
+//             b[i - n] = temp[i];
+//         }
+//     }
+// }
+
+//Optimal soln
+void mergeTwoSortedArraysWithoutExtraSpace(vector<long long> &a, vector<long long> &b)
+{  // TC--> O(min(n,m))+O(nlogn)+O(mlogm)   SC --> O(1)
+    int n = a.size();
+    int m = b.size();
+    int left = n-1;
+    int right = 0;
+
+    while(left >= 0 && right < m){
+        if(a[left] > b[right]){
+            swap(a[left], b[right]);
+            left--;
+            right++;
+        }else{
+            break;
+        }
+    }
+
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
 }
 
 int main()
@@ -418,15 +565,42 @@ int main()
     // cin >> n;
     // cout << "Enter the number of columns (m): ";
     // cin >> m;
-    vector<int> varr = {1, 2, 3, 3};
+
+    vector<long long> a = {1 ,8, 8};
+    vector<long long> b = {2, 3, 4 ,5};
+     int n = a.size();
+    int m = b.size();
     int k = 3;
     int target = 0;
-    cout << "Vector Values: ";
-    for (auto it : varr)
+    cout << "Vector Values a: ";
+    for (auto it : a)
     {
         cout << it << " ";
     }
     cout << endl;
+
+    cout << "Vector Values b: ";
+    for (auto it : b)
+    {
+        cout << it << " ";
+    }
+    cout << endl;
+
+    // vector<vector<int>> varr = {{1, 3}, {2, 6}, {8, 9}, {9, 11}, {8, 10}, {8, 4}, {15, 18}, {16, 17}};
+    // int k = 3;
+    // int target = 0;
+
+    // cout << "Vector Values: ";
+    // for (auto it : varr)
+    // {
+    //     cout << "("; // Add opening bracket before each pair
+    //     for (auto num : it)
+    //     {
+    //         cout << num << " ";
+    //     }
+    //     cout << ") "; // Add closing bracket after each pair
+    // }
+    // cout << endl;
 
     // Input matrix
     // vector<vector<int>> matrix(n, vector<int>(m));
@@ -460,7 +634,9 @@ int main()
     // auto result = triplet(varr.size(), varr);
     // auto result = fourSum(varr, target);
     // auto result = getLongestZeroSumSubarrayLength(varr);
-    auto result = subarraysWithSumK(varr, k);
+    // auto result = subarraysWithSumK(varr, k);
+    // auto result = mergeOverlappingIntervals(varr);
+    mergeTwoSortedArraysWithoutExtraSpace(a, b);
 
     // cout << "Set Zero Matrix for" << n << "x" << m << " is:" << endl;
     // for (int i = 0; i < n; ++i)
@@ -520,7 +696,28 @@ int main()
     // cout << "Four Sum Count is: " << result.size() << endl;
     // cout << " Longest Subarray With Zero Sum: " << result << endl;
 
-    cout << "Subarrays with XOR 'k': " << result << endl;
-    
+    // cout << "Subarrays with XOR 'k': " << result << endl;
+
+    // cout << "Answer Values: ";
+    // for (auto it : result)
+    // {
+    //     cout << "("; // Add opening bracket before each pair
+    //     for (auto num : it)
+    //     {
+    //         cout << num << " ";
+    //     }
+    //     cout << ") "; // Add closing bracket after each pair
+    // }
+    // cout << endl;
+
+      cout << "Merge Two Sorted Arrays Without Extra Space: ";
+    for (auto it : a) {
+        cout << it << " ";
+    }
+    for (auto it : b) {
+        cout << it << " ";
+    }
+    cout << endl;
+
     return 0;
 }
