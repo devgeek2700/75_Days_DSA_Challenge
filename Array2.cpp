@@ -391,12 +391,23 @@ int getLongestZeroSumSubarrayLength(vector<int> &arr)
     return maxlen;
 }
 
-int subarraysWithSumK(vector < int > a, int b) {
-    
-}
-
-int subarraysWithSumK1(vector < int > a, int b) {
-    
+int subarraysWithSumK(vector<int> arr, int b)
+{
+    int n = arr.size();
+    int count = 0;
+    for (int i = 0; i < n; i++)
+    {
+        int Xor = 0;
+        for (int j = i; j < n; j++)
+        {
+            Xor = Xor ^ arr[j];
+            if (Xor == b)
+            {
+                count++;
+            }
+        }
+    }
+    return count;
 }
 
 int main()
@@ -407,7 +418,8 @@ int main()
     // cin >> n;
     // cout << "Enter the number of columns (m): ";
     // cin >> m;
-    vector<int> varr = {1, 1};
+    vector<int> varr = {1, 2, 3, 3};
+    int k = 3;
     int target = 0;
     cout << "Vector Values: ";
     for (auto it : varr)
@@ -447,7 +459,8 @@ int main()
     // auto result = majorityElement(varr);
     // auto result = triplet(varr.size(), varr);
     // auto result = fourSum(varr, target);
-    auto result = getLongestZeroSumSubarrayLength(varr);
+    // auto result = getLongestZeroSumSubarrayLength(varr);
+    auto result = subarraysWithSumK(varr, k);
 
     // cout << "Set Zero Matrix for" << n << "x" << m << " is:" << endl;
     // for (int i = 0; i < n; ++i)
@@ -505,6 +518,9 @@ int main()
     // cout << endl;
 
     // cout << "Four Sum Count is: " << result.size() << endl;
-    cout << " Longest Subarray With Zero Sum: " << result << endl;
+    // cout << " Longest Subarray With Zero Sum: " << result << endl;
+
+    cout << "Subarrays with XOR 'k': " << result << endl;
+    
     return 0;
 }
