@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+
 using namespace std;
 
 vector<vector<int>> markRow(vector<vector<int>> &matrix, int i, int m)
@@ -584,41 +585,165 @@ void mergeTwoSortedArraysWithoutExtraSpace(vector<long long> &a, vector<long lon
 //         }
 //     }
 
-    // return {repeatVal, missingVal};
+// return {repeatVal, missingVal};
 
 // }
 
+// Better soln
+// vector<int> findMissingRepeatingNumbers(vector<int> a)
+// { // TC --> O(n)   SC --> O(1)
+//     int n = a.size();
+//     int hash[n + 1] = {0};
+//     for (int i = 0; i < n; i++)
+//     {
+//         hash[a[i]]++; // incraete the val by 1
+//     }
+
+//     int repeatVal = -1;
+//     int missingVal = -1;
+//     for (int i = 1; i <= n; i++)
+//     {
+//         if (hash[i] == 2)
+//         {
+//             repeatVal = i;
+//         }
+//         else if (hash[i] == 0)
+//         {
+//             missingVal = i;
+//         }
+
+//         if (missingVal != -1 && repeatVal != -1)
+//         {
+//             break;
+//         }
+//     }
+
+//     return {repeatVal, missingVal};
+// }
+
+// Optimal soln  --> (Maths Soln)
+// 1 to n = n*(n+1)/2
+// 1^2 to n^2 = n*(n+1)*(2n+1)/6
+
 vector<int> findMissingRepeatingNumbers(vector<int> a)
-{ // TC --> O(n^2)   SC --> O(1)
-    int n = a.size();
-    int hash[n + 1] = {0};
+{ // TC --> O(n)  SC --> O(1)
+    long long n = a.size();
+    long long SN = (n * (n + 1)) / 2;
+    long long S2N = (n * (n + 1) * (2 * n + 1)) / 6;
+    long long S = 0, S2 = 0;
+
     for (int i = 0; i < n; i++)
     {
-        hash[a[i]]++; // incraete the val by 1
+        S += a[i];
+        S2 += (long long)a[i] * a[i];
     }
+    long long val1 = S - SN;   // X - Y
+    long long val2 = S2 - S2N; // X^2 - Y^2
+    val2 /= val1;              // Divide by X - Y
 
-    int repeatVal = -1;
-    int missingVal = -1;
-    for (int i = 1; i <= n; i++)
-    {
-        if (hash[i] == 2)
-        {
-            repeatVal = i;
-        }
-        else if (hash[i] == 0)
-        {
-            missingVal = i;
-        }
+    long long X = (val1 + val2) / 2; // X = (X - Y + X^2 - Y^2) / 2
+    long long Y = X - val1;          // Y = X - (X - Y)
 
-        if (missingVal != -1 && repeatVal != -1)
-        {
-            break;
-        }
-    }
-
-
-    return {repeatVal, missingVal};
+    return {(int)X, (int)Y};
 }
+
+//  Number of Inversions
+
+// int numberOfInversions(vector<int>&a, int n) { // TC --> O(n^2)  SC --> O(1)
+//     int count = 0;
+//     for(int i = 0; i < n; i++){
+//         for(int j = i+1; j<n; j++){
+//             if(a[i] > a[j]){
+//                 count++;
+//             }
+//         }
+//     }
+//        return count;
+// }
+
+// Optimal soln
+int merge(vector<int> &arr, int low, int mid, int high)
+{
+    vector<int> temp;
+    int left = low;
+    int right = mid + 1;
+
+    // Modification 1: cnt variable to count the pairs:
+    int cnt = 0;
+
+    while (left <= mid && right <= high)
+    {
+        if (arr[left] <= arr[right])
+        {
+            temp.push_back(arr[left]);
+            left++;
+        }
+        else
+        {
+            temp.push_back(arr[right]);
+            cnt += (mid - left + 1); // Modification 2
+            right++;
+        }
+    }
+
+    while (left <= mid)
+    {
+        temp.push_back(arr[left]);
+        left++;
+    }
+
+    while (right <= high)
+    {
+        temp.push_back(arr[right]);
+        right++;
+    }
+
+    for (int i = low; i <= high; i++)
+    {
+        arr[i] = temp[i - low];
+    }
+
+    return cnt; // Modification 3
+}
+
+int mergeSort(vector<int> &arr, int low, int high)
+{
+    int cnt = 0;
+    if (low >= high)
+        return cnt;
+    int mid = (low + high) / 2;
+    cnt += mergeSort(arr, low, mid);      // left half
+    cnt += mergeSort(arr, mid + 1, high); // right half
+    cnt += merge(arr, low, mid, high);    // merging sorted halves
+    return cnt;
+}
+
+int numberOfInversions(vector<int> &a, int n)
+{ // TC --> O(nlogn)  SC --> O(n)
+    return mergeSort(a, 0, n - 1);
+}
+
+
+
+//  Team Contest or Reverse Pairs
+
+int team(vector<int>& skill, int n) {  // TC --> O(N^2)  SC --> O(1)
+    int count = 0;
+    for(int i = 0; i < n; i++) {
+        for(int j = i + 1; j < n; j++) {
+            if(skill[i] > 2 * skill[j]) {
+                count++;
+            } 
+        }
+    }
+    return count;
+}
+
+// optimal soln
+int team(vector<int> & skill, int n) {  // TC --> O(N^2)  SC --> O(1)
+    
+}
+
 
 int main()
 {
@@ -629,7 +754,7 @@ int main()
     // cout << "Enter the number of columns (m): ";
     // cin >> m;
 
-    vector<int> a = {1, 2, 1};
+    vector<int> a = {4, 1, 2, 3, 1};
     // vector<long long> b = {2, 3, 4 ,5};
     int n = a.size();
     // int m = b.size();
@@ -700,7 +825,9 @@ int main()
     // auto result = subarraysWithSumK(varr, k);
     // auto result = mergeOverlappingIntervals(varr);
     // mergeTwoSortedArraysWithoutExtraSpace(a, b);
-    auto result = findMissingRepeatingNumbers(a);
+    // findMissingRepeatingNumbers(a);
+    // auto result = numberOfInversions(a, a.size());
+    auto result = team(a, a.size());
 
     // cout << "Set Zero Matrix for" << n << "x" << m << " is:" << endl;
     // for (int i = 0; i < n; ++i)
@@ -783,12 +910,15 @@ int main()
     // }
     // cout << endl;
 
-    cout << "Missing And Repeating Numbers: ";
-    for (auto it : result)
-    {
-        cout << it << " ";
-    }
-    cout << endl;
+    // cout << "Missing And Repeating Numbers: ";
+    // for (auto it : result)
+    // {
+    //     cout << it << " ";
+    // }
+    // cout << endl;
+
+    // cout << " Number of Inversions: " << result << endl;
+    cout << "Reverse Pairs: " << result << endl;
 
     return 0;
 }
