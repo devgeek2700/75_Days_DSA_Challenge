@@ -662,86 +662,179 @@ vector<int> findMissingRepeatingNumbers(vector<int> a)
 // }
 
 // Optimal soln
-int merge(vector<int> &arr, int low, int mid, int high)
-{
-    vector<int> temp;
-    int left = low;
-    int right = mid + 1;
+// int merge(vector<int> &arr, int low, int mid, int high)
+// {
+//     vector<int> temp;
+//     int left = low;
+//     int right = mid + 1;
 
-    // Modification 1: cnt variable to count the pairs:
-    int cnt = 0;
+//     // Modification 1: cnt variable to count the pairs:
+//     int cnt = 0;
 
-    while (left <= mid && right <= high)
-    {
-        if (arr[left] <= arr[right])
-        {
-            temp.push_back(arr[left]);
-            left++;
-        }
-        else
-        {
-            temp.push_back(arr[right]);
-            cnt += (mid - left + 1); // Modification 2
-            right++;
-        }
-    }
+//     while (left <= mid && right <= high)
+//     {
+//         if (arr[left] <= arr[right])
+//         {
+//             temp.push_back(arr[left]);
+//             left++;
+//         }
+//         else
+//         {
+//             temp.push_back(arr[right]);
+//             cnt += (mid - left + 1); // Modification 2
+//             right++;
+//         }
+//     }
 
-    while (left <= mid)
-    {
-        temp.push_back(arr[left]);
-        left++;
-    }
+//     while (left <= mid)
+//     {
+//         temp.push_back(arr[left]);
+//         left++;
+//     }
 
-    while (right <= high)
-    {
-        temp.push_back(arr[right]);
-        right++;
-    }
+//     while (right <= high)
+//     {
+//         temp.push_back(arr[right]);
+//         right++;
+//     }
 
-    for (int i = low; i <= high; i++)
-    {
-        arr[i] = temp[i - low];
-    }
+//     for (int i = low; i <= high; i++)
+//     {
+//         arr[i] = temp[i - low];
+//     }
 
-    return cnt; // Modification 3
-}
+//     return cnt; // Modification 3
+// }
 
-int mergeSort(vector<int> &arr, int low, int high)
-{
-    int cnt = 0;
-    if (low >= high)
-        return cnt;
-    int mid = (low + high) / 2;
-    cnt += mergeSort(arr, low, mid);      // left half
-    cnt += mergeSort(arr, mid + 1, high); // right half
-    cnt += merge(arr, low, mid, high);    // merging sorted halves
-    return cnt;
-}
+// int mergeSort(vector<int> &arr, int low, int high)
+// {
+//     int cnt = 0;
+//     if (low >= high)
+//         return cnt;
+//     int mid = (low + high) / 2;
+//     cnt += mergeSort(arr, low, mid);      // left half
+//     cnt += mergeSort(arr, mid + 1, high); // right half
+//     cnt += merge(arr, low, mid, high);    // merging sorted halves
+//     return cnt;
+// }
 
-int numberOfInversions(vector<int> &a, int n)
-{ // TC --> O(nlogn)  SC --> O(n)
-    return mergeSort(a, 0, n - 1);
-}
+// int numberOfInversions(vector<int> &a, int n)
+// { // TC --> O(nlogn)  SC --> O(n)
+//     return mergeSort(a, 0, n - 1);
+// }
 
 
 
 //  Team Contest or Reverse Pairs
 
-int team(vector<int>& skill, int n) {  // TC --> O(N^2)  SC --> O(1)
-    int count = 0;
-    for(int i = 0; i < n; i++) {
-        for(int j = i + 1; j < n; j++) {
-            if(skill[i] > 2 * skill[j]) {
-                count++;
-            } 
+// int team(vector<int>& skill, int n) {  // TC --> O(N^2)  SC --> O(1)
+//     int count = 0;
+//     for(int i = 0; i < n; i++) {
+//         for(int j = i + 1; j < n; j++) {
+//             if(skill[i] > 2 * skill[j]) {
+//                 count++;
+//             } 
+//         }
+//     }
+//     return count; 
+// }
+
+
+// Optimal soln
+void countPairs(vector<int>& arr, int low, int mid, int high, int& count) {
+    int right = mid + 1;
+    for (int i = low; i <= mid; i++) {
+        while (right <= high && arr[i] > 2 * arr[right]) {
+            right++;
+        }
+        count += (right - (mid + 1));
+    }
+}
+
+void merge(vector<int>& arr, int low, int mid, int high) {
+    vector<int> temp;
+    int left = low;
+    int right = mid + 1;
+
+    while (left <= mid && right <= high) {
+        if (arr[left] <= arr[right]) {
+            temp.push_back(arr[left]);
+            left++;
+        } else {
+            temp.push_back(arr[right]);
+            right++;
         }
     }
+
+    while (left <= mid) {
+        temp.push_back(arr[left]);
+        left++;
+    }
+
+    while (right <= high) {
+        temp.push_back(arr[right]);
+        right++;
+    }
+
+    for (int i = low; i <= high; i++) {
+        arr[i] = temp[i - low];
+    }
+}
+
+void mergeSort(vector<int>& arr, int low, int high, int& count) {
+    if (low >= high)
+        return;
+    int mid = (low + high) / 2;
+    mergeSort(arr, low, mid, count);      // left half
+    mergeSort(arr, mid + 1, high, count); // right half
+    countPairs(arr, low, mid, high, count);
+    merge(arr, low, mid, high);           // merging sorted halves
+}
+
+int team(vector<int>& skill, int n) {  // Tc --> O(2nlogn)  SC --> O(n)
+    int count = 0;
+    mergeSort(skill, 0, n - 1, count);
     return count;
 }
 
-// optimal soln
-int team(vector<int> & skill, int n) {  // TC --> O(N^2)  SC --> O(1)
-    
+//  Subarray With Maximum Product
+
+// int subarrayWithMaxProduct(vector<int> &arr){  // TC --> O(n^2)  SC --> O(1)
+//     int n = arr.size();
+//     int maxProduct = INT_MIN;
+
+//     for(int i = 0; i<n; i++){
+//         int currProduct = 1;
+//         for(int j = i; j<n; j++){
+//             currProduct *= arr[j];
+//             maxProduct = max(maxProduct, currProduct);
+//         }
+//     }
+//     return maxProduct;
+// }
+
+// Optimal soln
+int subarrayWithMaxProduct(vector<int> &arr){  // TC --> O(n)  SC --> O(1)
+    int n = arr.size();
+    int maxProduct = INT_MIN;
+    int prefixSum = 1;
+    int SuffixSum = 1;
+
+    for(int i = 0; i<n; i++){
+        if(prefixSum == 0){
+            prefixSum = 1;
+        }
+        if(SuffixSum == 0){
+            SuffixSum = 1;
+        }
+
+        prefixSum *= arr[i];
+        SuffixSum *= arr[n-i-1];
+
+        maxProduct = max(maxProduct, max(prefixSum, SuffixSum));
+    }
+
+    return maxProduct;
 }
 
 
@@ -754,7 +847,7 @@ int main()
     // cout << "Enter the number of columns (m): ";
     // cin >> m;
 
-    vector<int> a = {4, 1, 2, 3, 1};
+    vector<int> a = {-1, 3, 0, -4, 3};
     // vector<long long> b = {2, 3, 4 ,5};
     int n = a.size();
     // int m = b.size();
@@ -827,7 +920,8 @@ int main()
     // mergeTwoSortedArraysWithoutExtraSpace(a, b);
     // findMissingRepeatingNumbers(a);
     // auto result = numberOfInversions(a, a.size());
-    auto result = team(a, a.size());
+    // auto result = team(a, a.size());
+    auto result = subarrayWithMaxProduct(a);
 
     // cout << "Set Zero Matrix for" << n << "x" << m << " is:" << endl;
     // for (int i = 0; i < n; ++i)
@@ -918,7 +1012,10 @@ int main()
     // cout << endl;
 
     // cout << " Number of Inversions: " << result << endl;
-    cout << "Reverse Pairs: " << result << endl;
+
+    // cout << "Reverse Pairs: " << result << endl;
+
+    cout << "Subarray With Maximum Product: " << result << endl;
 
     return 0;
 }
