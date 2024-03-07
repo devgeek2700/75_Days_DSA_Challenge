@@ -535,26 +535,89 @@ vector<vector<int>> mergeOverlappingIntervals(vector<vector<int>> &arr)
 //     }
 // }
 
-//Optimal soln
+// Optimal soln
 void mergeTwoSortedArraysWithoutExtraSpace(vector<long long> &a, vector<long long> &b)
-{  // TC--> O(min(n,m))+O(nlogn)+O(mlogm)   SC --> O(1)
+{ // TC--> O(min(n,m))+O(nlogn)+O(mlogm)   SC --> O(1)
     int n = a.size();
     int m = b.size();
-    int left = n-1;
+    int left = n - 1;
     int right = 0;
 
-    while(left >= 0 && right < m){
-        if(a[left] > b[right]){
+    while (left >= 0 && right < m)
+    {
+        if (a[left] > b[right])
+        {
             swap(a[left], b[right]);
             left--;
             right++;
-        }else{
+        }
+        else
+        {
             break;
         }
     }
 
     sort(a.begin(), a.end());
     sort(b.begin(), b.end());
+}
+
+//  Missing And Repeating Numbers
+// vector<int> findMissingRepeatingNumbers(vector<int> a) { // TC --> O(n^2)   SC --> O(1)
+//     int repeatVal = -1;
+//     int missingVal = -1;
+
+//     for(int i = 1; i <= a.size(); i++) {
+//         int count = 0;
+//         for(int j = 0; j < a.size(); j++) {
+//             if(a[j] == i) {
+//                 count++;
+//             }
+//         }
+//         if(count == 2) {
+//             repeatVal = i;
+//         } else if(count == 0) {
+//             missingVal = i;
+//         }
+
+//         if(missingVal != -1 && repeatVal != -1) {
+//             break;
+//         }
+//     }
+
+    // return {repeatVal, missingVal};
+
+// }
+
+vector<int> findMissingRepeatingNumbers(vector<int> a)
+{ // TC --> O(n^2)   SC --> O(1)
+    int n = a.size();
+    int hash[n + 1] = {0};
+    for (int i = 0; i < n; i++)
+    {
+        hash[a[i]]++; // incraete the val by 1
+    }
+
+    int repeatVal = -1;
+    int missingVal = -1;
+    for (int i = 1; i <= n; i++)
+    {
+        if (hash[i] == 2)
+        {
+            repeatVal = i;
+        }
+        else if (hash[i] == 0)
+        {
+            missingVal = i;
+        }
+
+        if (missingVal != -1 && repeatVal != -1)
+        {
+            break;
+        }
+    }
+
+
+    return {repeatVal, missingVal};
 }
 
 int main()
@@ -566,10 +629,10 @@ int main()
     // cout << "Enter the number of columns (m): ";
     // cin >> m;
 
-    vector<long long> a = {1 ,8, 8};
-    vector<long long> b = {2, 3, 4 ,5};
-     int n = a.size();
-    int m = b.size();
+    vector<int> a = {1, 2, 1};
+    // vector<long long> b = {2, 3, 4 ,5};
+    int n = a.size();
+    // int m = b.size();
     int k = 3;
     int target = 0;
     cout << "Vector Values a: ";
@@ -579,12 +642,12 @@ int main()
     }
     cout << endl;
 
-    cout << "Vector Values b: ";
-    for (auto it : b)
-    {
-        cout << it << " ";
-    }
-    cout << endl;
+    // cout << "Vector Values b: ";
+    // for (auto it : b)
+    // {
+    //     cout << it << " ";
+    // }
+    // cout << endl;
 
     // vector<vector<int>> varr = {{1, 3}, {2, 6}, {8, 9}, {9, 11}, {8, 10}, {8, 4}, {15, 18}, {16, 17}};
     // int k = 3;
@@ -636,7 +699,8 @@ int main()
     // auto result = getLongestZeroSumSubarrayLength(varr);
     // auto result = subarraysWithSumK(varr, k);
     // auto result = mergeOverlappingIntervals(varr);
-    mergeTwoSortedArraysWithoutExtraSpace(a, b);
+    // mergeTwoSortedArraysWithoutExtraSpace(a, b);
+    auto result = findMissingRepeatingNumbers(a);
 
     // cout << "Set Zero Matrix for" << n << "x" << m << " is:" << endl;
     // for (int i = 0; i < n; ++i)
@@ -710,11 +774,18 @@ int main()
     // }
     // cout << endl;
 
-      cout << "Merge Two Sorted Arrays Without Extra Space: ";
-    for (auto it : a) {
-        cout << it << " ";
-    }
-    for (auto it : b) {
+    //   cout << "Merge Two Sorted Arrays Without Extra Space: ";
+    // for (auto it : a) {
+    //     cout << it << " ";
+    // }
+    // for (auto it : b) {
+    //     cout << it << " ";
+    // }
+    // cout << endl;
+
+    cout << "Missing And Repeating Numbers: ";
+    for (auto it : result)
+    {
         cout << it << " ";
     }
     cout << endl;
