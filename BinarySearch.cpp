@@ -215,7 +215,7 @@ pair<int, int> getFloorAndCeil(vector<int> &arr, int n, int x)
 // }
 
 // Optimal soln --> using libraies
-// pair<int, int> firstAndLastPosition(vector<int> &arr, int n, int k) {
+// pair<int, int> firstAndLastPosition(vector<int> &arr, int n, int k) { // TC --> O(n)  SC --> O(1)
 //     int first = lower_bound(arr.begin(), arr.end(), k) - arr.begin();
 //     int last = (upper_bound(arr.begin(), arr.end(), k) - arr.begin()) - 1;
 
@@ -282,7 +282,7 @@ int lastPosition(vector<int> &arr, int n, int k)
     return last;
 }
 
-pair<int, int> firstAndLastPosition(vector<int> &arr, int n, int k)
+pair<int, int> firstAndLastPosition(vector<int> &arr, int n, int k) // TC --> O(n)  SC --> O(1)
 {
     int first = firstPosition(arr, n, k);
     if (first == -1)
@@ -296,7 +296,7 @@ pair<int, int> firstAndLastPosition(vector<int> &arr, int n, int k)
 
 //  Number of occurrence  --> using libraies
 
-// int countofoccurrence(vector<int> &arr, int n, int x) 
+// int countofoccurrence(vector<int> &arr, int n, int x) // TC --> O(n)  SC --> O(1)
 // {
 //     int first = lower_bound(arr.begin(), arr.end(), x) - arr.begin();
 //     int last = (upper_bound(arr.begin(), arr.end(), x) - arr.begin()) - 1;
@@ -308,7 +308,7 @@ pair<int, int> firstAndLastPosition(vector<int> &arr, int n, int k)
 
 // Optimal soln --> using first and last function call
 
-int countofoccurrence(vector<int> &arr, int n, int x) 
+int countofoccurrence(vector<int> &arr, int n, int x) // TC --> O(n)  SC --> O(1)
 {
     int first = firstPosition(arr, n, x);
     if (first == -1)
@@ -317,24 +317,67 @@ int countofoccurrence(vector<int> &arr, int n, int x)
     }
     int last = lastPosition(arr, n, x);
 
-    return last - first +1;
+    return last - first + 1;
 }
-
 
 //  Search In Rotated Sorted Array (I) --> all values are unique
 
-int RotatedArrayI(vector<int>& arr, int n, int k)
+int RotatedArrayI(vector<int> &arr, int n, int k) // TC --> O(n)  SC --> O(1)
 {
-    
+    int low = 0;
+    int high = n - 1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (arr[mid] == k)
+        {
+            return mid;
+        }
+        // left part sorted
+        if (arr[low] <= arr[mid])
+        {
+            if (arr[low] <= k && k <= arr[mid])
+            {
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
+        // right part sorted
+        else
+        {
+            if (arr[mid] <= arr[high])
+            {
+                if (arr[mid] <= k && k <= arr[high])
+                {
+                    low = mid + 1;
+                }
+                else
+                {
+                    high = mid - 1;
+                }
+            }
+        }
+    }
+    return -1;
 }
+
+
+
+
+
 
 
 int main()
 {
-    vector<int> arr = {1, 1, 1, 2, 2, 3, 3};
+    vector<int> arr = {31, 44, 56, 0, 10, 13};
 
     int n = arr.size();
-    int target = 3;
+    int target = 47;
 
     cout << "Display Arrays: ";
     for (int i = 0; i < n; i++)
@@ -367,8 +410,11 @@ int main()
     // int result = countofoccurrence(arr, n, target);
     // cout << "Number of occurrence: " << result << endl;
 
-    int result = RotatedArrayI(arr, n, target);
-    cout << "Search In Rotated Sorted Array (I): " << result << endl;
+    // int result = RotatedArrayI(arr, n, target);
+    // cout << "Search In Rotated Sorted Array (I): " << result << endl;
+
+    bool result = searchInARotatedSortedArrayII(arr, target);
+    cout << "Search In Rotated Sorted Array (II): " << result << endl;
 
     return 0;
 }
