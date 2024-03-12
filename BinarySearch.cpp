@@ -420,6 +420,21 @@ bool searchInARotatedSortedArrayII(vector<int>&arr, int k) // TC --> O(n)  SC --
 }
 
 
+vector<int> MinimumCoins(int n) {
+    vector<int> denominations = {1000, 500, 100, 50, 20, 10, 5, 2, 1};
+    vector<int> result;
+
+    for (int i = 0; i < denominations.size(); ++i) {
+        int coins = n / denominations[i];
+        while (coins--) {
+            result.push_back(denominations[i]);
+            n -= denominations[i];
+        }
+    }
+
+    return result;
+}
+
 
 
 
