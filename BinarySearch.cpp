@@ -368,10 +368,10 @@ int RotatedArrayI(vector<int> &arr, int n, int k) // TC --> O(n)  SC --> O(1)
 
 //  Search In Rotated Sorted Array (II) --> dulpicates
 
-bool searchInARotatedSortedArrayII(vector<int>&arr, int k) // TC --> O(n)  SC --> O(1)
+bool searchInARotatedSortedArrayII(vector<int> &arr, int k) // TC --> O(n)  SC --> O(1)
 {
     int n = arr.size();
-  int low = 0;
+    int low = 0;
     int high = n - 1;
 
     while (low <= high)
@@ -383,9 +383,10 @@ bool searchInARotatedSortedArrayII(vector<int>&arr, int k) // TC --> O(n)  SC --
             return true;
         }
 
-        if(arr[low] == arr[mid] && arr[mid] == arr[high]){
-            low = low+1;
-            high = high-1;
+        if (arr[low] == arr[mid] && arr[mid] == arr[high])
+        {
+            low = low + 1;
+            high = high - 1;
             continue;
         }
         // left part sorted
@@ -419,20 +420,170 @@ bool searchInARotatedSortedArrayII(vector<int>&arr, int k) // TC --> O(n)  SC --
     return false;
 }
 
+//  Minimum no of times Rotated
 
-bool isBinary(string &bin) {
-    for (char c : bin) {
-        if (c != '0' && c != '1') {
-            return false;
+int findMin(vector<int> &arr) // TC --> O(logn)  SC --> O(1)
+{
+    int n = arr.size();
+    int low = 0;
+    int high = n - 1;
+    int minVal = INT_MAX;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (arr[low] <= arr[high])
+        {
+            minVal = min(minVal, arr[low]);
+            break;
+        }
+
+        // left half is sorted if low < mid
+        if (arr[low] <= arr[mid])
+        {
+            minVal = min(minVal, arr[low]);
+            low = mid + 1;
+        }
+        else
+        {
+            minVal = min(minVal, arr[mid]);
+            high = mid - 1;
         }
     }
-    return true;
+
+    return minVal;
 }
+
+// minimum number of times Rotation
+int findKRotation(vector<int> &arr) // TC --> O(logn)  SC --> O(1)
+{
+    int n = arr.size();
+    int low = 0;
+    int high = n - 1;
+    int minVal = INT_MAX;
+    int minIdx = 0;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (arr[low] <= arr[high])
+        {
+            if (arr[low] < minVal)
+            {
+                minVal = arr[low];
+                minIdx = low;
+            }
+
+            break;
+        }
+
+        // left half is sorted if low < mid
+        if (arr[low] <= arr[mid])
+        {
+            if (arr[low] < minVal)
+            {
+                minVal = arr[low];
+                minIdx = low;
+            }
+
+            low = mid + 1;
+        }
+        else
+        {
+            if (arr[mid] < minVal)
+            {
+                minVal = arr[mid];
+                minIdx = mid;
+            }
+
+            high = mid - 1;
+        }
+    }
+
+    return minIdx;
+}
+
+//  Single Element in a Sorted Array
+// Bructe force
+// int singleNonDuplicate(vector<int>& arr)
+// {
+//     int n = arr.size();
+//     int singleVal;
+
+//     if(n == 1){
+//         return n;
+//     }
+
+//     for(int i = 0; i < n; i++){
+//         if( i == 0){
+//             if(arr[i] != arr[i+1]){
+//                 return arr[i];
+//             }
+//         }else if(i == n-1){
+//             if(arr[i] != arr[i-1]){
+//                 return arr[i];
+//             }
+//         }else{
+//             if(arr[i] != arr[i+1] && arr[i-1] != arr[i]){
+//                 return arr[i];
+//             }
+//         }
+//     }
+//   }
+
+// eliminate only that part where element is not present
+// (even , odd) --> element is on right half
+// (odd  , even) --> element is on left half
+
+int singleNonDuplicate(vector<int> &arr) // TC --> O(logn)  SC --> O(1)
+{
+    int n = arr.size();
+    int low = 1;
+    int high = n - 2;
+
+    if (n == 1)
+    {
+        return arr[0];
+    }
+
+    if (arr[0] != arr[1])
+    {
+        return arr[0];
+    }
+
+    if (arr[n - 1] != arr[n - 2])
+    {
+        return arr[n - 1];
+    }
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (arr[mid] != arr[mid + 1] && arr[mid] != arr[mid - 1])
+        {
+            return arr[mid];
+        }
+
+        // left half --> go to right half of element
+        if (mid % 2 == 1 && arr[mid] == arr[mid - 1] || mid % 2 == 0 && arr[mid] == arr[mid + 1])
+        {
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+}
+
 
 
 int main()
 {
-    vector<int> arr = {31, 44, 56, 0, 10, 13};
+    vector<int> arr = {10, 10, 14, 16, 16, 25, 25, 28, 28, 36, 36, 44, 44};
 
     int n = arr.size();
     int target = 47;
@@ -471,8 +622,17 @@ int main()
     // int result = RotatedArrayI(arr, n, target);
     // cout << "Search In Rotated Sorted Array (I): " << result << endl;
 
-    bool result = searchInARotatedSortedArrayII(arr, target);
-    cout << "Search In Rotated Sorted Array (II): " << result << endl;
+    // bool result = searchInARotatedSortedArrayII(arr, target);
+    // cout << "Search In Rotated Sorted Array (II): " << result << endl;
+
+    // int result = findMin(arr);
+    // cout << "Find Minimum in Rotated Sorted Array: " << result << endl;
+
+    // int result = findKRotation(arr);
+    // cout << "Find Minimum no of times Rotated: " << result << endl;
+
+    int result = singleNonDuplicate(arr);
+    cout << "Single Element in a Sorted Array: " << result << endl;
 
     return 0;
 }
