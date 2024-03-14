@@ -577,13 +577,63 @@ int singleNonDuplicate(vector<int> &arr) // TC --> O(logn)  SC --> O(1)
             high = mid - 1;
         }
     }
+    return -1;
 }
+
+
+//  Find Peak Element
+int findPeakElement(vector<int> &arr) {
+    int n = arr.size();
+    int low = 1;
+    int high = n - 2;
+
+     if (n == 1)
+    {
+        return 0;
+    }
+
+     if (arr[0] > arr[1])
+    {
+        return 0;
+    }
+
+     if (arr[n-1] >  arr[n-2])
+    {
+        return n-1;
+    }
+
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (arr[mid] > arr[mid + 1] && arr[mid] > arr[mid-1])
+        {
+            return mid;
+            // maxPeak = max(maxPeak, arr[mid]);
+        }
+
+        if (arr[mid - 1] < arr[mid])
+        {
+            low = mid + 1;
+        }
+        else if(arr[mid] > arr[mid+1])
+        {
+            high = mid - 1;
+        }
+        else{
+            low = mid+1;
+        }
+    }
+    return -1;
+}
+
 
 
 
 int main()
 {
-    vector<int> arr = {10, 10, 14, 16, 16, 25, 25, 28, 28, 36, 36, 44, 44};
+    vector<int> arr = {1, 2, 1 };
 
     int n = arr.size();
     int target = 47;
@@ -631,8 +681,11 @@ int main()
     // int result = findKRotation(arr);
     // cout << "Find Minimum no of times Rotated: " << result << endl;
 
-    int result = singleNonDuplicate(arr);
-    cout << "Single Element in a Sorted Array: " << result << endl;
+    // int result = singleNonDuplicate(arr);
+    // cout << "Single Element in a Sorted Array: " << result << endl;
+
+    int result = findPeakElement(arr);
+    cout <<"Find Peak Element at index: " << result << endl;
 
     return 0;
 }
