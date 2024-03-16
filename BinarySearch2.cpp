@@ -19,7 +19,7 @@ using namespace std;
 // }
 
 // binary search method
-int floorSqrt(int n)  // TC --> O(logn)
+int floorSqrt(int n) // TC --> O(logn)
 {
 
     int low = 1;
@@ -43,12 +43,45 @@ int floorSqrt(int n)  // TC --> O(logn)
     return ans;
 }
 
+//  Find Nth Root Of M
+
+
+long long sqrtofntimes(long long base, int exp) {
+    long long result = 1;
+    while (exp > 0) {
+        if (exp % 2 == 1) {
+            result *= base;
+        }
+        base *= base;
+        exp /= 2;
+    }
+    return result;
+}
+
+int NthRoot(int n, int m) {
+    //Use Binary search on the answer space:
+    int low = 1, high = m;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        int midN = sqrtofntimes(mid, n, m);
+        if (midN == 1) {
+            return mid;
+        }
+        else if (midN == 0) low = mid + 1;
+        else high = mid - 1;
+    }
+    return -1;
+}
+
+
+
 int main()
 {
-    int num = 100;
+    int n = 4;
+    int m = 69;
 
-    int result = floorSqrt(num);
-    cout << "Square Root of a number: " << result << endl;
+    int result = NthRoot(n,m);
+    cout << "Find Nth Root Of M: " << result << endl;
 
     return 0;
 }
