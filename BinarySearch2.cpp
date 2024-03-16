@@ -46,16 +46,14 @@ int floorSqrt(int n) // TC --> O(logn)
 //  Find Nth Root Of M
 
 
-long long sqrtofntimes(long long base, int exp) {
-    long long result = 1;
-    while (exp > 0) {
-        if (exp % 2 == 1) {
-            result *= base;
-        }
-        base *= base;
-        exp /= 2;
+int func(int mid, int n, int m) {
+    long long ans = 1;
+    for (int i = 1; i <= n; i++) {
+        ans = ans * mid;
+        if (ans > m) return 2;
     }
-    return result;
+    if (ans == m) return 1;
+    return 0;
 }
 
 int NthRoot(int n, int m) {
@@ -63,7 +61,7 @@ int NthRoot(int n, int m) {
     int low = 1, high = m;
     while (low <= high) {
         int mid = (low + high) / 2;
-        int midN = sqrtofntimes(mid, n, m);
+        int midN = func(mid, n, m);
         if (midN == 1) {
             return mid;
         }
