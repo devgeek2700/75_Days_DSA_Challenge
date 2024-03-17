@@ -73,6 +73,34 @@ int NthRoot(int n, int m) {
 
 
 
+long long power(long long x, long long y, long long p) {
+    long long res = 1; // Initialize result
+
+    x = x % p; // Update x if it is more than or equal to p
+
+    while (y > 0) {
+        // If y is odd, multiply x with result
+        if (y & 1)
+            res = (res * x) % p;
+
+        // y must be even now
+        y = y >> 1; // y = y/2
+        x = (x * x) % p;
+    }
+    return res;
+}
+
+int powerOfPower(int A, int B, int C, int M) {
+    // Calculate B^C mod (M-1)
+    long long exp = power(B, C, M - 1);
+
+    // Calculate A^(B^C) mod M
+    long long result = power(A, exp, M);
+
+    return result;
+}
+
+
 int main()
 {
     int n = 4;
