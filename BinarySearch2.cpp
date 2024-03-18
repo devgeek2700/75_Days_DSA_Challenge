@@ -45,69 +45,163 @@ int floorSqrt(int n) // TC --> O(logn)
 
 //  Find Nth Root Of M
 
-
-int func(int mid, int n, int m) {
+int func(int mid, int n, int m)
+{
     long long ans = 1;
-    for (int i = 1; i <= n; i++) {
+    for (int i = 1; i <= n; i++)
+    {
         ans = ans * mid;
-        if (ans > m) return 2;
+        if (ans > m)
+            return 2;
     }
-    if (ans == m) return 1;
+    if (ans == m)
+        return 1;
     return 0;
 }
 
-int NthRoot(int n, int m) {
-    //Use Binary search on the answer space:
+int NthRoot(int n, int m)
+{
+    // Use Binary search on the answer space:
     int low = 1, high = m;
-    while (low <= high) {
+    while (low <= high)
+    {
         int mid = (low + high) / 2;
         int midN = func(mid, n, m);
-        if (midN == 1) {
+        if (midN == 1)
+        {
             return mid;
         }
-        else if (midN == 0) low = mid + 1;
-        else high = mid - 1;
+        else if (midN == 0)
+            low = mid + 1;
+        else
+            high = mid - 1;
     }
     return -1;
 }
 
+//  Koko Eating Bananas
+// totalhours = ceil(arr[i]/hourly)
 
+int countperHour(vector<int> v, int mid, int h)
+{
+    int totalHours = 0;
 
-long long power(long long x, long long y, long long p) {
-    long long res = 1; // Initialize result
-
-    x = x % p; // Update x if it is more than or equal to p
-
-    while (y > 0) {
-        // If y is odd, multiply x with result
-        if (y & 1)
-            res = (res * x) % p;
-
-        // y must be even now
-        y = y >> 1; // y = y/2
-        x = (x * x) % p;
+    for (int i = 0; i < v.size(); i++)
+    {
+        totalHours += ceil(double(v[i]) / mid);
     }
-    return res;
+    return totalHours;
 }
 
-int powerOfPower(int A, int B, int C, int M) {
-    // Calculate B^C mod (M-1)
-    long long exp = power(B, C, M - 1);
+int minimumRateToEatBananas(vector<int> v, int h)
+{
+    int low = 1;
+    int high = *max_element(v.begin(), v.end());
+    int ans = high;
 
-    // Calculate A^(B^C) mod M
-    long long result = power(A, exp, M);
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        int requiredAns = countperHour(v, mid, h);
 
-    return result;
+        if (requiredAns <= h)
+        {
+            ans = mid;
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return ans;
 }
+
+//  Rose Garden
+
+bool possibleBloomDay(vector<int> arr, int k, int m, int day)
+{
+    int count = 0;
+    int noofBouquets = 0;
+
+    for (int i = 0; i < arr.size(); i++)
+    {
+        if (arr[i] <= day)
+        {
+            count++;
+        }
+        else
+        {
+            noofBouquets += (count / k);
+            count = 0;
+        }
+    }
+
+
+    noofBouquets += (count / k);
+
+    if (noofBouquets >= m)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+int roseGarden(vector<int> arr, int k, int m)
+{
+    //m -->  no of Bouquets
+    //k -->  adjacent flowers required
+
+
+    int low = *min_element(arr.begin(), arr.end());
+    int high = *max_element(arr.begin(), arr.end());
+    int ans = -1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        int requiredAns = possibleBloomDay(arr, k, m, mid);
+
+        if (requiredAns == true)
+        {
+            ans = mid;
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return ans;
+}
+
 
 
 int main()
 {
-    int n = 4;
-    int m = 69;
+    // int n = 4;
+    // int h = 7;
 
-    int result = NthRoot(n,m);
-    cout << "Find Nth Root Of M: " << result << endl;
+    vector<int> arr = {1, 1, 1, 1};
+    int n = arr.size();
+    int k = 1;
+    int m = 1;
+
+    cout << "Display Arrays: ";
+    for (int i = 0; i < n; i++)
+    {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    // int result = minimumRateToEatBananas(arr, h);
+    // cout << "Koko Eating Bananas: " << result << endl;
+
+    int result = roseGarden(arr, k, m);
+    cout << "Rose Garden: " << result << endl;
 
     return 0;
 }
