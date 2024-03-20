@@ -220,7 +220,7 @@ int smallestDivisor(vector<int> &arr, int limit)
 
 //  Capacity To Ship Packages Within D Days
 
-int allpossibleDays(vector<int> weights, int Capacity)
+int minnofindDays(vector<int> weights, int Capacity)
 {
     int noofDays = 1;
     int load = 0;
@@ -249,12 +249,11 @@ int leastWeightCapacity(vector<int> &weights, int d)
     int low = *max_element(weights.begin(), weights.end());
     int high = accumulate(weights.begin(), weights.end(), 0);
     int ans = -1;
-    
 
     while (low <= high)
     {
         int mid = (low + high) / 2;
-        int requiredAns = allpossibleDays(weights, mid);
+        int requiredAns = minnofindDays(weights, mid);
 
         if (requiredAns <= d)
         {
@@ -269,17 +268,48 @@ int leastWeightCapacity(vector<int> &weights, int d)
     return ans;
 }
 
+
+//  Kth Missing Positive Number
+
+int missingK(vector<int> vec, int n, int k)
+{
+    int low = 0;
+    int high = n - 1;
+    int ans;
+
+    while (low <= high)
+    {
+        int mid = low + (high - low) / 2;
+        int MissingElements = vec[mid] - (mid + 1);
+        if (MissingElements < k)
+        {
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+
+    ans = low + k;
+    return ans;
+}
+
+
+
+
+
 int main()
 {
     // int n = 4;
     // int h = 7;
-    // int k = 1;
     // int m = 1;
     // int limit = 11;
+    // int d = 12;
 
-    vector<int> arr = {86 ,45, 74, 64, 14 ,68, 44 ,11, 43, 33, 8, 20};
+    vector<int> arr = {4, 7, 9, 10};
+    int k = 1;
     int n = arr.size();
-    int d = 12;
 
     cout << "Display Arrays: ";
     for (int i = 0; i < n; i++)
@@ -297,8 +327,12 @@ int main()
     // int result = smallestDivisor(arr, limit);
     // cout << "Smallest Divisor Given a limit: " << result << endl;
 
-    int result = leastWeightCapacity(arr, d);
-    cout << "Capacity To Ship Packages Within D Days: " << result << endl;
+    // int result = leastWeightCapacity(arr, d);
+    // cout << "Capacity To Ship Packages Within D Days: " << result << endl;
+
+    int result = missingK(arr, n, k);
+    cout << "Kth Missing Positive Number: " << result << endl;
+
 
     return 0;
 }
