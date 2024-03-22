@@ -108,11 +108,60 @@ int findPages(vector<int> &arr, int n, int m)
     return ans;
 }
 
+
+
+//  Largest Subarray Sum Minimized  // Max on Min
+
+int SubarrayDivide(vector<int> &arr, int mid)
+{
+    int CurrentSubArr = 1;
+    int SubArrnxt = 0;
+
+    for (int i = 0; i < arr.size(); i++)
+    {
+        if (SubArrnxt + arr[i] <= mid)
+        {
+            SubArrnxt += arr[i];
+        }
+        else
+        {
+            CurrentSubArr += 1;
+            SubArrnxt = arr[i];
+        }
+    }
+
+    return CurrentSubArr;
+}
+
+int largestSubarraySumMinimized(vector<int> a, int k) {
+      int low = *max_element(a.begin(), a.end());
+    int high = accumulate(a.begin(), a.end(), 0);
+    int ans = -1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        int requiredAns = SubarrayDivide(a, mid);
+
+        if (requiredAns > k)
+        {
+            low = mid + 1;
+        }
+        else
+        {
+            ans = mid;
+            high = mid - 1;
+        }
+    }
+    return ans;
+}
+
+
 int main()
 {
-    vector<int> arr = {25, 46, 28, 49, 24};
-    // int k = 2;
-    int m = 4;
+    vector<int> arr = {10, 4, 5, 10, 9, 10 };
+    int k = 4;
+    // int m = 4;
     int n = arr.size();
 
     cout << "Display Arrays: ";
@@ -125,8 +174,11 @@ int main()
     // int result = aggressiveCows(arr, k);
     // cout << "Aggressive Cows: " << result << endl;
 
-    int result = findPages(arr, n, m);
-    cout << "Allocate Books: " << result << endl;
+    // int result = findPages(arr, n, m);
+    // cout << "Allocate Books: " << result << endl;
+
+    int result = largestSubarraySumMinimized(arr, k);
+    cout <<"Largest Subarray Sum Minimized: " << result << endl;
 
     return 0;
 }
