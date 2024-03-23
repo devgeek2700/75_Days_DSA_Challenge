@@ -182,3 +182,29 @@ int main()
 
     return 0;
 }
+
+
+
+
+
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    char ch;
+    cin >> ch;
+
+    // Check if the character is an uppercase alphabet
+    if (ch >= 'A' && ch <= 'Z')
+        cout << 1 << endl;
+    // Check if the character is a lowercase alphabet
+    else if (ch >= 'a' && ch <= 'z')
+        cout << 0 << endl;
+    // Character is neither an uppercase alphabet nor a lowercase alphabet
+    else
+        cout << -1 << endl;
+
+    return 0;
+}
