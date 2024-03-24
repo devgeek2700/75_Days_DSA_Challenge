@@ -134,7 +134,7 @@ int SubarrayDivide(vector<int> &arr, int mid)
 }
 
 int largestSubarraySumMinimized(vector<int> a, int k) {
-      int low = *max_element(a.begin(), a.end());
+    int low = *max_element(a.begin(), a.end());
     int high = accumulate(a.begin(), a.end(), 0);
     int ans = -1;
 
@@ -156,11 +156,59 @@ int largestSubarraySumMinimized(vector<int> a, int k) {
     return ans;
 }
 
+// Painter's Partition Problem
+
+int canpaintboard(vector<int> &arr, int mid)
+{
+    int countPainter = 1;
+    int currPainter = 0;
+
+    for (int i = 0; i < arr.size(); i++)
+    {
+        if (currPainter + arr[i] <= mid)
+        {
+            currPainter += arr[i];
+        }
+        else
+        {
+            countPainter += 1;
+            currPainter = arr[i];
+        }
+    }
+
+    return countPainter;
+}
+
+
+int findLargestMinDistance(vector<int> &boards, int k)
+{
+    int low = *max_element(boards.begin(), boards.end());
+    int high = accumulate(boards.begin(), boards.end(), 0);
+    int ans = -1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        int requiredAns = canpaintboard(boards, mid);
+
+        if (requiredAns > k)
+        {
+            low = mid + 1;
+        }
+        else
+        {
+            ans = mid;
+            high = mid - 1;
+        }
+    }
+    return ans;
+}
+
 
 int main()
 {
-    vector<int> arr = {10, 4, 5, 10, 9, 10 };
-    int k = 4;
+    vector<int> arr = {48, 90};
+    int k = 2;
     // int m = 4;
     int n = arr.size();
 
@@ -177,34 +225,11 @@ int main()
     // int result = findPages(arr, n, m);
     // cout << "Allocate Books: " << result << endl;
 
-    int result = largestSubarraySumMinimized(arr, k);
-    cout <<"Largest Subarray Sum Minimized: " << result << endl;
+    // int result = largestSubarraySumMinimized(arr, k);
+    // cout <<"Largest Subarray Sum Minimized: " << result << endl;
 
-    return 0;
-}
-
-
-
-
-
-
-
-#include <iostream>
-using namespace std;
-
-int main() {
-    char ch;
-    cin >> ch;
-
-    // Check if the character is an uppercase alphabet
-    if (ch >= 'A' && ch <= 'Z')
-        cout << 1 << endl;
-    // Check if the character is a lowercase alphabet
-    else if (ch >= 'a' && ch <= 'z')
-        cout << 0 << endl;
-    // Character is neither an uppercase alphabet nor a lowercase alphabet
-    else
-        cout << -1 << endl;
+    int result = findLargestMinDistance(arr, k);
+    cout <<" Painter's Partition Problem: " << result << endl;
 
     return 0;
 }
