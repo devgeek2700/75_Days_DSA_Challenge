@@ -233,3 +233,23 @@ int main()
 
     return 0;
 }
+
+
+
+
+
+int findFirstRepeatingDigit(string digitPattern) {
+    unordered_set<char> seen;
+
+    for (char digit : digitPattern) {
+        // If the current digit is already in the set, it's repeating, return it
+        if (seen.find(digit) != seen.end()) {
+            return digit - '0'; // Convert char to int
+        } else {
+            seen.insert(digit);
+        }
+    }
+
+    // If no repeating digit is found, return -1
+    return -1;
+}
