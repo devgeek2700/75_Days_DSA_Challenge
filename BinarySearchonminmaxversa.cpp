@@ -55,8 +55,6 @@ int aggressiveCows(vector<int> &stalls, int k)
     return ans;
 }
 
-
-
 //  Allocate Books
 
 int maxminumPagesAllocate(vector<int> &arr, int mid)
@@ -86,7 +84,8 @@ int findPages(vector<int> &arr, int n, int m)
     int high = accumulate(arr.begin(), arr.end(), 0);
     int ans = -1;
 
-    if(m > n){
+    if (m > n)
+    {
         return ans;
     }
 
@@ -107,8 +106,6 @@ int findPages(vector<int> &arr, int n, int m)
     }
     return ans;
 }
-
-
 
 //  Largest Subarray Sum Minimized  // Max on Min
 
@@ -133,7 +130,8 @@ int SubarrayDivide(vector<int> &arr, int mid)
     return CurrentSubArr;
 }
 
-int largestSubarraySumMinimized(vector<int> a, int k) {
+int largestSubarraySumMinimized(vector<int> a, int k)
+{
     int low = *max_element(a.begin(), a.end());
     int high = accumulate(a.begin(), a.end(), 0);
     int ans = -1;
@@ -179,7 +177,6 @@ int canpaintboard(vector<int> &arr, int mid)
     return countPainter;
 }
 
-
 int findLargestMinDistance(vector<int> &boards, int k)
 {
     int low = *max_element(boards.begin(), boards.end());
@@ -204,11 +201,76 @@ int findLargestMinDistance(vector<int> &boards, int k)
     return ans;
 }
 
+//  Minimize Max Distance to Gas Station  --> Min on Max
+// place them in equal distances
+
+// better soln
+// double minimiseMaxDistance(vector<int> &arr, int k) {
+//     int n = arr.size();
+//     vector<int> howMany(n - 1, 0);
+//     priority_queue<pair<long double, int>> pq;
+
+//     for (int i = 0; i < n - 1; i++) {
+//         pq.push({arr[i + 1] - arr[i], i});
+//     }
+
+//     for (int gasStn = 1; gasStn <= k; gasStn++) {
+//         auto tp = pq.top();
+//         pq.pop();
+//         int secIdx = tp.second;
+//         howMany[secIdx]++;
+
+//         long double initialDiff = arr[secIdx + 1] - arr[secIdx];
+//         long double newSection = initialDiff / (long double)(howMany[secIdx] + 1); // Corrected division
+//         pq.push({newSection, secIdx});
+//     }
+//     return pq.top().first;
+// }
+
+// optimal soln
+int noofGasStationsrequired( vector<int> &arr, long double dist) {
+    int n = arr.size(); // size of the array
+    int cnt = 0;
+    for (int i = 1; i < n; i++) {
+        int numberInBetween = ((arr[i] - arr[i - 1]) / dist);
+        if ((arr[i] - arr[i - 1]) == (dist * numberInBetween)) {
+            numberInBetween--;
+        }
+        cnt += numberInBetween;
+    }
+    return cnt;
+}
+
+double minimiseMaxDistance(vector<int> &arr, int k)
+{
+    long double low = 0;
+    long double high = *max_element(arr.begin(), arr.end());
+    long double ans = -1;
+
+    long double diff = 1e-6;
+
+    while (high - low > diff)
+    {
+        long double mid = (low + high) / (2.0);
+        int countofGasStn = noofGasStationsrequired(arr, mid);
+
+        if (countofGasStn > k)
+        {
+            low = mid;
+        }
+        else
+        {
+            ans = mid;
+            high = mid;
+        }
+    }
+    return ans;
+}
 
 int main()
 {
-    vector<int> arr = {48, 90};
-    int k = 2;
+    vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int k = 1;
     // int m = 4;
     int n = arr.size();
 
@@ -228,28 +290,11 @@ int main()
     // int result = largestSubarraySumMinimized(arr, k);
     // cout <<"Largest Subarray Sum Minimized: " << result << endl;
 
-    int result = findLargestMinDistance(arr, k);
-    cout <<" Painter's Partition Problem: " << result << endl;
+    // int result = findLargestMinDistance(arr, k);
+    // cout <<" Painter's Partition Problem: " << result << endl;
+
+    auto result = minimiseMaxDistance(arr, k);
+    cout << " Minimize Max Distance to Gas Station: " << result << endl;
 
     return 0;
-}
-
-
-
-
-
-int findFirstRepeatingDigit(string digitPattern) {
-    unordered_set<char> seen;
-
-    for (char digit : digitPattern) {
-        // If the current digit is already in the set, it's repeating, return it
-        if (seen.find(digit) != seen.end()) {
-            return digit - '0'; // Convert char to int
-        } else {
-            seen.insert(digit);
-        }
-    }
-
-    // If no repeating digit is found, return -1
-    return -1;
 }
