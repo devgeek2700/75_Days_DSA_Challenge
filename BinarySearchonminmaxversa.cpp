@@ -228,12 +228,15 @@ int findLargestMinDistance(vector<int> &boards, int k)
 // }
 
 // optimal soln
-int noofGasStationsrequired( vector<int> &arr, long double dist) {
+int noofGasStationsrequired(vector<int> &arr, long double dist)
+{
     int n = arr.size(); // size of the array
     int cnt = 0;
-    for (int i = 1; i < n; i++) {
+    for (int i = 1; i < n; i++)
+    {
         int numberInBetween = ((arr[i] - arr[i - 1]) / dist);
-        if ((arr[i] - arr[i - 1]) == (dist * numberInBetween)) {
+        if ((arr[i] - arr[i - 1]) == (dist * numberInBetween))
+        {
             numberInBetween--;
         }
         cnt += numberInBetween;
@@ -267,15 +270,73 @@ double minimiseMaxDistance(vector<int> &arr, int k)
     return ans;
 }
 
+//  Median of two sorted arrays
+
+double median(vector<int> &a, vector<int> &b)
+{
+    int n1 = a.size();
+    int n2 = b.size();
+
+    // first array to be smaller
+    if (n1 > n2)
+    {
+        return median(b, a);
+    }
+
+    int low = 0;
+    int high = n1;
+    int left = (n1 + n2 + 1) / 2;
+    int n = n1 + n2;
+
+    while (low <= high)
+    {
+        int mid1 = (low + high) >> 1;
+        int mid2 = left - mid1;
+        int l1 = (mid1 == 0) ? INT_MIN : a[mid1 - 1];
+        int l2 = (mid2 == 0) ? INT_MIN : b[mid2 - 1];
+        int r1 = (mid1 == n1) ? INT_MAX : a[mid1];
+        int r2 = (mid2 == n2) ? INT_MAX : b[mid2];
+
+        if (l1 <= r2 && l2 <= r1)
+        {
+            if (n % 2 == 1)
+            {
+                return max(l1, l2);
+            }
+            return (double)(max(l1, l2) + min(r1, r2)) / 2.0;
+        }
+        else if (l1 > r2)
+        {
+            high = mid1 - 1;
+        }
+        else
+        {
+            low = mid1 + 1;
+        }
+    }
+    return 0;
+}
+
+
+
 int main()
 {
-    vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    vector<int> arr = {1,2,2};
+    vector<int> barr = {2,4,4};
     int k = 1;
     // int m = 4;
     int n = arr.size();
+    int m = barr.size();
 
-    cout << "Display Arrays: ";
+    cout << "Display Arrays arr: ";
     for (int i = 0; i < n; i++)
+    {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    cout << "Display Arrays barr: ";
+    for (int i = 0; i < m; i++)
     {
         cout << arr[i] << " ";
     }
@@ -293,8 +354,11 @@ int main()
     // int result = findLargestMinDistance(arr, k);
     // cout <<" Painter's Partition Problem: " << result << endl;
 
-    auto result = minimiseMaxDistance(arr, k);
-    cout << " Minimize Max Distance to Gas Station: " << result << endl;
+    // auto result = minimiseMaxDistance(arr, k);
+    // cout << " Minimize Max Distance to Gas Station: " << result << endl;
+
+    auto result = median(arr, barr);
+    cout << "Median of two sorted arrays: " << result << endl;
 
     return 0;
 }
