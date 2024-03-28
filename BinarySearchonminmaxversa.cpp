@@ -319,11 +319,52 @@ double median(vector<int> &a, vector<int> &b)
 
 
 
+//  K-th Element of Two Sorted Arrays
+
+int kthElement(vector<int> &a, vector<int>&b, int n1, int n2, int k){
+
+    // first array to be smaller
+    if (n1 > n2)
+    {
+        return kthElement(b, a, n2, n1, k);
+    }
+
+    int low = max(k-n2, 0);
+    int high = min(k, n1);
+    int left = k;
+    int n = n1 + n2;
+
+    while (low <= high)
+    {
+        int mid1 = (low + high) >> 1;
+        int mid2 = left - mid1;
+        int l1 = (mid1 == 0) ? INT_MIN : a[mid1 - 1];
+        int l2 = (mid2 == 0) ? INT_MIN : b[mid2 - 1];
+        int r1 = (mid1 == n1) ? INT_MAX : a[mid1];
+        int r2 = (mid2 == n2) ? INT_MAX : b[mid2];
+
+        if (l1 <= r2 && l2 <= r1)
+        {
+            return max(l1, l2);
+        }
+        else if (l1 > r2)
+        {
+            high = mid1 - 1;
+        }
+        else
+        {
+            low = mid1 + 1;
+        }
+    }
+    return 0;
+}
+
+
 int main()
 {
-    vector<int> arr = {1,2,2};
-    vector<int> barr = {2,4,4};
-    int k = 1;
+    vector<int> arr = {1, 2, 3, 5, 6};
+    vector<int> barr = {4, 7, 8, 9, 100  };
+    int k = 6;
     // int m = 4;
     int n = arr.size();
     int m = barr.size();
@@ -357,8 +398,11 @@ int main()
     // auto result = minimiseMaxDistance(arr, k);
     // cout << " Minimize Max Distance to Gas Station: " << result << endl;
 
-    auto result = median(arr, barr);
-    cout << "Median of two sorted arrays: " << result << endl;
+    // auto result = median(arr, barr);
+    // cout << "Median of two sorted arrays: " << result << endl;
+
+    auto result = kthElement(arr, barr, n, m, k);
+    cout << "K-th Element of Two Sorted Arrays: " << result << endl;
 
     return 0;
 }
