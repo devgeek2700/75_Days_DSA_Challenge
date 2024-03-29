@@ -112,3 +112,34 @@ int main()
 
     return 0;
 }
+
+
+
+
+
+#include <bits/stdc++.h> 
+string sentenceSorting(string &str) {
+    stringstream ss(str);
+    vector<pair<string, int>> words; // Store each word along with its suffix number
+
+    string word;
+    while (ss >> word) {
+        int suffix = word.back() - '0'; // Extract the suffix number from the word
+        word.pop_back(); // Remove the suffix number from the word
+        words.push_back({word, suffix});
+    }
+
+    // Sort the words based on their suffix numbers
+    sort(words.begin(), words.end(), [](const pair<string, int>& a, const pair<string, int>& b) {
+        return a.second < b.second;
+    });
+
+    // Reconstruct the sorted words into a new string
+    string result;
+    for (const auto& w : words) {
+        result += w.first + " ";
+    }
+    result.pop_back(); // Remove the extra space at the end
+
+    return result;
+}
