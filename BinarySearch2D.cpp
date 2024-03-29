@@ -79,18 +79,43 @@ bool searchMatrix(vector<vector<int>> &mat, int target)
     return false;
 }
 
+//  Search In A Sorted 2D Matrix - II
+bool searchElementII(vector<vector<int>> &MATRIX, int target)
+{ // TC --> O(n+m)
+    int n = MATRIX.size();
+    int m = MATRIX[0].size();
 
+    int row = 0;
+    int col = m - 1;
+    while (row < n && col >= 0)
+    {
+        if (MATRIX[row][col] == target)
+        {
+            return true;
+        }
+        else if (MATRIX[row][col] < target)
+        {
+            row++;
+        }
+        else
+        {
+            col--;
+        }
+    }
+    return false;
+}
 
 int main()
 {
     vector<vector<int>> matrix = {
-        {1, 2, 4},
-        {6, 7, 8},
-        {9, 10, 34}};
+        {1, 5, 9, 13},
+        {14, 15, 16, 17},
+        {19, 20, 21, 50},
+        {59, 60, 71, 80}};
 
     int n = matrix.size();
     int m = matrix[0].size();
-    int target = 78;
+    int target = 80;
 
     cout << "Display 2D Matrix: " << endl;
     for (int i = 0; i < n; i++)
@@ -107,39 +132,11 @@ int main()
     // int max1sRow = rowWithMax1s(matrix, n, m);
     // cout << "Row with maximum 1s: " << max1sRow << endl;
 
-    int max1sRow = searchMatrix(matrix, target);
-    cout << "Search In A 2D Matrix: " << max1sRow << endl;
+    // int max1sRow = searchMatrix(matrix, target);
+    // cout << "Search In A 2D Matrix: " << max1sRow << endl;
+
+    int max1sRow = searchElementII(matrix, target);
+    cout << "Search In A 2D Matrix - II: " << max1sRow << endl;
 
     return 0;
-}
-
-
-
-
-
-#include <bits/stdc++.h> 
-string sentenceSorting(string &str) {
-    stringstream ss(str);
-    vector<pair<string, int>> words; // Store each word along with its suffix number
-
-    string word;
-    while (ss >> word) {
-        int suffix = word.back() - '0'; // Extract the suffix number from the word
-        word.pop_back(); // Remove the suffix number from the word
-        words.push_back({word, suffix});
-    }
-
-    // Sort the words based on their suffix numbers
-    sort(words.begin(), words.end(), [](const pair<string, int>& a, const pair<string, int>& b) {
-        return a.second < b.second;
-    });
-
-    // Reconstruct the sorted words into a new string
-    string result;
-    for (const auto& w : words) {
-        result += w.first + " ";
-    }
-    result.pop_back(); // Remove the extra space at the end
-
-    return result;
 }
