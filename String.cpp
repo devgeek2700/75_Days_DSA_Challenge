@@ -62,3 +62,37 @@ void rearrangeArray(int arr[], int n) {
         arr[i] /= n;
     }
 }
+
+
+
+#include <bits/stdc++.h> 
+vector<int> searchInSortedArray(vector<int> &arr, int n, vector<int> &queries, int q) {
+    vector<int> result;
+    // Iterate through each query
+    for (int i = 0; i < q; i++) {
+        int x = queries[i];
+        int low = 0, high = n - 1;
+        bool found = false;
+        // Binary search
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            // If element is found
+            if (arr[mid] == x) {
+                found = true;
+                break;
+            }
+            // If element is greater than mid
+            else if (arr[mid] < x)
+                low = mid + 1;
+            // If element is smaller than mid
+            else
+                high = mid - 1;
+        }
+        // If element is found, push 1 to result vector, else push 0
+        if (found)
+            result.push_back(1);
+        else
+            result.push_back(0);
+    }
+    return result;
+}
