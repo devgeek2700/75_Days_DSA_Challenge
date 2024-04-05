@@ -96,3 +96,28 @@ vector<int> searchInSortedArray(vector<int> &arr, int n, vector<int> &queries, i
     }
     return result;
 }
+
+vector<int> searchInTheArray(vector<int>& arr, vector<int>& queries, int n, int q) {
+    vector<int> result;
+    
+    // Sort the array to optimize searching
+    sort(arr.begin(), arr.end());
+    
+    for (int i = 0; i < q; ++i) {
+        int sum = 0;
+        
+        // Iterate through the array 'arr' to find elements less than or equal to the current query
+        for (int j = 0; j < n; ++j) {
+            if (arr[j] <= queries[i]) {
+                sum += arr[j];
+            }
+            else {
+                break; // Optimization: If the current element is greater than the query, we don't need to check further
+            }
+        }
+        
+        result.push_back(sum);
+    }
+    
+    return result;
+}
