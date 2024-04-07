@@ -113,3 +113,28 @@ int main()
 
     return 0;
 }
+
+
+
+
+long long firstOne() {
+    long long lo = 0, hi = 1;
+    
+    // Double the window size until we find the first occurrence of 1
+    while (get(hi) == 0) {
+        lo = hi;
+        hi *= 2;
+    }
+    
+    // Perform binary search within the identified window to find the first occurrence of 1
+    while (lo < hi) {
+        long long mid = lo + (hi - lo) / 2;
+        if (get(mid) == 0) {
+            lo = mid + 1;
+        } else {
+            hi = mid;
+        }
+    }
+    
+    return hi;
+}
