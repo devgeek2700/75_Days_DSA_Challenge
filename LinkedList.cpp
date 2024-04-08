@@ -138,3 +138,25 @@ long long firstOne() {
     
     return hi;
 }
+
+
+int specialSum(vector<int>& arr, int n) {
+    int sum = 0;
+    
+    // Calculate the sum of all elements of the array
+    for (int i = 0; i < n; ++i) {
+        sum += arr[i];
+    }
+    
+    // Keep adding the digits of the sum until it becomes a single digit
+    while (sum >= 10) {
+        int tempSum = 0;
+        while (sum > 0) {
+            tempSum += sum % 10; // Add the last digit of the sum
+            sum /= 10; // Remove the last digit from the sum
+        }
+        sum = tempSum; // Update the sum with the new sum of digits
+    }
+    
+    return sum; // Return the final single-digit sum
+}
