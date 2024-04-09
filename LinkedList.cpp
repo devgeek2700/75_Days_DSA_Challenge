@@ -160,3 +160,7 @@ int specialSum(vector<int>& arr, int n) {
     
     return sum; // Return the final single-digit sum
 }
+
+
+
+// kal se coding start
