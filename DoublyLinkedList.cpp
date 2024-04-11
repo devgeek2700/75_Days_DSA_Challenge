@@ -53,7 +53,8 @@ void printList(Node *Head)
     cout << endl;
 }
 
-// Deletions
+// Deletions in Doubly Linked List
+
 // -> Head
 Node *DeleteHead(Node *Head)
 {
@@ -166,7 +167,7 @@ void deleteatNode(Node *temp)
     delete temp;
 }
 
-// Insertions
+// Insertions in Doubly Linked List
 // -> Before Head
 
 Node *InsertBeforeHead(Node *Head, int insertValue)
@@ -236,23 +237,70 @@ void InsertBeforeNode(Node *node, int insertValue)
 }
 
 // -> At Tail
-Node *insertAtTail(Node *Head, int insertValue) {
- if (Head->next == NULL)
+Node *insertAtTail(Node *Head, int insertValue)
+{
+    if (Head->next == NULL)
     {
         return InsertBeforeHead(Head, insertValue);
     }
 
-  Node *tail = Head;
-  while (tail->next != NULL) {
-    tail = tail->next;
-  }
+    Node *tail = Head;
+    while (tail->next != NULL)
+    {
+        tail = tail->next;
+    }
 
-  Node *newTailNode = new Node(insertValue, NULL, tail);
-  tail->next = newTailNode;
+    Node *newTailNode = new Node(insertValue, NULL, tail);
+    tail->next = newTailNode;
 
-  return Head;
+    return Head;
 }
 
+//  Reverse A Doubly Linked List
+
+// Bructe force soln --> using stack reversing data
+// Node *reverseDLL(Node *Head) // TC --> O(n)
+// {
+//     stack<int> st;
+//     Node *temp = Head;
+//     while (temp != NULL)
+//     {
+//         st.push(temp->data);
+//         temp = temp->next;
+//     }
+
+//     temp = Head;
+//     while (temp != NULL || !st.empty())
+//     {
+//         temp->data = st.top();
+//         st.pop();
+//         temp = temp->next;
+//     }
+//     return Head;
+// }
+
+// Better soln --> reverding links
+
+Node *reverseDLL(Node *Head) // TC --> O(n)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return Head;
+    }
+
+    Node *prevNode = NULL;
+    Node *currentNode = Head;
+    while (currentNode != NULL)
+    {
+        prevNode = currentNode->back;
+        currentNode->back = currentNode->next;
+        currentNode->next = prevNode;
+
+        currentNode = currentNode->back;
+    }
+
+    return prevNode->back;
+}
 
 int main()
 {
@@ -307,6 +355,11 @@ int main()
     // Insertion at Tail Node
     cout << "Insertion at Tail Node: ";
     Head = insertAtTail(Head, 200);
+    printList(Head);
+
+    //  Reverse A Doubly Linked List
+    cout << "Reverse A Doubly Linked List: ";
+    Head = reverseDLL(Head);
     printList(Head);
 
     return 0;
