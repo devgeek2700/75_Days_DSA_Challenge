@@ -25,7 +25,7 @@ public:
     }
 };
 
-// Convert Array to Doubly Linked List
+// Convert Array to Doubly Linked List --> real application in Browser clicking into pages
 
 Node *convertArray2DoublyLinkedLst(vector<int> &varr)
 {
@@ -166,6 +166,94 @@ void deleteatNode(Node *temp)
     delete temp;
 }
 
+// Insertions
+// -> Before Head
+
+Node *InsertBeforeHead(Node *Head, int insertValue)
+{
+    Node *newHeadNode = new Node(insertValue, Head, NULL);
+    Head->back = newHeadNode;
+    return newHeadNode;
+}
+
+// -> Before tail
+Node *InsertBeforeTail(Node *Head, int insertValue)
+{
+
+    if (Head->next == NULL)
+    {
+        return InsertBeforeHead(Head, insertValue);
+    }
+    Node *tail = Head;
+    while (tail->next != NULL)
+    {
+        tail = tail->next;
+    }
+
+    Node *prevNode = tail->back;
+    Node *newBeforeTailNode = new Node(insertValue, tail, prevNode);
+    prevNode->next = newBeforeTailNode;
+    tail->back = newBeforeTailNode;
+
+    return Head;
+}
+
+// -> Before kNode
+Node *InsertBeforeKNode(Node *Head, int k, int insertValue)
+{
+    if (k == 1)
+    {
+        return InsertBeforeHead(Head, insertValue);
+    }
+
+    Node *temp = Head;
+    int count = 1;
+    while (temp != NULL)
+    {
+        count++;
+        if (count == k)
+        {
+            break;
+        }
+        temp = temp->next;
+    }
+
+    Node *prevNode = temp->back;
+    Node *newBeforeKNode = new Node(insertValue, temp, prevNode);
+    prevNode->next = newBeforeKNode;
+    temp->back = newBeforeKNode;
+
+    return Head;
+}
+
+// -> Before Node
+void InsertBeforeNode(Node *node, int insertValue)
+{
+    Node *prevNode = node->back;
+    Node *newBeforeNode = new Node(insertValue, node, prevNode);
+    prevNode->next = newBeforeNode;
+    node->back = newBeforeNode;
+}
+
+// -> At Tail
+Node *insertAtTail(Node *Head, int insertValue) {
+ if (Head->next == NULL)
+    {
+        return InsertBeforeHead(Head, insertValue);
+    }
+
+  Node *tail = Head;
+  while (tail->next != NULL) {
+    tail = tail->next;
+  }
+
+  Node *newTailNode = new Node(insertValue, NULL, tail);
+  tail->next = newTailNode;
+
+  return Head;
+}
+
+
 int main()
 {
     vector<int> varr = {22, 45, 67, 78, 22, 11, 89};
@@ -191,12 +279,35 @@ int main()
     // Head = DeleteatPosition(Head, 1);
     // printList(Head);
 
-    // Delete of the Node
-    cout << "Delete of the Node: ";
-    deleteatNode(Head->next->next->next);
+    // // Delete of the Node
+    // cout << "Delete of the Node: ";
+    // deleteatNode(Head->next->next->next);
+    // printList(Head);
+
+    // Insertion at Before Head
+    cout << "Insertion at Before Head: ";
+    Head = InsertBeforeHead(Head, 567);
     printList(Head);
 
-    // 44:15
+    // Insertion at Before Tail
+    cout << "Insertion at Before Tail: ";
+    Head = InsertBeforeTail(Head, 100);
+    printList(Head);
+
+    // Insertion at Before kth Node
+    cout << "Insertion at Before kth Node: ";
+    Head = InsertBeforeKNode(Head, 5, 900);
+    printList(Head);
+
+    // Insertion at Before Node
+    cout << "Insertion at Before Node: ";
+    InsertBeforeNode(Head->next->next->next->next, 1000);
+    printList(Head);
+
+    // Insertion at Tail Node
+    cout << "Insertion at Tail Node: ";
+    Head = insertAtTail(Head, 200);
+    printList(Head);
 
     return 0;
 }
