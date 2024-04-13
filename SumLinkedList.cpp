@@ -35,6 +35,18 @@ Node *convertArray2LinkedLst(vector<int> &arr)
     return head;
 }
 
+// Print LinkedList
+void printLinkedList(Node *Head)
+{
+    Node *temp = Head;
+    while (temp != NULL)
+    {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
 //  Middle Of Linked List
 // Mtd-1
 Node *findMiddle1(Node *Head) // TC --> O(n)  SC --> O(1)
@@ -78,9 +90,64 @@ Node *findMiddleTortoiseHareMethod(Node *Head) // TC --> O(n/2)  SC --> O(1)
     return Slow;
 }
 
+//  Reverse Linked List Iterative - reverse data --> Using Stack
+// bructe force
+// Node *reverseLinkedListIterative(Node *Head) // TC --> O(n) SC --> O(n)
+// {
+//     stack<int> st;
+//     Node *temp = Head;
+//     while (temp != NULL)
+//     {
+//         st.push(temp->data);
+//         temp = temp->next;
+//     }
+
+//     temp = Head;
+//     while (temp != NULL || !st.empty())
+//     {
+//         temp->data = st.top();
+//         st.pop();
+//         temp = temp->next;
+//     }
+//     return Head;
+// }
+
+// optimal soln - reverse links
+Node *reverseLinkedListIterative(Node *Head) // TC --> O(n) SC --> O(1)
+{
+    Node *prevNode = NULL;
+    Node *temp = Head;
+
+    while (temp != NULL)
+    {
+        Node *frontNode = temp->next;
+        temp->next = prevNode;
+        prevNode = temp;
+        temp = frontNode;
+    }
+    return prevNode;
+}
+
+// 	Reverse a Linked List - Recursive
+
+Node *reverseLinkedListRecursive(Node *Head) // TC --> O(n) SC --> O(n)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return Head;
+    }
+
+    Node *newHeadNode = reverseLinkedListRecursive(Head->next);
+    Node *frontNode = Head->next;
+    frontNode->next = Head;
+    Head->next = NULL;
+
+    return newHeadNode;
+}
+
 int main()
 {
-    vector<int> arr = {1, 2, 3, 4, 5, 6};
+    vector<int> arr = {10, 20, 30, 40, 50, 60, 70, 80,90, 100};
 
     Node *Head = convertArray2LinkedLst(arr);
 
@@ -94,8 +161,12 @@ int main()
     cout << endl;
 
     // Node *findMidAns = findMiddle1(Head);
-    Node *findMiddleTortoiseHareMethodAns = findMiddleTortoiseHareMethod(Head);
-    cout << "Middle Of Linked List: " << findMiddleTortoiseHareMethodAns->data << endl;
+    // Node *findMiddleTortoiseHareMethodAns = findMiddleTortoiseHareMethod(Head);
+    // cout << "Middle Of Linked List: " << findMiddleTortoiseHareMethodAns->data << endl;
+
+    Head = reverseLinkedListIterative(Head);
+    cout << "Reverse Linked List Iterative - Using Stack: ";
+    printLinkedList(Head);
 
     return 0;
 }
