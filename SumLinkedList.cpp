@@ -145,9 +145,52 @@ Node *reverseLinkedListRecursive(Node *Head) // TC --> O(n) SC --> O(n)
     return newHeadNode;
 }
 
+//  Cycle Detection in a Singly Linked List
+// Mtd-1 using map
+bool detectCycle(Node *Head) // TC --> O(n*2*logn)  SC --> O(1)
+{
+    map<Node *, int> mpp;
+    Node *temp = Head;
+
+    while (temp != NULL)
+    {
+        if (mpp.find(temp) != mpp.end())
+        {
+            return true;
+        }
+
+        mpp[temp] = 1;
+        temp = temp->next;
+    }
+
+    return false;
+}
+
+// Mtd-2 using Tortoise Hare Method
+bool detectCycleTortoiseHareMethod(Node *Head) // TC --> O(n)  SC --> O(1)
+{
+    Node *Slow = Head;
+    Node *Fast = Head;
+
+    while (Fast != NULL && Fast->next != NULL)
+    {
+        Slow = Slow->next;
+        Fast = Fast->next->next;
+
+        if (Slow == Fast)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+
 int main()
 {
-    vector<int> arr = {10, 20, 30, 40, 50, 60, 70, 80,90, 100};
+    vector<int> arr = {1, 2, 3, 4, -1 };
 
     Node *Head = convertArray2LinkedLst(arr);
 
@@ -164,9 +207,15 @@ int main()
     // Node *findMiddleTortoiseHareMethodAns = findMiddleTortoiseHareMethod(Head);
     // cout << "Middle Of Linked List: " << findMiddleTortoiseHareMethodAns->data << endl;
 
-    Head = reverseLinkedListIterative(Head);
-    cout << "Reverse Linked List Iterative - Using Stack: ";
-    printLinkedList(Head);
+    // Head = reverseLinkedListIterative(Head);
+    // cout << "Reverse Linked List Iterative - Using Stack: ";
+    // printLinkedList(Head);
+
+    // bool isLoopedorNot = detectCycle(Head);
+    bool isLoopedorNot = detectCycleTortoiseHareMethod(Head);
+    cout <<"Cycle Detection in a Singly Linked List: " << isLoopedorNot << endl;
+
+   
 
     return 0;
 }
