@@ -188,6 +188,57 @@ bool detectCycleTortoiseHareMethod(Node *Head) // TC --> O(n)  SC --> O(1)
 
 
 
+//  Find the starting point in LL - Linked List Cycle II
+// // Mtd-1 using map
+Node *staringNodeodCycle(Node *Head)
+{
+ map<Node *, int> mpp;
+    Node *temp = Head;
+
+    while (temp != NULL)
+    {
+        if (mpp.find(temp) != mpp.end())
+        {
+            return temp;
+        }
+
+        mpp[temp] = 1;
+        temp = temp->next;
+    }
+
+    return NULL;
+}
+
+ // Mtd-2 using Tortoise Hare Method
+
+Node *staringNodeodCycleTortoiseHareMethod(Node *Head)
+{
+
+    Node *Slow = Head;
+    Node *Fast = Head;
+
+    while (Fast != NULL && Fast->next != NULL)
+    {
+        Slow = Slow->next;
+        Fast = Fast->next->next;
+
+        if (Slow == Fast)
+        {
+            Slow = Head;
+            while (Slow != Fast)
+            {
+                Slow = Slow->next;
+                Fast = Fast->next;
+            }
+            return Slow;
+        }
+    }
+
+    return NULL;
+}
+
+
+
 int main()
 {
     vector<int> arr = {1, 2, 3, 4, -1 };
@@ -212,8 +263,16 @@ int main()
     // printLinkedList(Head);
 
     // bool isLoopedorNot = detectCycle(Head);
-    bool isLoopedorNot = detectCycleTortoiseHareMethod(Head);
-    cout <<"Cycle Detection in a Singly Linked List: " << isLoopedorNot << endl;
+    // bool isLoopedorNot = detectCycleTortoiseHareMethod(Head);
+    // cout <<"Cycle Detection in a Singly Linked List: " << isLoopedorNot << endl;
+
+     Node *isLoopStarted = staringNodeodCycle(Head);
+//    Node* isLoopStarted = staringNodeodCycleTortoiseHareMethod(Head);
+   if (isLoopStarted != nullptr) {
+       cout << "Found the starting point of the cycle in the linked list: " << isLoopStarted->data << endl;
+   } else {
+       cout << "No cycle found in the linked list." << endl;
+   }
 
    
 
