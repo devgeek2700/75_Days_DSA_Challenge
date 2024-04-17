@@ -186,13 +186,11 @@ bool detectCycleTortoiseHareMethod(Node *Head) // TC --> O(n)  SC --> O(1)
     return false;
 }
 
-
-
 //  Find the starting point in LL - Linked List Cycle II
 // // Mtd-1 using map
 Node *staringNodeodCycle(Node *Head)
 {
- map<Node *, int> mpp;
+    map<Node *, int> mpp;
     Node *temp = Head;
 
     while (temp != NULL)
@@ -209,7 +207,7 @@ Node *staringNodeodCycle(Node *Head)
     return NULL;
 }
 
- // Mtd-2 using Tortoise Hare Method
+// Mtd-2 using Tortoise Hare Method
 
 Node *staringNodeodCycleTortoiseHareMethod(Node *Head)
 {
@@ -237,11 +235,263 @@ Node *staringNodeodCycleTortoiseHareMethod(Node *Head)
     return NULL;
 }
 
+//  Find length of Loop
+// // Mtd-1 using map
+int lengthOfLoop(Node *Head) // TC --> O(n*2*logn)  SC --> O(n)
+{
+    map<Node *, int> mpp;
+    Node *temp = Head;
+    int count = 0;
+
+    while (temp != NULL)
+    {
+        if (mpp.find(temp) != mpp.end())
+        {
+            int startvalueloop = mpp[temp];
+            return count - startvalueloop;
+        }
+        mpp[temp] = count;
+        count++;
+        temp = temp->next;
+    }
+
+    return 0;
+}
+
+// Mtd-2 using Tortoise Hare Method
+
+int findlengthcount(Node *Slow, Node *Fast)
+{
+    int count = 1;
+    Fast = Fast->next;
+    while (Slow != Fast)
+    {
+        count++;
+        Fast = Fast->next;
+    }
+    return count;
+}
+
+int lengthOfLoopTortoiseHareMethod(Node *Head) // TC --> O(n)  SC --> O(1)
+{
+    Node *Slow = Head;
+    Node *Fast = Head;
+
+    while (Fast != NULL && Fast->next != NULL)
+    {
+        Slow = Slow->next;
+        Fast = Fast->next->next;
+
+        if (Slow == Fast)
+        {
+            return findlengthcount(Slow, Fast);
+        }
+    }
+    return 0;
+}
+
+// Check If Linked List Is Palindrome
+// mtd-1  -> stack
+bool isPalindrome(Node *Head) // TC --> O(2n)  SC --> O(n)
+{
+    stack<int> st;
+    Node *temp = Head;
+    while (temp != NULL)
+    {
+        st.push(temp->data);
+        temp = temp->next;
+    }
+
+    temp = Head;
+    while (temp != NULL || !st.empty())
+    {
+        if (temp->data != st.top())
+        {
+            return false;
+        }
+        temp = temp->next;
+        st.pop();
+    }
+    return true;
+}
+
+// mtd-1  -> Tortoise Hare Method
+bool isPalindromeTortoiseHareMethod(Node *Head) // TC --> O(2n)  SC --> O(n)
+{
+    Node *Slow = Head;
+    Node *Fast = Head;
+
+    while (Fast->next != NULL && Fast->next->next != NULL)
+    {
+        Slow = Slow->next;
+        Fast = Fast->next->next;
+    }
+
+    Node *newHeadMidVal = reverseLinkedListIterative(Slow->next);
+
+    Node *First = Head;
+    Node *Second = newHeadMidVal;
+
+    while (Second != NULL)
+    {
+        if (First->data != Second->data)
+        {
+            reverseLinkedListIterative(newHeadMidVal);
+            return false;
+        }
+        First = First->next;
+        Second = Second->next;
+    }
+
+    reverseLinkedListIterative(newHeadMidVal);
+
+    return true;
+}
+
+//  Segregate Even And Odd Index Nodes In a Linked List
+// Mtd - 1 --> bructe force odd & even iterstions
+Node *segregateEvenOdd(Node *Head) // TC --> O(2n)   SC --> O(n)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return Head;
+    }
+
+    Node *temp = Head;
+    vector<int> arr;
+
+    // ODD INDEX
+    while (temp != NULL && temp->next != NULL)
+    {
+        arr.push_back(temp->data);
+        temp = temp->next->next;
+    }
+    if (temp != NULL)
+    {
+        arr.push_back(temp->data);
+    }
+
+    // EVEN INDEX
+    temp = Head->next;
+    while (temp != NULL && temp->next != NULL)
+    {
+        arr.push_back(temp->data);
+        temp = temp->next->next;
+    }
+    if (temp != NULL)
+    {
+        arr.push_back(temp->data);
+    }
+
+    // exchange the original list with the new list
+
+    int i = 0;
+    temp = Head;
+    while (temp != NULL)
+    {
+        temp->data = arr[i];
+        i++;
+        temp = temp->next;
+    }
+    return Head;
+}
+
+// Mtd - 2 --> change links
+Node *segregateEvenOddlinks(Node *Head)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return Head;
+    }
+
+    Node *oddNode = Head;
+    Node *evenNode = Head->next;
+    Node *evenHead = Head->next;
+
+    while (evenNode != NULL && evenNode->next != NULL)
+    {
+        oddNode->next = oddNode->next->next;
+        evenNode->next = evenNode->next->next;
+        oddNode = oddNode->next;
+        evenNode = evenNode->next;
+    }
+
+    oddNode->next = evenHead;
+
+    return Head;
+}
+
+//  Segregate Even And Odd Data Nodes In a Linked List
+Node *segregateEvenOddData(Node *Head)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return Head;
+    }
+
+    Node *temp = Head;
+    Node *evenStart = NULL;
+    Node *evenEnd = NULL;
+    Node *oddStart = NULL;
+    Node *oddEnd = NULL;
+
+    while (temp != NULL)
+    {
+        if (temp->data >= 0) // Ignore negative data values
+        {
+            if (temp->data % 2 == 0) // If the data is even
+            {
+                if (evenStart == NULL) // even nodes not found before
+                {
+                    evenStart = temp;
+                    evenEnd = evenStart;
+                }
+                else
+                {
+                    evenEnd->next = temp; // some even nodes not found before
+                    evenEnd = evenEnd->next;
+                }
+            }
+            else // If the data is odd
+            {
+                if (oddStart == NULL)
+                {
+                    oddStart = temp;
+                    oddEnd = oddStart;
+                }
+                else
+                {
+                    oddEnd->next = temp;
+                    oddEnd = oddEnd->next;
+                }
+            }
+        }
+        temp = temp->next;
+    }
+
+    // Joining the even and odd lists
+    if (evenStart != NULL)
+    {
+        Head = evenStart;
+        evenEnd->next = oddStart;
+    }
+    else
+    {
+        Head = oddStart;
+    }
+
+    if (oddEnd != NULL)
+    {
+        oddEnd->next = NULL;
+    }
+
+    return Head;
+}
 
 
 int main()
 {
-    vector<int> arr = {1, 2, 3, 4, -1 };
+    vector<int> arr = {1,3,45,67,89};
 
     Node *Head = convertArray2LinkedLst(arr);
 
@@ -266,51 +516,37 @@ int main()
     // bool isLoopedorNot = detectCycleTortoiseHareMethod(Head);
     // cout <<"Cycle Detection in a Singly Linked List: " << isLoopedorNot << endl;
 
-     Node *isLoopStarted = staringNodeodCycle(Head);
-//    Node* isLoopStarted = staringNodeodCycleTortoiseHareMethod(Head);
-   if (isLoopStarted != nullptr) {
-       cout << "Found the starting point of the cycle in the linked list: " << isLoopStarted->data << endl;
-   } else {
-       cout << "No cycle found in the linked list." << endl;
-   }
+    //      Node *isLoopStarted = staringNodeodCycle(Head);
+    // //    Node* isLoopStarted = staringNodeodCycleTortoiseHareMethod(Head);
+    //    if (isLoopStarted != nullptr) {
+    //        cout << "Found the starting point of the cycle in the linked list: " << isLoopStarted->data << endl;
+    //    } else {
+    //        cout << "No cycle found in the linked list." << endl;
+    //    }
 
-   
+    // int lenLoop = lengthOfLoop(Head);
+    // int lenLoop = lengthOfLoopTortoiseHareMethod(Head);
+    // cout << "Find length of Loop: " << lenLoop << endl;
+
+    // bool isPalindromeval = isPalindrome(Head);
+    // bool isPalindromeval = isPalindromeTortoiseHareMethod(Head);
+    // if (isPalindromeval == 1)
+    // {
+    //     cout << "Linked List Is Palindrome: " << isPalindromeval << endl;
+    // }
+    // else
+    // {
+    //     cout << "Linked List Is Not Palindrome" << endl;
+    // }
+
+    // Head = segregateEvenOdd(Head);
+    // Head = segregateEvenOddlinks(Head);
+    // cout << "Segregate Even And Odd Index Nodes: ";
+    // printLinkedList(Head);
+
+    Head = segregateEvenOddData(Head);
+    cout << "Even And Odd Data Nodes: ";
+    printLinkedList(Head);
 
     return 0;
-}
-
-
-
-
-Node* reverseLinkedList(Node* head) {
-    // Check if the list is empty
-    // or has only one node
-    if (head == NULL || head->next == NULL) {
-        
-        // No change is needed;
-        // return the current head
-        return head; 
-    }
-
-    // Recursive step: Reverse the remaining 
-    // part of the list and get the new head
-    Node* newHead = reverseLinkedList(head->next);
-
-    // Store the next node in 'front'
-    // to reverse the link
-    Node* front = head->next;
-
-    // Update the 'next' pointer of 'front' to
-    // point to the current head, effectively
-    // reversing the link direction
-    front->next = head;
-
-    // Set the 'next' pointer of the
-    // current head to 'null' to
-    // break the original link
-    head->next = NULL;
-
-    // Return the new head obtained
-    // from the recursion
-    return newHead;
 }
