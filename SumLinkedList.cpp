@@ -348,7 +348,7 @@ bool isPalindromeTortoiseHareMethod(Node *Head) // TC --> O(2n)  SC --> O(n)
     return true;
 }
 
-//  Segregate Even And Odd Index Nodes In a Linked List
+//    In a Linked List
 // Mtd - 1 --> bructe force odd & even iterstions
 Node *segregateEvenOdd(Node *Head) // TC --> O(2n)   SC --> O(n)
 {
@@ -549,4 +549,47 @@ int main()
     printLinkedList(Head);
 
     return 0;
+}
+
+
+
+
+
+
+
+// Function to print the linked list
+void printLL(Node* head) {
+    while (head != NULL) {
+        cout << head->data << " ";
+        head = head->next;
+    }
+}
+
+// Function to delete the Nth node
+// from the end of the linked list
+Node* removeKthNode(Node* head, int N) {
+    // Create two pointers, fastp and slowp
+    Node* fastp = head;
+    Node* slowp = head;
+
+    // Move the fastp pointer N nodes ahead
+    for (int i = 0; i < N; i++)
+        fastp = fastp->next;
+
+    // If fastp becomes NULL,
+    // the Nth node from the end is the head
+    if (fastp == NULL)
+        return head->next;
+
+    // Move both pointers until fastp reaches the end
+    while (fastp->next != NULL) {
+        fastp = fastp->next;
+        slowp = slowp->next;
+    }
+
+    // Delete the Nth node from the end
+    Node* delNode = slowp->next;
+    slowp->next = slowp->next->next;
+    delete delNode;
+    return head;
 }
