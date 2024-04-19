@@ -488,10 +488,84 @@ Node *segregateEvenOddData(Node *Head)
     return Head;
 }
 
+//  Delete Kth Node From End
+// bructe force
+Node *removeKthNodeTortiseMtd(Node *Head, int K) // TC --> O(2*len)  SC --> O(1)
+{
+    int count = 0;
+    Node *temp = Head;
+
+    while (temp != NULL)
+    {
+        count++;
+        temp = temp->next;
+    }
+
+    if (count == K)
+    {
+        Node *newHead = Head->next;
+        delete (Head);
+        return newHead;
+    }
+
+    int resNode = count - K;
+    temp = Head;
+
+    while (temp != NULL)
+    {
+        resNode--;
+        if (resNode == 0)
+        {
+            break;
+        }
+
+        temp = temp->next;
+    }
+
+    Node *deleteNode = temp->next;
+    temp->next = temp->next->next;
+    delete (deleteNode);
+
+    return Head;
+}
+
+// Optimal soln
+Node *removeKthNode(Node *Head, int K) // TC --> O(2*len)  SC --> O(1)
+{
+    Node *Slow = Head;
+    Node *Fast = Head;
+
+    Fast = Head;
+    for (int i = 0; i < K; i++)
+    {
+        Fast = Fast->next;
+    }
+
+     // when n is given
+    if(Fast == NULL){
+        return Head->next;
+    }
+
+
+    while (Fast->next != NULL)
+    {
+        Slow = Slow->next;
+        Fast = Fast->next;
+    }
+
+
+    Node *deleteNode = Slow->next;
+    Slow->next = Slow->next->next;
+    delete (deleteNode);
+
+    
+
+    return Head;
+}
 
 int main()
 {
-    vector<int> arr = {1,3,45,67,89};
+    vector<int> arr = {1, 2, 3, 4, 5, 6};
 
     Node *Head = convertArray2LinkedLst(arr);
 
@@ -544,52 +618,14 @@ int main()
     // cout << "Segregate Even And Odd Index Nodes: ";
     // printLinkedList(Head);
 
-    Head = segregateEvenOddData(Head);
-    cout << "Even And Odd Data Nodes: ";
+    // Head = segregateEvenOddData(Head);
+    // cout << "Even And Odd Data Nodes: ";
+    // printLinkedList(Head);
+
+    // Head = removeKthNode(Head, 3);
+    Head = removeKthNodeTortiseMtd(Head, 3);
+    cout << "Remove Nth Node from the end of LL: ";
     printLinkedList(Head);
 
     return 0;
-}
-
-
-
-
-
-
-
-// Function to print the linked list
-void printLL(Node* head) {
-    while (head != NULL) {
-        cout << head->data << " ";
-        head = head->next;
-    }
-}
-
-// Function to delete the Nth node
-// from the end of the linked list
-Node* removeKthNode(Node* head, int N) {
-    // Create two pointers, fastp and slowp
-    Node* fastp = head;
-    Node* slowp = head;
-
-    // Move the fastp pointer N nodes ahead
-    for (int i = 0; i < N; i++)
-        fastp = fastp->next;
-
-    // If fastp becomes NULL,
-    // the Nth node from the end is the head
-    if (fastp == NULL)
-        return head->next;
-
-    // Move both pointers until fastp reaches the end
-    while (fastp->next != NULL) {
-        fastp = fastp->next;
-        slowp = slowp->next;
-    }
-
-    // Delete the Nth node from the end
-    Node* delNode = slowp->next;
-    slowp->next = slowp->next->next;
-    delete delNode;
-    return head;
 }
