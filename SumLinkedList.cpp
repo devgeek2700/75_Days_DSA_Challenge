@@ -490,7 +490,7 @@ Node *segregateEvenOddData(Node *Head)
 
 //  Delete Kth Node From End
 // bructe force
-Node *removeKthNodeTortiseMtd(Node *Head, int K) // TC --> O(2*len)  SC --> O(1)
+Node *removeKthNodeTortiseMtd(Node *Head, int K) // TC --> O(len)  SC --> O(1)
 {
     int count = 0;
     Node *temp = Head;
@@ -541,11 +541,11 @@ Node *removeKthNode(Node *Head, int K) // TC --> O(2*len)  SC --> O(1)
         Fast = Fast->next;
     }
 
-     // when n is given
-    if(Fast == NULL){
+    // when n is given
+    if (Fast == NULL)
+    {
         return Head->next;
     }
-
 
     while (Fast->next != NULL)
     {
@@ -553,19 +553,204 @@ Node *removeKthNode(Node *Head, int K) // TC --> O(2*len)  SC --> O(1)
         Fast = Fast->next;
     }
 
-
     Node *deleteNode = Slow->next;
     Slow->next = Slow->next->next;
     delete (deleteNode);
 
-    
+    return Head;
+}
+
+//  Sort Linked List
+// bructe force
+
+Node *sortList(Node *Head) // TC --> O(n+logn+n)   SC --> O(n)
+{
+    vector<int> varr;
+    Node *temp = Head;
+
+    while (temp != NULL)
+    {
+        varr.push_back(temp->data);
+        temp = temp->next;
+    }
+
+    sort(varr.begin(), varr.end());
+
+    int i = 0;
+    temp = Head;
+    while (temp != NULL)
+    {
+        temp->data = varr[i];
+        temp = temp->next;
+        i++;
+    }
 
     return Head;
 }
 
+// optimal soln
+
+Node *merge2Sortedlist(Node *list1, Node *list2)
+{
+    Node *dummyNode = new Node(-1);
+    Node *temp = dummyNode;
+
+    while (list1 != NULL && list2 != NULL)
+    {
+        if (list1->data > list2->data)
+        {
+            temp->next = list1;
+            temp = list1;
+            list1 = list1->next;
+        }
+        else
+        {
+            temp->next = list2;
+            temp = list2;
+            list2 = list2->next;
+        }
+    }
+    if (list1)
+    {
+        temp->next = list1;
+    }
+    else
+    {
+        temp->next = list2;
+    }
+    return dummyNode->next;
+}
+
+Node *findMiddleMergeSort(Node *Head) // TC --> O(n/2)  SC --> O(1)
+{
+    Node *Slow = Head;
+    Node *Fast = Head->next;
+
+    while (Fast != NULL && Fast->next != NULL)
+    {
+        Slow = Slow->next;
+        Fast = Fast->next->next;
+    }
+
+    return Slow;
+}
+
+Node *sortListMergesort(Node *Head) // TC --> O((n*logn)   SC --> O(1)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return Head;
+    }
+
+    Node *middleVal = findMiddleMergeSort(Head);
+    Node *leftHead = Head;
+    Node *RightHead = middleVal->next;
+    middleVal->next = NULL;
+
+    leftHead = sortListMergesort(leftHead);
+    RightHead = sortListMergesort(RightHead);
+
+    return merge2Sortedlist(leftHead, RightHead);
+}
+
+//  Sort linked list of 0s 1s 2s
+// bructe force  --> data replacement
+Node *sortList012(Node *Head) // TC --> O(2n)   SC --> O(1)
+{
+    Node *temp = Head;
+    int count0 = 0;
+    int count1 = 0;
+    int count2 = 0;
+
+    while (temp != NULL)
+    {
+        if (temp->data == 0)
+        {
+            count0++;
+        }
+        else if (temp->data == 1)
+        {
+            count1++;
+        }
+        else
+        {
+            count2++;
+        }
+        temp = temp->next;
+    }
+
+    temp = Head;
+
+    while (temp != NULL)
+    {
+        if (count0)
+        {
+            temp->data = 0;
+            count0--;
+        }
+        else if (count1)
+        {
+            temp->data = 1;
+            count1--;
+        }
+        else
+        {
+            temp->data = 2;
+            count2--;
+        }
+        temp = temp->next;
+    }
+    return Head;
+}
+
+// optimal soln  --> link exchange
+Node *sortList012links(Node *Head) // TC --> O(2n)   SC --> O(1)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return Head;
+    }
+
+    Node *temp = Head;
+    Node *dummyNode0 = new Node(-1);
+    Node *dummyNode1 = new Node(-1);
+    Node *dummyNode2 = new Node(-1);
+    Node *zero = dummyNode0;
+    Node *one = dummyNode1;
+    Node *two = dummyNode2;
+
+    while (temp != NULL)
+    {
+        if(temp->data == 0){
+            zero->next = temp;
+            zero = temp;
+        }
+        else if(temp->data == 1){
+            one->next = temp;
+            one = temp;
+        }
+        else{
+            two->next = temp;
+            two = temp;
+        }
+        temp = temp->next;
+    }
+
+    zero->next = (dummyNode1->next)?dummyNode1->next : dummyNode2->next;
+    one->next = dummyNode2->next;
+    two->next = NULL;
+
+    Node* newHead = dummyNode0->next;
+    delete(dummyNode0);
+    delete(dummyNode1);
+    delete(dummyNode2);
+
+    return newHead;
+}
+
 int main()
 {
-    vector<int> arr = {1, 2, 3, 4, 5, 6};
+    vector<int> arr = {2, 0, 0, 1, 0, 2, 1};
 
     Node *Head = convertArray2LinkedLst(arr);
 
@@ -623,8 +808,17 @@ int main()
     // printLinkedList(Head);
 
     // Head = removeKthNode(Head, 3);
-    Head = removeKthNodeTortiseMtd(Head, 3);
-    cout << "Remove Nth Node from the end of LL: ";
+    // Head = removeKthNodeTortiseMtd(Head, 3);
+    // cout << "Remove Nth Node from the end of LL: ";
+    // printLinkedList(Head);
+
+    // Head = sortList(Head);
+    // cout << "Sort Linked List: ";
+    // printLinkedList(Head);
+
+    // Head = sortList012(Head);
+    Head = sortList012links(Head);
+    cout << "Sort linked list of 0s 1s 2s: ";
     printLinkedList(Head);
 
     return 0;
