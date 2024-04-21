@@ -823,3 +823,43 @@ int main()
 
     return 0;
 }
+
+
+
+
+vector<int> getMaximumOfSubarrays(vector<int> &arr, int k) {
+    vector<int> result;
+    deque<int> dq;
+
+    int n = arr.size();
+    
+    // Process first 'k' elements
+    for (int i = 0; i < k; ++i) {
+        // Remove elements smaller than the current element from the back of the deque
+        while (!dq.empty() && arr[i] >= arr[dq.back()])
+            dq.pop_back();
+        
+        dq.push_back(i);
+    }
+    
+    // Process remaining elements
+    for (int i = k; i < n; ++i) {
+        // The front of the deque is the maximum element of the previous window
+        result.push_back(arr[dq.front()]);
+        
+        // Remove elements outside the current window
+        while (!dq.empty() && dq.front() <= i - k)
+            dq.pop_front();
+        
+        // Remove elements smaller than the current element from the back of the deque
+        while (!dq.empty() && arr[i] >= arr[dq.back()])
+            dq.pop_back();
+        
+        dq.push_back(i);
+    }
+    
+    // Push maximum of the last window
+    result.push_back(arr[dq.front()]);
+    
+    return result;
+}
