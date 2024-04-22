@@ -721,36 +721,158 @@ Node *sortList012links(Node *Head) // TC --> O(2n)   SC --> O(1)
 
     while (temp != NULL)
     {
-        if(temp->data == 0){
+        if (temp->data == 0)
+        {
             zero->next = temp;
             zero = temp;
         }
-        else if(temp->data == 1){
+        else if (temp->data == 1)
+        {
             one->next = temp;
             one = temp;
         }
-        else{
+        else
+        {
             two->next = temp;
             two = temp;
         }
         temp = temp->next;
     }
 
-    zero->next = (dummyNode1->next)?dummyNode1->next : dummyNode2->next;
+    zero->next = (dummyNode1->next) ? dummyNode1->next : dummyNode2->next;
     one->next = dummyNode2->next;
     two->next = NULL;
 
-    Node* newHead = dummyNode0->next;
-    delete(dummyNode0);
-    delete(dummyNode1);
-    delete(dummyNode2);
+    Node *newHead = dummyNode0->next;
+    delete (dummyNode0);
+    delete (dummyNode1);
+    delete (dummyNode2);
 
     return newHead;
+}
+
+//  Intersection of Two Linked Lists
+// Mtd - 1  --> Using Map
+Node *findIntersectionExchange(Node *firstHead, Node *secondHead) // TC --> O(n*logn)  SC --> O(n1)
+{
+    map<Node *, int> mpp;
+    Node *temp1 = firstHead;
+
+    while (temp1 != NULL)
+    {
+        mpp[temp1] = 1;
+        temp1 = temp1->next;
+    }
+
+    Node *temp2 = secondHead;
+
+    while (temp2 != NULL)
+    {
+        if (mpp.find(temp2) != mpp.end())
+        {
+            return temp2;
+        }
+        else
+        {
+            temp2 = temp2->next;
+        }
+    }
+    return NULL;
+}
+
+// Mtd - 2  --> moving by 'd' dsitance for equal comparison
+
+Node *collisionPoint(Node *small, Node *big, int d)
+{
+    while (d)
+    {
+        d--;
+        big = big->next;
+    }
+
+    while (small != big)
+    {
+        small = small->next;
+        big = big->next;
+    }
+    return big;
+}
+
+Node *findIntersectiondistance(Node *firstHead, Node *secondHead) // TC --> O(n1 + 2*n2)  SC --> O(1)
+{
+    Node *temp1 = firstHead;
+    Node *temp2 = secondHead;
+
+    int n1 = 0;
+    while (temp1 != NULL)
+    {
+        n1++;
+        temp1 = temp1->next;
+    }
+
+    int n2 = 0;
+    while (temp2 != NULL)
+    {
+        n2++;
+        temp2 = temp2->next;
+    }
+
+    // Resetting temp1 and temp2 to their respective heads
+    temp1 = firstHead;
+    temp2 = secondHead;
+
+    if (n1 > n2)
+    {
+        return collisionPoint(firstHead, secondHead, n2 - n1);
+    }
+    else
+    {
+        return collisionPoint(secondHead, firstHead, n1 - n2);
+    }
+
+    return NULL;
+}
+
+// Mtd - 3  --> optimal soln -->
+
+Node *findIntersectionExchange(Node *firstHead, Node *secondHead) // TC --> O(n1 + n2)  SC --> O(n1)
+{
+    Node *temp1 = firstHead;
+    Node *temp2 = secondHead;
+
+    if (firstHead == NULL || secondHead == NULL)
+    {
+        return NULL;
+    }
+
+    while (temp1 != temp2)
+    {
+        temp1 = temp1->next;
+        temp2 = temp2->next;
+
+        if (temp1 == temp2)
+        {
+            return temp1;
+        }
+
+        if (temp1 == NULL)
+        {
+            temp1 = secondHead;
+        }
+        if (temp2 == NULL)
+        {
+            temp2 = firstHead;
+        }
+    }
+
+    return NULL;
 }
 
 int main()
 {
     vector<int> arr = {2, 0, 0, 1, 0, 2, 1};
+    vector<int> firstHead = {4, 1, -1};
+    vector<int> secondHead = {5, 6, -1};
 
     Node *Head = convertArray2LinkedLst(arr);
 
@@ -817,49 +939,12 @@ int main()
     // printLinkedList(Head);
 
     // Head = sortList012(Head);
-    Head = sortList012links(Head);
-    cout << "Sort linked list of 0s 1s 2s: ";
-    printLinkedList(Head);
+    // Head = sortList012links(Head);
+    // cout << "Sort linked list of 0s 1s 2s: ";
+    // printLinkedList(Head);
 
+    // int lenLoop = findIntersection(firstHead, secondHead);
+    int lenLoop = findIntersectionExchange(firstHead, secondHead);
+    cout << "Intersection of Two Linked Lists: " << lenLoop << endl;
     return 0;
-}
-
-
-
-
-vector<int> getMaximumOfSubarrays(vector<int> &arr, int k) {
-    vector<int> result;
-    deque<int> dq;
-
-    int n = arr.size();
-    
-    // Process first 'k' elements
-    for (int i = 0; i < k; ++i) {
-        // Remove elements smaller than the current element from the back of the deque
-        while (!dq.empty() && arr[i] >= arr[dq.back()])
-            dq.pop_back();
-        
-        dq.push_back(i);
-    }
-    
-    // Process remaining elements
-    for (int i = k; i < n; ++i) {
-        // The front of the deque is the maximum element of the previous window
-        result.push_back(arr[dq.front()]);
-        
-        // Remove elements outside the current window
-        while (!dq.empty() && dq.front() <= i - k)
-            dq.pop_front();
-        
-        // Remove elements smaller than the current element from the back of the deque
-        while (!dq.empty() && arr[i] >= arr[dq.back()])
-            dq.pop_back();
-        
-        dq.push_back(i);
-    }
-    
-    // Push maximum of the last window
-    result.push_back(arr[dq.front()]);
-    
-    return result;
 }
