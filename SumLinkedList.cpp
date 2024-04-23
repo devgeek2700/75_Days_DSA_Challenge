@@ -753,32 +753,32 @@ Node *sortList012links(Node *Head) // TC --> O(2n)   SC --> O(1)
 
 //  Intersection of Two Linked Lists
 // Mtd - 1  --> Using Map
-Node *findIntersectionExchange(Node *firstHead, Node *secondHead) // TC --> O(n*logn)  SC --> O(n1)
-{
-    map<Node *, int> mpp;
-    Node *temp1 = firstHead;
+// Node *findIntersectionExchange(Node *firstHead, Node *secondHead) // TC --> O(n*logn)  SC --> O(n1)
+// {
+//     map<Node *, int> mpp;
+//     Node *temp1 = firstHead;
 
-    while (temp1 != NULL)
-    {
-        mpp[temp1] = 1;
-        temp1 = temp1->next;
-    }
+//     while (temp1 != NULL)
+//     {
+//         mpp[temp1] = 1;
+//         temp1 = temp1->next;
+//     }
 
-    Node *temp2 = secondHead;
+//     Node *temp2 = secondHead;
 
-    while (temp2 != NULL)
-    {
-        if (mpp.find(temp2) != mpp.end())
-        {
-            return temp2;
-        }
-        else
-        {
-            temp2 = temp2->next;
-        }
-    }
-    return NULL;
-}
+//     while (temp2 != NULL)
+//     {
+//         if (mpp.find(temp2) != mpp.end())
+//         {
+//             return temp2;
+//         }
+//         else
+//         {
+//             temp2 = temp2->next;
+//         }
+//     }
+//     return NULL;
+// }
 
 // Mtd - 2  --> moving by 'd' dsitance for equal comparison
 
@@ -868,9 +868,81 @@ Node *findIntersectionExchange(Node *firstHead, Node *secondHead) // TC --> O(n1
     return NULL;
 }
 
+//  Add one to a number represented as Linked List
+Node *addOne(Node *Head) // TC -->O(3n)   SC --> O(1)
+{
+    Head = reverseLinkedListIterative(Head);
+    Node *temp = Head;
+    int carry = 1;
+
+    while (temp != NULL)
+    {
+        temp->data = temp->data + carry;
+
+        if (temp->data < 10)
+        {
+            carry = 0;
+            break; // Move this break statement outside of the if-else block
+        }
+        else
+        {
+            temp->data = 0;
+            carry = 1;
+        }
+        temp = temp->next;
+    }
+
+    if (carry == 1)
+    {
+        Node *newCarryNode = new Node(1);
+        Head = reverseLinkedListIterative(Head);
+        newCarryNode->next = Head; // Corrected the assignment operator here
+        return newCarryNode;
+    }
+
+    Head = reverseLinkedListIterative(Head);
+
+    return Head;
+}
+
+// using recusrions --> backtracking
+
+int Recusrionaddone(Node *temp)
+{
+    if (temp == NULL)
+    {
+        return 1;
+    }
+
+    int Carry = Recusrionaddone(temp->next);
+    temp->data = temp->data + Carry;
+
+    if (temp->data < 10)
+    {
+        return 0;
+    }
+
+    temp->data = 0;
+    return 1;
+}
+
+
+Node *addOneRecursion(Node *Head) // TC -->O(3n)   SC --> O(1)
+{
+    int finalCarry = Recusrionaddone(Head);
+    if (finalCarry == 1)
+    {
+        Node *newCarryNode = new Node(1);
+        newCarryNode->next = Head;
+        return newCarryNode;
+    }
+
+    return Head;
+}
+
 int main()
 {
-    vector<int> arr = {2, 0, 0, 1, 0, 2, 1};
+    vector<int> arr = {9, 9};
     vector<int> firstHead = {4, 1, -1};
     vector<int> secondHead = {5, 6, -1};
 
@@ -943,8 +1015,14 @@ int main()
     // cout << "Sort linked list of 0s 1s 2s: ";
     // printLinkedList(Head);
 
-    // int lenLoop = findIntersection(firstHead, secondHead);
-    int lenLoop = findIntersectionExchange(firstHead, secondHead);
-    cout << "Intersection of Two Linked Lists: " << lenLoop << endl;
+    // // int lenLoop = findIntersection(firstHead, secondHead);
+    // int lenLoop = findIntersectionExchange(firstHead, secondHead);
+    // cout << "Intersection of Two Linked Lists: " << lenLoop << endl;
+
+    // Head = addOne(Head);
+    Head = addOneRecursion(Head);
+    cout << "Add one to a number represented as Linked List: ";
+    printLinkedList(Head);
+
     return 0;
 }
