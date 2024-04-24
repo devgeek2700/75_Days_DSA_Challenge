@@ -926,7 +926,6 @@ int Recusrionaddone(Node *temp)
     return 1;
 }
 
-
 Node *addOneRecursion(Node *Head) // TC -->O(3n)   SC --> O(1)
 {
     int finalCarry = Recusrionaddone(Head);
@@ -940,20 +939,79 @@ Node *addOneRecursion(Node *Head) // TC -->O(3n)   SC --> O(1)
     return Head;
 }
 
+//  Add Two Numbers
+
+Node *addTwoNumbers(Node *Headnum1, Node *Headnum2)  // TC --> O(max(n1,n2))   SC --> O(max(n1,n2))
+{
+    Node *temp1 = Headnum1;
+    Node *temp2 = Headnum2;
+
+    Node *sublistFinal = new Node(-1);
+    Node *currNode = sublistFinal;
+
+    int carry = 0;
+    while (temp1 != NULL || temp2 != NULL)
+    {
+        int sum = carry;
+        if (temp1)
+        {
+            sum = sum + temp1->data;
+            temp1 = temp1->next;
+        }
+        if (temp2)
+        {
+            sum = sum + temp2->data;
+            temp2 = temp2->next;
+        }
+        currNode->next = new Node(sum % 10);
+        carry = sum / 10;
+        currNode = currNode->next;
+    }
+
+    if (carry)
+    {
+        currNode->next = new Node(carry);
+    }
+    return sublistFinal->next;
+}
+// 11:41
+
 int main()
 {
     vector<int> arr = {9, 9};
     vector<int> firstHead = {4, 1, -1};
     vector<int> secondHead = {5, 6, -1};
+    vector<int> num1 = {1, 2, 3};
+    vector<int> num2 = {4, 5, 6};
 
     Node *Head = convertArray2LinkedLst(arr);
+    Node *Headnum1 = convertArray2LinkedLst(num1);
+    Node *Headnum2 = convertArray2LinkedLst(num2);
 
     Node *temp = Head;
+    Node *temp1 = Headnum1;
+    Node *temp2 = Headnum2;
     cout << "Linked List Values: ";
     while (temp != NULL)
     {
         cout << temp->data << " ";
         temp = temp->next;
+    }
+    cout << endl;
+
+    cout << "Linked List Values  of num1: ";
+    while (temp1 != NULL)
+    {
+        cout << temp1->data << " ";
+        temp1 = temp1->next;
+    }
+    cout << endl;
+
+    cout << "Linked List Values  of num2: ";
+    while (temp2 != NULL)
+    {
+        cout << temp2->data << " ";
+        temp2 = temp2->next;
     }
     cout << endl;
 
@@ -1020,8 +1078,12 @@ int main()
     // cout << "Intersection of Two Linked Lists: " << lenLoop << endl;
 
     // Head = addOne(Head);
-    Head = addOneRecursion(Head);
-    cout << "Add one to a number represented as Linked List: ";
+    // Head = addOneRecursion(Head);
+    // cout << "Add one to a number represented as Linked List: ";
+    // printLinkedList(Head);
+
+     Head = addTwoNumbers(Headnum1, Headnum2);
+    cout << " Add Two Numbers: ";
     printLinkedList(Head);
 
     return 0;
