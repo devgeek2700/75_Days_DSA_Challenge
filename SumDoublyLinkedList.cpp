@@ -151,9 +151,34 @@ vector<pair<int, int>> findPairs(Node *Head, int k) // Tc --> O(2n)   // SC --< 
     return anspairs;
 }
 
+//  Remove duplicates from a sorted Doubly Linked List
+
+//  Remove duplicates from a sorted Doubly Linked List
+Node *removeDuplicates(Node *Head) // TC --> O(n)  SC --> O(1)
+{
+    Node *temp = Head;
+
+    while (temp != NULL && temp->next != NULL)
+    {
+        Node *nextNode = temp->next;
+        while (nextNode != NULL && nextNode->data == temp->data)
+        {
+            nextNode = nextNode->next;
+        }
+        temp->next = nextNode;
+        if (nextNode)
+        {
+            nextNode->back = temp;
+        }
+        temp = temp->next;
+    }
+
+    return Head;
+}
+
 int main()
 {
-    vector<int> varr = {1, 2, 3, 4, 9};
+    vector<int> varr = {1, 2, 2, 2, 3};
     int Key = 5;
 
     Node *Head = convertArray2DoublyLinkedLst(varr);
@@ -167,13 +192,17 @@ int main()
     // printList(Head);
     // cout << endl;
 
-    auto result = findPairs(Head, Key);
-    cout << "Pairs with sum equal to " << Key << ": ";
-    for (auto p : result)
-    {
-        cout << "(" << p.first << ", " << p.second << ") ";
-    }
-    cout << endl;
+    // auto result = findPairs(Head, Key);
+    // cout << "Pairs with sum equal to " << Key << ": ";
+    // for (auto p : result)
+    // {
+    //     cout << "(" << p.first << ", " << p.second << ") ";
+    // }
+    // cout << endl;
 
+    Head = removeDuplicates(Head);
+    cout << "Remove duplicates from a sorted Doubly Linked List: ";
+    printList(Head);
+    cout << endl;
     return 0;
 }
