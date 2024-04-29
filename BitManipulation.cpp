@@ -152,7 +152,7 @@ int countSetBits(int n)
     int count = 0;
     while (n > 1)
     {
-        count += n & 1; // odd checks
+        count += n & 1; // (n & 1) odd checks
         n = n >> 1;     // divide by 2
     }
 
@@ -193,6 +193,65 @@ int counttotalSetBitsbinary(int N)
         count += (N / (i << 1)) * i + min(max(N % (i << 1) - i + 1, 0), i);
     }
     return count;
+}
+
+//  Odd Even using Bit Manipulation
+string oddEven(int N)
+{
+    if (N & 1)
+    {
+        return "ODD";
+    }
+    else
+    {
+        return "EVEN";
+    }
+}
+
+//  Divide Two Integers
+int divideTwoInteger(int dividend, int divisor) // TC --> O(logn)^2  SC --> O(1)
+{
+    if (dividend == divisor)
+    {
+        return 1;
+    }
+
+    bool sign = true;
+
+    if (dividend >= 0 && divisor < 0)
+    {
+        sign = false;
+    }
+    if (dividend < 0 && divisor > 0)
+    {
+        sign = false;
+    }
+
+    int n = abs(dividend);
+    int d = abs(divisor);
+    int ans = 0;
+
+    while (n >= d)
+    {
+        int count = 0;
+        while (n >= (d << (count + 1)))
+        {
+            count++;
+        }
+        ans += (1 << count);
+        n = n - (d * (1 << count));
+    }
+
+    if (ans == (1 << 31) && sign)
+    {
+        return INT_MAX;
+    }
+    if (ans == (1 << 31) && sign)
+    {
+        return INT_MIN;
+    }
+
+    return sign ? ans : -ans;
 }
 
 int main()
@@ -236,6 +295,12 @@ int main()
 
     int counttotalSetBitsbinaryans = counttotalSetBitsbinary(5);
     cout << "Count total  binary representation: " << counttotalSetBitsbinaryans << endl;
+
+    string oddEvenans = oddEven(n);
+    cout << "Odd or Even?: " << oddEvenans << endl;
+
+    int divideTwoIntegerans = divideTwoInteger(10, 3);
+    cout << "Divide Two Integers: " << divideTwoIntegerans << endl;
 
     return 0;
 }
