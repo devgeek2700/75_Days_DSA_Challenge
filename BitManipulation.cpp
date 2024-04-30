@@ -254,6 +254,23 @@ int divideTwoInteger(int dividend, int divisor) // TC --> O(logn)^2  SC --> O(1)
     return sign ? ans : -ans;
 }
 
+//  Flip Bits
+int flipBits(int A, int B) // TC --> O(start ^ goal)
+{
+    int ans = A ^ B;
+    int count = 0;
+
+    while (ans > 0)
+    {
+        if (ans & 1) {
+            count++;
+        }
+        ans >>= 1;
+    }
+    return count;
+}
+
+
 int main()
 {
     int n;
@@ -301,6 +318,9 @@ int main()
 
     int divideTwoIntegerans = divideTwoInteger(10, 3);
     cout << "Divide Two Integers: " << divideTwoIntegerans << endl;
+
+    int flipBitsans = flipBits(10, 3);
+    cout << "Flip Bits: " << flipBitsans << endl;
 
     return 0;
 }
