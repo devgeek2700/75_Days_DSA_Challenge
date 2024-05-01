@@ -262,7 +262,8 @@ int flipBits(int A, int B) // TC --> O(start ^ goal)
 
     while (ans > 0)
     {
-        if (ans & 1) {
+        if (ans & 1)
+        {
             count++;
         }
         ans >>= 1;
@@ -270,6 +271,100 @@ int flipBits(int A, int B) // TC --> O(start ^ goal)
     return count;
 }
 
+//  One Odd Occurring
+int missingNumberodd(int n, vector<int> &arr) // TC --> O(n)  SC --> O(1)
+{
+    int XORans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        XORans ^= arr[i];
+    }
+    return XORans;
+}
+
+//  Subsequences of String
+vector<string> subsequences(string str) // TC --> O(n * 2^n)  SC -->  nearly O(n * 2^n)
+
+{
+    vector<string> ans;
+    int n = str.length();
+    int noofSubsets = 1 << n;
+
+    for (int num = 0; num < noofSubsets; num++)
+    {
+        string list = "";
+        for (int i = 0; i < n; i++)
+        {
+            if (num & (1 << i))
+            {
+                list.push_back(str[i]);
+            }
+        }
+        ans.push_back(list);
+    }
+    return ans;
+}
+
+//  in Range XOR
+int findXORRange(int R) // TC --> O(1)  SC --> O(1)
+{
+    if (R % 4 == 0)
+    {
+        return R;
+    }
+    else if (R % 4 == 1)
+    {
+        return 1;
+    }
+    else if (R % 4 == 2)
+    {
+        return R + 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+//  L to R XOR
+
+int findXOR(int L, int R)
+{
+    return findXORRange(L - 1) ^ findXORRange(R);
+}
+
+// Find the two numbers appearing odd number of times
+
+vector<int> twoOddNum(vector<int> arr)
+{
+    int XORans = 0;
+    int n = arr.size();
+
+    for (int i = 0; i < n; i++)
+    {
+        XORans ^= arr[i];
+    }
+
+    int Rightmostbit = XORans & -XORans;
+    int b1 = 0, b2 = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (arr[i] & Rightmostbit)
+        { // if non zero number then b1
+            b1 ^= arr[i];
+        }
+        else
+        {
+            b2 ^= arr[i];
+        }
+    }
+
+    if (b1 > b2)
+        return {b1, b2};
+    else
+        return {b2, b1};
+}
 
 int main()
 {
@@ -321,6 +416,32 @@ int main()
 
     int flipBitsans = flipBits(10, 3);
     cout << "Flip Bits: " << flipBitsans << endl;
+
+    vector<int> arr = {1, 1, 1, 1, 1};
+
+    int missingNumberoddans = missingNumberodd(arr.size(), arr);
+    cout << "One Odd Occurring: " << missingNumberoddans << endl;
+
+    string str = {'1', '2', '3'};
+    vector<string> subsequencesans = subsequences(str);
+
+    cout << "Subsequences of String: ";
+    for (string s : subsequencesans)
+    {
+        cout << s << " ";
+    }
+    cout << endl;
+
+    int findXORRangeans = findXORRange(8);
+    cout << "In Range XOR: " << findXORRangeans << endl;
+
+    int findXORans = findXOR(96, 129);
+    cout << "L to R XOR: " << findXORans << endl;
+
+    vector<int> varr = {57, 41, 46, 42, 46, 19, 54, 57, 19, 54, 53, 41};
+
+    vector<int> twoOddNumans = twoOddNum(varr);
+    cout << "Find the two numbers appearing odd number of times: " << twoOddNumans[0] << " " << twoOddNumans[1] << endl;
 
     return 0;
 }
