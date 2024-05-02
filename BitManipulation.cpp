@@ -282,7 +282,7 @@ int missingNumberodd(int n, vector<int> &arr) // TC --> O(n)  SC --> O(1)
     return XORans;
 }
 
-//  Subsequences of String
+//  Subsequences of String number
 vector<string> subsequences(string str) // TC --> O(n * 2^n)  SC -->  nearly O(n * 2^n)
 
 {
