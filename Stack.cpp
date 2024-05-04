@@ -321,6 +321,113 @@ public:
     }
 };
 
+// Valid Parentheses
+
+bool isValidParenthesis(string str)
+{
+    stack<char> st;
+
+    for (int i = 0; i < str.length(); i++)
+    {
+        if (str[i] == '(' || str[i] == '[' || str[i] == '{')
+        {
+            st.push(str[i]);
+        }
+        else
+        {
+            if (st.empty())
+            {
+                return false;
+            }
+
+            char ch = st.top();
+            st.pop();
+            if ((str[i] == ')' && ch != '(') || (str[i] == ']' && ch != '[') || (str[i] == '}' && ch != '{'))
+            {
+                return false;
+            }
+        }
+    }
+
+    return st.empty();
+}
+
+//  Min Stack
+class minStack
+{
+    stack<long long> st;
+    long long mini;
+
+public:
+    // Constructor
+    minStack()
+    {
+        while (st.empty() == false)
+        {
+            st.pop();
+        }
+        mini = INT_MAX;
+    }
+
+   void push(int num)
+    {
+        long long val = num;
+        if (st.empty())
+        {
+            mini = val;
+            st.push(val);
+        }
+        else
+        {
+            if (val < mini)
+            {
+                st.push(2 * val * 1LL - mini);
+                mini = val;
+            }
+            else
+            {
+                st.push(val);
+            }
+        }
+    }
+    void pop()
+    {
+        if (st.empty())
+        {
+            return;
+        }
+
+        long long el = st.top();
+        st.pop();
+
+        if (el < mini)
+        {
+            mini = 2 * mini - el;
+        }
+    }
+
+    int top()
+    {
+        if (st.empty())
+        {
+            return -1;
+        }
+
+        long long el = st.top();
+
+        if (el < mini)
+        {
+            return mini;
+        }
+        return el;
+    }
+
+    int getMin()
+    {
+        return mini;
+    }
+};
+
 int main()
 {
     // int stack1[100], n = 100, top = -1;
@@ -432,28 +539,59 @@ int main()
 
     // Implement stack using Linkedlist
 
-    Stack s;
+    // Stack s;
 
-    // Push
-    s.pushStackusingLL(11);
-    s.pushStackusingLL(34);
-    s.pushStackusingLL(56);
-    s.pushStackusingLL(67);
-    s.pushStackusingLL(22);
-    s.pushStackusingLL(90);
+    // // Push
+    // s.pushStackusingLL(11);
+    // s.pushStackusingLL(34);
+    // s.pushStackusingLL(56);
+    // s.pushStackusingLL(67);
+    // s.pushStackusingLL(22);
+    // s.pushStackusingLL(90);
 
-    // Display
-    s.displayStackusingLL();
+    // // Display
+    // s.displayStackusingLL();
 
-    cout << "\nTop element is " << s.peek_topStackusingLL() << endl;
+    // cout << "\nTop element is " << s.peek_topStackusingLL() << endl;
 
-    // Delete
-    s.popStackusingLL();
-    s.popStackusingLL();
-    s.popStackusingLL();
+    // // Delete
+    // s.popStackusingLL();
+    // s.popStackusingLL();
+    // s.popStackusingLL();
 
-    // Print top
-    cout << "\nTop element is " << s.peek_topStackusingLL() << endl;
+    // // Print top
+    // cout << "\nTop element is " << s.peek_topStackusingLL() << endl;
+
+    // Valid Parentheses
+    // string str = "[[}[";
+    // cout << "strin is: " << str << endl;
+
+    // if (isValidParenthesis(str))
+    // {
+    //     cout << "Parentheses are Balanced" << endl;
+    // }
+    // else
+    // {
+    //     cout << "Parentheses are Not Balanced" << endl;
+    // }
+
+    //  Min Stack
+     minStack mst;
+
+    mst.push(23);
+    mst.push(56);
+    mst.push(78);
+    mst.push(-12);
+    mst.push(98);
+    mst.push(42);
+
+    cout<<"popped value: "<<mst.top()<<endl;
+    mst.pop();
+
+    cout<<"top value: "<<mst.top()<<endl;
+    cout<<"Min Value: "<<mst.getMin()<<endl;
+    
+
 
     return 0;
 }
