@@ -132,7 +132,7 @@ using namespace std;
 queue<int> q1;
 queue<int> q2;
 
-void pushStackusing2Queue(int val) // TC --> O(N)  SC --> ~ O(N)
+void pushStackusing2Queue(int val) // TC --> O(N)  SC --> ~ O(2N)
 {
     q2.push(val);
 
