@@ -129,98 +129,197 @@ using namespace std;
 
 // Stack Implementation using a Two Queues
 
-queue<int> q1;
-queue<int> q2;
+// queue<int> q1;
+// queue<int> q2;
 
-void pushStackusing2Queue(int val) // TC --> O(N)  SC --> ~ O(2N)
+// void pushStackusing2Queue(int val) // TC --> O(N)  SC --> ~ O(2N)
+// {
+//     q2.push(val);
+
+//     while (!q1.empty())
+//     {
+//         q2.push(q1.front());
+//         q1.pop();
+//     }
+//     swap(q1, q2);
+// }
+
+// void popStackusing2Queue()
+// {
+//     if (!q1.empty())
+//     {
+//         cout << "Stack elmenent pop using queue: " << q1.front() << endl;
+//         q1.pop();
+//     }
+//     else
+//     {
+//         cout << "Queue1 is EMPTY" << endl;
+//     }
+// }
+
+// void displayStackusing2Queue()
+// {
+//     if (!q1.empty())
+//     {
+//         cout << "Elements in the queue are:";
+//         queue<int> temp = q1;
+//         while (!temp.empty())
+//         {
+//             cout << temp.front() << " ";
+//             temp.pop();
+//         }
+//         cout << endl;
+//     }
+//     else
+//     {
+//         cout << "Queue Underflow" << endl;
+//     }
+// }
+
+// // Stack Implementation using a Single Queue
+// queue<int> qu1;
+
+// void pushStackusing1Queue(int val) // TC --> O(N)  SC --> O(N)
+// {
+//     qu1.push(val);
+
+//     for (int i = 0; i < qu1.size() - 1; i++)
+//     {
+//         qu1.push(qu1.front());
+//         qu1.pop();
+//     }
+// }
+
+// void popStackusing1Queue()
+// {
+//     if (!qu1.empty())
+//     {
+//         cout << "Stack elmenent pop using queue: " << qu1.front() << endl;
+//         qu1.pop();
+//     }
+//     else
+//     {
+//         cout << "Queue1 is EMPTY" << endl;
+//     }
+// }
+
+// void displayStackusing1Queue()
+// {
+//     if (!qu1.empty())
+//     {
+//         cout << "Elements in the queue are:";
+//         queue<int> temp = qu1;
+//         while (!temp.empty())
+//         {
+//             cout << temp.front() << " ";
+//             temp.pop();
+//         }
+//         cout << endl;
+//     }
+//     else
+//     {
+//         cout << "Queue Underflow" << endl;
+//     }
+// }
+
+// Implement stack using Linkedlist
+class Node
 {
-    q2.push(val);
+public:
+    int data;
+    Node *next;
 
-    while (!q1.empty())
+public:
+    Node(int data1)
     {
-        q2.push(q1.front());
-        q1.pop();
+        data = data1;
+        next = nullptr;
     }
-    swap(q1, q2);
-}
+};
 
-void popStackusing2Queue()
+class Stack
 {
-    if (!q1.empty())
-    {
-        cout << "Stack elmenent pop using queue: " << q1.front() << endl;
-        q1.pop();
-    }
-    else
-    {
-        cout << "Queue1 is EMPTY" << endl;
-    }
-}
+    Node *top;
 
-void displayStackusing2Queue()
-{
-    if (!q1.empty())
+public:
+    Stack()
     {
-        cout << "Elements in the queue are:";
-        queue<int> temp = q1;
-        while (!temp.empty())
+        top = nullptr;
+    }
+
+    void pushStackusingLL(int val)
+    {
+        Node *temp = new Node(val);
+
+        if (!temp)
         {
-            cout << temp.front() << " ";
-            temp.pop();
+            cout << "Stack Overflow!" << endl;
+            exit(1);
         }
-        cout << endl;
+        temp->data = val;
+        temp->next = top;
+        top = temp;
     }
-    else
+
+    bool isEmptyStackusingLL()
     {
-        cout << "Queue Underflow" << endl;
+        return top == NULL;
     }
-}
 
-// Stack Implementation using a Single Queue
-queue<int> qu1;
-
-void pushStackusing1Queue(int val) // TC --> O(N)  SC --> O(N)
-{
-    qu1.push(val);
-
-    for (int i = 0; i < qu1.size() - 1; i++)
+    int peek_topStackusingLL()
     {
-        qu1.push(qu1.front());
-        qu1.pop();
-    }
-}
-
-void popStackusing1Queue()
-{
-    if (!qu1.empty())
-    {
-        cout << "Stack elmenent pop using queue: " << qu1.front() << endl;
-        qu1.pop();
-    }
-    else
-    {
-        cout << "Queue1 is EMPTY" << endl;
-    }
-}
-
-void displayStackusing1Queue()
-{
-    if (!qu1.empty())
-    {
-        cout << "Elements in the queue are:";
-        queue<int> temp = qu1;
-        while (!temp.empty())
+        if (!isEmptyStackusingLL())
         {
-            cout << temp.front() << " ";
-            temp.pop();
+            return top->data;
         }
-        cout << endl;
+        else
+        {
+            cout << "Stack Underflow!" << endl;
+            exit(1);
+        }
     }
-    else
+
+    void popStackusingLL()
     {
-        cout << "Queue Underflow" << endl;
+        Node *temp;
+
+        if (isEmptyStackusingLL())
+        {
+            cout << "\nStack Underflow" << endl;
+            exit(1);
+        }
+        else
+        {
+            temp = top;
+            top = top->next;
+            delete (temp);
+        }
     }
-}
+
+    void displayStackusingLL()
+    {
+        Node *temp;
+
+        if (isEmptyStackusingLL())
+        {
+            cout << "\nStack Underflow" << endl;
+            exit(1);
+        }
+        else
+        {
+            temp = top;
+            while (temp != NULL)
+            {
+                cout << temp->data << " ";
+                temp = temp->next;
+                if (temp != NULL)
+                {
+                    cout << " -> ";
+                }
+            }
+        }
+    }
+};
 
 int main()
 {
@@ -300,35 +399,61 @@ int main()
 
     // Stack Implementation using a Single Queue
 
-    int ch, val;
-    cout << "1) Push in stack using Queue" << endl;
-    cout << "2) Pop from stack using Queue" << endl;
-    cout << "3) Display stack using Queue" << endl;
-    cout << "4) Exit" << endl;
+    // int ch, val;
+    // cout << "1) Push in stack using Queue" << endl;
+    // cout << "2) Pop from stack using Queue" << endl;
+    // cout << "3) Display stack using Queue" << endl;
+    // cout << "4) Exit" << endl;
 
-    do
-    {
-        cout << "Enter choice: ";
-        cin >> ch;
-        switch (ch)
-        {
-        case 1:
-            cout << "Enter value to be pushed: ";
-            cin >> val;
-            pushStackusing1Queue(val);
-            break;
-        case 2:
-            popStackusing1Queue();
-            break;
-        case 3:
-            displayStackusing1Queue();
-            break;
-        case 4:
-            cout << "Exit" << endl;
-            break;
-        default:
-            cout << "Invalid Choice" << endl;
-        }
-    } while (ch != 4);
+    // do
+    // {
+    //     cout << "Enter choice: ";
+    //     cin >> ch;
+    //     switch (ch)
+    //     {
+    //     case 1:
+    //         cout << "Enter value to be pushed: ";
+    //         cin >> val;
+    //         pushStackusing1Queue(val);
+    //         break;
+    //     case 2:
+    //         popStackusing1Queue();
+    //         break;
+    //     case 3:
+    //         displayStackusing1Queue();
+    //         break;
+    //     case 4:
+    //         cout << "Exit" << endl;
+    //         break;
+    //     default:
+    //         cout << "Invalid Choice" << endl;
+    //     }
+    // } while (ch != 4);
+
+    // Implement stack using Linkedlist
+
+    Stack s;
+
+    // Push
+    s.pushStackusingLL(11);
+    s.pushStackusingLL(34);
+    s.pushStackusingLL(56);
+    s.pushStackusingLL(67);
+    s.pushStackusingLL(22);
+    s.pushStackusingLL(90);
+
+    // Display
+    s.displayStackusingLL();
+
+    cout << "\nTop element is " << s.peek_topStackusingLL() << endl;
+
+    // Delete
+    s.popStackusingLL();
+    s.popStackusingLL();
+    s.popStackusingLL();
+
+    // Print top
+    cout << "\nTop element is " << s.peek_topStackusingLL() << endl;
+
     return 0;
 }
