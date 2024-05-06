@@ -505,6 +505,86 @@ string infixToPostfix(string exp)
     return postfixVal;
 }
 
+//  Prefix to Infix
+// Post to inf --> B operator A
+
+bool ispost2infixOperand(char oprd)
+{
+    switch (oprd)
+    {
+    case '+':
+    case '-':
+    case '/':
+    case '*':
+        return true;
+    }
+    return false;
+}
+string postToInfix(string &s)
+{
+    stack<string> expression;
+
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (ispost2infixOperand(s[i]))
+        {
+            string op1 = expression.top();
+            expression.pop();
+            string op2 = expression.top();
+            expression.pop();
+
+            string temp = '(' + op2 + s[i] + op1 + ')';
+            expression.push(temp);
+        }
+        else
+        {
+            expression.push(string(1, s[i]));
+        }
+    }
+
+    return expression.top();
+}
+
+// Prefix to Infix
+// Pre to inf --> A operator B
+bool ispre2infixOperand(char oprd)
+{
+    switch (oprd)
+    {
+    case '+':
+    case '-':
+    case '/':
+    case '*':
+        return true;
+    }
+    return false;
+}
+
+string prefixToInfixConversion(string &s)
+{
+    stack<string> expression;
+
+    for (int i = s.length() - 1; i >= 0; i--)
+    {
+        if (ispre2infixOperand(s[i]))
+        {
+            string op1 = expression.top();
+            expression.pop();
+            string op2 = expression.top();
+            expression.pop();
+
+            string temp = '(' + op1 + s[i] + op2 + ')';
+            expression.push(temp);
+        }
+        else
+        {
+            expression.push(string(1, s[i]));
+        }
+    }
+
+    return expression.top();
+}
+
 int main()
 {
     // int stack1[100], n = 100, top = -1;
@@ -669,10 +749,21 @@ int main()
     // cout<<"Min Value: "<<mst.getMin()<<endl;
 
     string str = "a+b+c+d-e";
+    string exp = "ab+c+";
+    string str1 = "*-a/bc-/del";
 
     string postfixAns = infixToPostfix(str);
+    string postfixToInfixConversionAns = postToInfix(exp);
+    string prefixToInfixConversionAns = prefixToInfixConversion(str1);
 
-    cout << "Infix To Postfix: "<<postfixAns<<endl;;
+    cout << "Infix String: " << str << endl;
+    cout << "Infix To Postfix: " << postfixAns << endl;
+    cout << endl;
+    cout << "Postfix String: " << exp << endl;
+    cout << "Postfix to Infix: " << postfixToInfixConversionAns << endl;
+    cout << endl;
+    cout << "Prefix String: " << str1 << endl;
+    cout << "Prefix to Infix: " << prefixToInfixConversionAns << endl;
 
     return 0;
 }
