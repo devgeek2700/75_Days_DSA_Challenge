@@ -428,7 +428,7 @@ public:
     }
 };
 
-//  Infix To Postfix
+//  Infix To Postfix (->)
 
 int precedence(char sign)
 {
@@ -506,7 +506,7 @@ string infixToPostfix(string exp)
 }
 
 //  Prefix to Infix
-// Post to inf --> B operator A
+// Post to inf --> B operator A (->)
 
 bool ispost2infixOperand(char oprd)
 {
@@ -546,7 +546,7 @@ string postToInfix(string &s)
 }
 
 // Prefix to Infix
-// Pre to inf --> A operator B
+// Pre to inf --> A operator B (<-)
 bool ispre2infixOperand(char oprd)
 {
     switch (oprd)
@@ -574,6 +574,87 @@ string prefixToInfixConversion(string &s)
             expression.pop();
 
             string temp = '(' + op1 + s[i] + op2 + ')';
+            expression.push(temp);
+        }
+        else
+        {
+            expression.push(string(1, s[i]));
+        }
+    }
+
+    return expression.top();
+}
+
+//  Convert Prefix to Postfix
+// Prefix to Postfix -->  AB operator (<-)
+bool ispreToPostOperand(char oprd)
+{
+    switch (oprd)
+    {
+    case '+':
+    case '-':
+    case '/':
+    case '*':
+        return true;
+    }
+    return false;
+}
+
+string preToPost(string &s)
+{
+    stack<string> expression;
+
+    for (int i = s.length() - 1; i >= 0; i--)
+    {
+        if (ispreToPostOperand(s[i]))
+        {
+            string op1 = expression.top();
+            expression.pop();
+            string op2 = expression.top();
+            expression.pop();
+
+            string temp = op1 + op2 + s[i];
+            expression.push(temp);
+        }
+        else
+        {
+            expression.push(string(1, s[i]));
+        }
+    }
+
+    return expression.top();
+}
+
+//  PostFix To Prefix
+// PostFix To Prefix -->  operator AB (->)
+
+bool ispostfixToPrefixOperand(char oprd)
+{
+    switch (oprd)
+    {
+    case '+':
+    case '-':
+    case '/':
+    case '*':
+        return true;
+    }
+    return false;
+}
+
+string postfixToPrefix(string &s)
+{
+    stack<string> expression;
+
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (ispostfixToPrefixOperand(s[i]))
+        {
+            string op1 = expression.top();
+            expression.pop();
+            string op2 = expression.top();
+            expression.pop();
+
+            string temp = s[i] + op2 + op1;
             expression.push(temp);
         }
         else
@@ -751,10 +832,14 @@ int main()
     string str = "a+b+c+d-e";
     string exp = "ab+c+";
     string str1 = "*-a/bc-/del";
+    string str2 = "-/A+BC*DE";
+    string str3 = "abc/-ak/l-*";
 
     string postfixAns = infixToPostfix(str);
     string postfixToInfixConversionAns = postToInfix(exp);
     string prefixToInfixConversionAns = prefixToInfixConversion(str1);
+    string preToPostAns = preToPost(str2);
+    string postfixToPrefixAns = postfixToPrefix(str3);
 
     cout << "Infix String: " << str << endl;
     cout << "Infix To Postfix: " << postfixAns << endl;
@@ -764,6 +849,12 @@ int main()
     cout << endl;
     cout << "Prefix String: " << str1 << endl;
     cout << "Prefix to Infix: " << prefixToInfixConversionAns << endl;
+    cout << endl;
+    cout << "Prefix String: " << str2 << endl;
+    cout << "Prefix to Postfix: " << preToPostAns << endl;
+    cout << endl;
+    cout << "Postfix String: " << str3 << endl;
+    cout << "PostFix To Prefix: " << postfixToPrefixAns << endl;
 
     return 0;
 }
