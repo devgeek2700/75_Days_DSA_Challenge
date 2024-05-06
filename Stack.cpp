@@ -369,7 +369,7 @@ public:
         mini = INT_MAX;
     }
 
-   void push(int num)
+    void push(int num)
     {
         long long val = num;
         if (st.empty())
@@ -427,6 +427,83 @@ public:
         return mini;
     }
 };
+
+//  Infix To Postfix
+
+int precedence(char sign)
+{
+    if (sign == '^')
+    {
+        return 3;
+    }
+    else if (sign == '/' || sign == '*')
+    {
+        return 2;
+    }
+    else if (sign == '+' || sign == '-')
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+bool isOperand(char oprd)
+{
+    if ((oprd >= 'a' && oprd <= 'z') ||
+        (oprd >= 'A' && oprd <= 'Z') ||
+        (oprd >= '0' && oprd <= '9'))
+    {
+        return true;
+    }
+    return false;
+}
+
+string infixToPostfix(string exp)
+{
+    stack<char> st;
+    string postfixVal;
+
+    for (int i = 0; i < exp.length(); i++)
+    {
+        if (isOperand(exp[i]))
+        {
+            postfixVal += exp[i];
+        }
+        else if (exp[i] == '(')
+        {
+            st.push(exp[i]);
+        }
+        else if (exp[i] == ')')
+        {
+            while (!st.empty() && st.top() != '(')
+            {
+                postfixVal += st.top();
+                st.pop();
+            }
+            if (!st.empty())
+                st.pop(); // Pop '('
+        }
+        else
+        {
+            while (!st.empty() && precedence(exp[i]) <= precedence(st.top()))
+            {
+                postfixVal += st.top();
+                st.pop();
+            }
+            st.push(exp[i]);
+        }
+    }
+
+    while (!st.empty())
+    {
+        postfixVal += st.top();
+        st.pop();
+    }
+    return postfixVal;
+}
 
 int main()
 {
@@ -576,32 +653,26 @@ int main()
     // }
 
     //  Min Stack
-     minStack mst;
+    //  minStack mst;
 
-    mst.push(23);
-    mst.push(56);
-    mst.push(78);
-    mst.push(-12);
-    mst.push(98);
-    mst.push(42);
+    // mst.push(23);
+    // mst.push(56);
+    // mst.push(78);
+    // mst.push(-12);
+    // mst.push(98);
+    // mst.push(42);
 
-    cout<<"popped value: "<<mst.top()<<endl;
-    mst.pop();
+    // cout<<"popped value: "<<mst.top()<<endl;
+    // mst.pop();
 
-    cout<<"top value: "<<mst.top()<<endl;
-    cout<<"Min Value: "<<mst.getMin()<<endl;
-    
+    // cout<<"top value: "<<mst.top()<<endl;
+    // cout<<"Min Value: "<<mst.getMin()<<endl;
 
+    string str = "a+b+c+d-e";
+
+    string postfixAns = infixToPostfix(str);
+
+    cout << "Infix To Postfix: "<<postfixAns<<endl;;
 
     return 0;
-}
-
-
-
-vector<int> copyAndReverse(vector<int> arr, int n) {
-    vector<int> copy_arr;
-    for (int i = n - 1; i >= 0; i--) {
-        copy_arr.push_back(arr[i]);
-    }
-    return copy_arr;
 }
