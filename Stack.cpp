@@ -782,6 +782,82 @@ string infixToPrefixconversion(string infix)
     return prefix;
 }
 
+//  Next Greater Element
+// on the right side and then in circular way
+
+vector<int> nextGreaterElementcircular(vector<int> &arr, int n) // TC --> O(2*n)  SC --> O(N)
+{
+    vector<int> nqe(n, -1);
+    stack<int> st;
+
+    for (int i = 0; i <= 2 * n - 1; i++)
+    {
+        while (!st.empty() && arr[st.top()] < arr[i % n])
+        {
+            nqe[st.top()] = arr[i % n];
+            st.pop();
+        }
+
+        if (i < n)
+        {
+            st.push(i % n);
+        }
+    }
+
+    return nqe;
+}
+
+// on the right side
+vector<int> nextGreaterElement(vector<int> &arr, int n) // TC --> O(2*n)  SC --> O(N)
+{
+    vector<int> nqe(n, -1);
+    stack<int> st;
+
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && arr[st.top()] < arr[i])
+        {
+            nqe[st.top()] = arr[i];
+            st.pop();
+        }
+        st.push(i);
+    }
+
+    return nqe;
+}
+
+//  Immediate Smaller Element
+// Mtd-1
+void immediateSmaller1(vector<int> &arr) // TC --> O(n)  SC --> O(1)
+{
+    int n = arr.size();
+    vector<int> ans;
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        if (arr[i] > arr[i + 1])
+        {
+            ans.push_back(arr[i + 1]);
+        }
+        else
+        {
+            ans.push_back(-1);
+        }
+    }
+
+    for (int i = 0; i < ans.size(); i++)
+    {
+        cout << ans[i] << " ";
+    }
+    cout << endl;
+}
+
+// Mtd-2
+void immediateSmaller(vector<int> &arr) // TC --> O(n)  SC --> O(1)
+{
+   
+}
+
 int main()
 {
     // int stack1[100], n = 100, top = -1;
@@ -945,37 +1021,57 @@ int main()
     // cout<<"top value: "<<mst.top()<<endl;
     // cout<<"Min Value: "<<mst.getMin()<<endl;
 
-    string str = "a+b+c+d-e";
-    string exp = "ab+c+";
-    string str1 = "*-a/bc-/del";
-    string str2 = "-/A+BC*DE";
-    string str3 = "abc/-ak/l-*";
-    string str4 = "a+b*(c^d-e)^(f+g*h)-i";
+    // string str = "a+b+c+d-e";
+    // string exp = "ab+c+";
+    // string str1 = "*-a/bc-/del";
+    // string str2 = "-/A+BC*DE";
+    // string str3 = "abc/-ak/l-*";
+    // string str4 = "a+b*(c^d-e)^(f+g*h)-i";
 
-    string postfixAns = infixToPostfix(str);
-    string postfixToInfixConversionAns = postToInfix(exp);
-    string prefixToInfixConversionAns = prefixToInfixConversion(str1);
-    string preToPostAns = preToPost(str2);
-    string postfixToPrefixAns = postfixToPrefix(str3);
-    string infixToPerfixAns = infixToPrefixconversion(str4);
+    // string postfixAns = infixToPostfix(str);
+    // string postfixToInfixConversionAns = postToInfix(exp);
+    // string prefixToInfixConversionAns = prefixToInfixConversion(str1);
+    // string preToPostAns = preToPost(str2);
+    // string postfixToPrefixAns = postfixToPrefix(str3);
+    // string infixToPerfixAns = infixToPrefixconversion(str4);
 
-    cout << "Infix String: " << str << endl;
-    cout << "Infix To Postfix: " << postfixAns << endl;
+    // cout << "Infix String: " << str << endl;
+    // cout << "Infix To Postfix: " << postfixAns << endl;
+    // cout << endl;
+    // cout << "Postfix String: " << exp << endl;
+    // cout << "Postfix to Infix: " << postfixToInfixConversionAns << endl;
+    // cout << endl;
+    // cout << "Prefix String: " << str1 << endl;
+    // cout << "Prefix to Infix: " << prefixToInfixConversionAns << endl;
+    // cout << endl;
+    // cout << "Prefix String: " << str2 << endl;
+    // cout << "Prefix to Postfix: " << preToPostAns << endl;
+    // cout << endl;
+    // cout << "Postfix String: " << str3 << endl;
+    // cout << "PostFix To Prefix: " << postfixToPrefixAns << endl;
+    // cout << endl;
+    // cout << "Infix String: " << str4 << endl;
+    // cout << "Infix to Prefix: " << postfixToPrefixAns << endl;
+
+    vector<int> varr = {4, 7, 8, 2, 3, 1};
+
+    cout << "Display Element: ";
+    for (int i = 0; i < varr.size(); i++)
+    {
+        cout << varr[i] << " ";
+    }
     cout << endl;
-    cout << "Postfix String: " << exp << endl;
-    cout << "Postfix to Infix: " << postfixToInfixConversionAns << endl;
-    cout << endl;
-    cout << "Prefix String: " << str1 << endl;
-    cout << "Prefix to Infix: " << prefixToInfixConversionAns << endl;
-    cout << endl;
-    cout << "Prefix String: " << str2 << endl;
-    cout << "Prefix to Postfix: " << preToPostAns << endl;
-    cout << endl;
-    cout << "Postfix String: " << str3 << endl;
-    cout << "PostFix To Prefix: " << postfixToPrefixAns << endl;
-    cout << endl;
-    cout << "Infix String: " << str4 << endl;
-    cout << "Infix to Prefix: " << postfixToPrefixAns << endl;
+
+    // cout << "Next Greater Element: ";
+    // vector<int> res = nextGreaterElement(varr, varr.size());
+    // for (int i = 0; i < res.size(); i++)
+    // {
+    //     cout << res[i] << " ";
+    // }
+    // cout << endl;
+
+    cout << "Immediate Smaller Element: ";
+    immediateSmaller(varr);
 
     return 0;
 }
