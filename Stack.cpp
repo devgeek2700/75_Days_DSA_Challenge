@@ -828,34 +828,27 @@ vector<int> nextGreaterElement(vector<int> &arr, int n) // TC --> O(2*n)  SC -->
 
 //  Immediate Smaller Element
 // Mtd-1
-void immediateSmaller1(vector<int> &arr) // TC --> O(n)  SC --> O(1)
+void immediateSmaller(vector<int> &arr) // TC --> O(n)  SC --> O(1)
 {
     int n = arr.size();
-    vector<int> ans;
 
     for (int i = 0; i < n - 1; i++)
     {
         if (arr[i] > arr[i + 1])
         {
-            ans.push_back(arr[i + 1]);
+            arr[i] = arr[i + 1];
         }
         else
         {
-            ans.push_back(-1);
+            arr[i] = -1;
         }
     }
+    arr[n - 1] = -1;
 
-    for (int i = 0; i < ans.size(); i++)
+    for (auto i : arr)
     {
-        cout << ans[i] << " ";
+        cout << i << " ";
     }
-    cout << endl;
-}
-
-// Mtd-2
-void immediateSmaller(vector<int> &arr) // TC --> O(n)  SC --> O(1)
-{
-   
 }
 
 int main()
@@ -1053,7 +1046,7 @@ int main()
     // cout << "Infix String: " << str4 << endl;
     // cout << "Infix to Prefix: " << postfixToPrefixAns << endl;
 
-    vector<int> varr = {4, 7, 8, 2, 3, 1};
+    vector<int> varr = {1, 2, 3, 4};
 
     cout << "Display Element: ";
     for (int i = 0; i < varr.size(); i++)
