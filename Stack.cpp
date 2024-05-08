@@ -851,6 +851,35 @@ void immediateSmaller(vector<int> &arr) // TC --> O(n)  SC --> O(1)
     }
 }
 
+//  Count Of Greater Elements To The Right
+vector<int> countGreater(vector<int> &arr, vector<int> &query)
+{
+    int n = arr.size();
+    int q = query.size();
+    vector<int> answer;
+    vector<int> countarr(n, 0);
+    int count = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            if (arr[i] < arr[j])
+            {
+                count++;
+            }
+        }
+        countarr[i] = count;
+        count = 0;
+    }
+
+    for (int i = 0; i < q; i++)
+    {
+        answer.push_back(countarr[query[i]]);
+    }
+    return answer;
+}
+
 int main()
 {
     // int stack1[100], n = 100, top = -1;
@@ -1047,6 +1076,7 @@ int main()
     // cout << "Infix to Prefix: " << postfixToPrefixAns << endl;
 
     vector<int> varr = {1, 2, 3, 4};
+    vector<int> query = {0, 1, 2, 3};
 
     cout << "Display Element: ";
     for (int i = 0; i < varr.size(); i++)
@@ -1063,8 +1093,16 @@ int main()
     // }
     // cout << endl;
 
-    cout << "Immediate Smaller Element: ";
-    immediateSmaller(varr);
+    // cout << "Immediate Smaller Element: ";
+    // immediateSmaller(varr);
+
+    cout << "Count Of Greater Elements To The Right: ";
+    vector<int> res = countGreater(varr, query);
+    for (int i = 0; i < res.size(); i++)
+    {
+        cout << res[i] << " ";
+    }
+    cout << endl;
 
     return 0;
 }
