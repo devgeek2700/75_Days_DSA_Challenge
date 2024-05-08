@@ -852,7 +852,7 @@ void immediateSmaller(vector<int> &arr) // TC --> O(n)  SC --> O(1)
 }
 
 //  Count Of Greater Elements To The Right
-vector<int> countGreater(vector<int> &arr, vector<int> &query)
+vector<int> countGreater(vector<int> &arr, vector<int> &query) // TC --> O(N^2 +Q)  SC --> O(N+Q)
 {
     int n = arr.size();
     int q = query.size();
@@ -878,6 +878,65 @@ vector<int> countGreater(vector<int> &arr, vector<int> &query)
         answer.push_back(countarr[query[i]]);
     }
     return answer;
+}
+
+//  Trapping Rain Water
+// Mtd - 1 --> using loops
+long long getTrappedWater1(vector<int> &arr) // TC --> O(N^2)  SC --> O(1)
+{
+    long long res = 0;
+    int n = arr.size();
+
+    for (int i = 0; i < n; i++)
+    {
+        int left = arr[i];
+        for (int j = 0; j < i; j++)
+        {
+            left = max(left, arr[j]);
+        }
+
+        int right = arr[i];
+        for (int j = i + 1; j < n; j++)
+        {
+            right = max(right, arr[j]);
+        }
+
+        res += (min(left, right) - arr[i]);
+    }
+
+    return res;
+}
+
+// Mtd - 2 --> using Stack
+
+long long getTrappedWater(vector<int> &arr)
+{
+    long long trappedWater = 0;
+    stack<int> st;
+    int n = arr.size();
+
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && arr[i] > arr[st.top()])
+        {
+            int top = st.top();
+            st.pop();
+            if (!st.empty())
+            {
+                int distance = i - st.top() - 1;
+                trappedWater += (min(arr[i], arr[st.top()]) - arr[top]) * distance;
+            }
+        }
+        st.push(i);
+    }
+
+    return trappedWater;
+}
+
+// Sum of Subarray Minimums
+int sumSubarrayMins(vector<int> &arr)
+{
+
 }
 
 int main()
@@ -1075,8 +1134,7 @@ int main()
     // cout << "Infix String: " << str4 << endl;
     // cout << "Infix to Prefix: " << postfixToPrefixAns << endl;
 
-    vector<int> varr = {1, 2, 3, 4};
-    vector<int> query = {0, 1, 2, 3};
+    vector<int> varr = {3, 1, 2, 4};
 
     cout << "Display Element: ";
     for (int i = 0; i < varr.size(); i++)
@@ -1096,13 +1154,18 @@ int main()
     // cout << "Immediate Smaller Element: ";
     // immediateSmaller(varr);
 
-    cout << "Count Of Greater Elements To The Right: ";
-    vector<int> res = countGreater(varr, query);
-    for (int i = 0; i < res.size(); i++)
-    {
-        cout << res[i] << " ";
-    }
-    cout << endl;
+    // cout << "Count Of Greater Elements To The Right: ";
+    // vector<int> res = countGreater(varr, query);
+    // for (int i = 0; i < res.size(); i++)
+    // {
+    //     cout << res[i] << " ";
+    // }
+    // cout << endl;
+    // long long res = getTrappedWater(varr);
+    // cout << "Trapping Rain Water: " << res << endl;
+
+    int res = sumSubarrayMins(varr);
+    cout << "Sum of Subarray Minimums: " << res << endl;
 
     return 0;
 }
