@@ -934,9 +934,95 @@ long long getTrappedWater(vector<int> &arr)
 }
 
 // Sum of Subarray Minimums
-int sumSubarrayMins(vector<int> &arr)
+// Mtd - 1
+int sumSubarrayMins(vector<int> &arr) // TC --> O(N^2)  SC --> O(1)
 {
+    int sum = 0;
+    int n = arr.size();
+    for (int i = 0; i < n; i++)
+    {
+        int minVal = arr[i];
 
+        for (int j = i; j < n; j++)
+        {
+            minVal = min(arr[j], minVal);
+            sum += minVal;
+        }
+    }
+
+    return sum;
+}
+
+// Mtd - 2 using stack
+int sumSubarrayMins1(vector<int> &arr)
+{
+    int n = arr.size();
+    stack<pair<int, int>> prev, next;
+    vector<long long> left(n), right(n);
+    const int MOD = 1e9 + 7;
+
+    // Finding previous smaller element for each element
+    for (int i = 0; i < n; i++)
+    {
+        int count = 1;
+        while (!prev.empty() && prev.top().first > arr[i])
+        {
+            count += prev.top().second;
+            prev.pop();
+        }
+        prev.push({arr[i], count});
+        left[i] = count;
+    }
+
+    cout << "Left Array: ";
+    for (auto i : left)
+    {
+        cout << left[i] << " ";
+    }
+    cout << endl;
+
+    // Finding next smaller element for each element
+    for (int i = n - 1; i >= 0; i--)
+    {
+        int count = 1;
+        while (!next.empty() && next.top().first >= arr[i])
+        {
+            count += next.top().second;
+            next.pop();
+        }
+        next.push({arr[i], count});
+        right[i] = count;
+    }
+
+    cout << "Right Array: ";
+    for (auto i : right)
+    {
+        cout << right[i] << " ";
+    }
+    cout << endl;
+
+    long long result = 0;
+    for (int i = 0; i < n; i++)
+    {
+        result = (result + arr[i] * left[i] * right[i]) % MOD;
+    }
+
+    return result;
+}
+
+//  Minimum Sum Subarray
+
+int minimumSum(vector<int> &arr, int n)
+{
+    int minVal = INT_MAX;
+    int currSum = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        currSum = min(arr[i], arr[i] + currSum);
+        minVal = min(currSum, minVal);
+    }
+    return minVal;
 }
 
 int main()
@@ -1134,7 +1220,7 @@ int main()
     // cout << "Infix String: " << str4 << endl;
     // cout << "Infix to Prefix: " << postfixToPrefixAns << endl;
 
-    vector<int> varr = {3, 1, 2, 4};
+    vector<int> varr = {11, 81, 94, 43, 3};
 
     cout << "Display Element: ";
     for (int i = 0; i < varr.size(); i++)
@@ -1164,8 +1250,11 @@ int main()
     // long long res = getTrappedWater(varr);
     // cout << "Trapping Rain Water: " << res << endl;
 
-    int res = sumSubarrayMins(varr);
+    int res = sumSubarrayMins1(varr);
     cout << "Sum of Subarray Minimums: " << res << endl;
+
+    int ans = minimumSum(varr, varr.size());
+    cout << " Minimum Sum Subarray: " << ans << endl;
 
     return 0;
 }
