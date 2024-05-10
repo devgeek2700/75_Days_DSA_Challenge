@@ -965,8 +965,10 @@ int sumSubarrayMins1(vector<int> &arr)
     for (int i = 0; i < n; i++)
     {
         int count = 1;
+
         while (!prev.empty() && prev.top().first > arr[i])
         {
+            cout << "prev.top: " << prev.top().first << " and " << prev.top().second << endl;
             count += prev.top().second;
             prev.pop();
         }
@@ -1023,6 +1025,100 @@ int minimumSum(vector<int> &arr, int n)
         minVal = min(currSum, minVal);
     }
     return minVal;
+}
+
+//  Asteroid Collision --> using Stack
+// Mtd -1 --> not handling zero in input Array
+vector<int> collidingAsteroids1(vector<int> &asteroids) // TC --> O(N)  SC --> O(N)
+{
+    int n = asteroids.size();
+    stack<int> st;
+
+    for (auto &a : asteroids)
+    {
+        // check the condition for collision +ve , -ve
+        while (!st.empty() && a < 0 && st.top() > 0)
+        {
+            int sum = a + st.top();
+
+            // left side move
+            if (sum < 0)
+            {
+                st.pop();
+            }
+            // right side move
+            else if (sum > 0)
+            {
+                a = 0;
+                break;
+            }
+            // both destroyed
+            else
+            {
+                st.pop();
+                a = 0;
+                break;
+            }
+        }
+
+        if (a != 0)
+        {
+            st.push(a);
+        }
+    }
+
+    int stSize = st.size();
+    vector<int> ans(stSize);
+
+    int i = stSize - 1;
+
+    while (!st.empty())
+    {
+        ans[i] = st.top();
+        st.pop();
+        i--;
+    }
+
+    return ans;
+}
+
+// Mtd - 2 -->  handling zero in input Array
+vector<int> collidingAsteroids(vector<int> &asteroids) // TC --> O(N)  SC --> O(N)
+{
+    int n = asteroids.size();
+    stack<int> st;
+
+    for (int a : asteroids)
+    {
+        if (st.empty() || a > 0)
+        {
+            st.push(a);
+        }
+        else
+        {
+            while (!st.empty() && abs(a) < 0 && st.top() > 0)
+            {
+                st.pop();
+            }
+
+            if (st.empty() || st.top() < 0)
+            {
+                st.push(a);
+            }
+            else if (st.top() == abs(a))
+            {
+                st.pop();
+            }
+        }
+    }
+
+    vector<int> result(st.size());
+    for (int i = st.size() - 1; i >= 0; i--)
+    {
+        result[i] = st.top();
+        st.pop();
+    }
+    return result;
 }
 
 int main()
@@ -1220,7 +1316,7 @@ int main()
     // cout << "Infix String: " << str4 << endl;
     // cout << "Infix to Prefix: " << postfixToPrefixAns << endl;
 
-    vector<int> varr = {11, 81, 94, 43, 3};
+    vector<int> varr = {0, -2, -4, 2, -4, 4, 4, 0, 5, 3};
 
     cout << "Display Element: ";
     for (int i = 0; i < varr.size(); i++)
@@ -1250,11 +1346,19 @@ int main()
     // long long res = getTrappedWater(varr);
     // cout << "Trapping Rain Water: " << res << endl;
 
-    int res = sumSubarrayMins1(varr);
-    cout << "Sum of Subarray Minimums: " << res << endl;
+    // int res = sumSubarrayMins1(varr);
+    // cout << "Sum of Subarray Minimums: " << res << endl;
 
-    int ans = minimumSum(varr, varr.size());
-    cout << " Minimum Sum Subarray: " << ans << endl;
+    // int ans = minimumSum(varr, varr.size());
+    // cout << " Minimum Sum Subarray: " << ans << endl;
+
+    cout << "Asteroid Collision: ";
+    vector<int> collidingAsteroidsans = collidingAsteroids(varr);
+    for (int i = 0; i < collidingAsteroidsans.size(); i++)
+    {
+        cout << collidingAsteroidsans[i] << " ";
+    }
+    cout << endl;
 
     return 0;
 }
