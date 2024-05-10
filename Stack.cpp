@@ -1037,7 +1037,7 @@ vector<int> collidingAsteroids1(vector<int> &asteroids) // TC --> O(N)  SC --> O
     for (auto &a : asteroids)
     {
         // check the condition for collision +ve , -ve
-        while (!st.empty() && a < 0 && st.top() > 0)
+        while (!st.empty() && a < 0 && st.top() > 0 || a == 0)
         {
             int sum = a + st.top();
 
@@ -1083,42 +1083,48 @@ vector<int> collidingAsteroids1(vector<int> &asteroids) // TC --> O(N)  SC --> O
 }
 
 // Mtd - 2 -->  handling zero in input Array
-vector<int> collidingAsteroids(vector<int> &asteroids) // TC --> O(N)  SC --> O(N)
-{
-    int n = asteroids.size();
-    stack<int> st;
 
-    for (int a : asteroids)
+vector<int> collidingAsteroids(vector<int> &asteroids)
+
+{
+
+    int n = asteroids.size();
+
+    // Using a vector as a stack since we can pop the last element of a vector in O(1) and push_back() operation also takes O(1) time.
+
+    vector<int> remainingAsteroids;
+
+    // Iterate through the given array/list.
+
+    for (int i = 0; i < n; i++)
     {
-        if (st.empty() || a > 0)
+        // Push the current asteroid in the stack.
+        if (asteroids[i] > 0 || remainingAsteroids.size() == 0 || remainingAsteroids.back() < 0)
+
         {
-            st.push(a);
+            remainingAsteroids.push_back(asteroids[i]);
         }
         else
         {
-            while (!st.empty() && abs(a) < 0 && st.top() > 0)
+            // Pop the asteroids from the stack.
+            while (remainingAsteroids.size() > 0 && remainingAsteroids.back() > 0 && remainingAsteroids.back() < -asteroids[i])
             {
-                st.pop();
+                remainingAsteroids.pop_back();
             }
-
-            if (st.empty() || st.top() < 0)
+            // If size of both asteroids is the same then destroy both the asteroids.
+            if (remainingAsteroids.size() > 0 && remainingAsteroids.back() == -asteroids[i])
             {
-                st.push(a);
+                remainingAsteroids.pop_back();
             }
-            else if (st.top() == abs(a))
+            // If the current asteroid has not been dstroyed then push the current asteroid to the stack.
+            else if (remainingAsteroids.size() == 0 || remainingAsteroids.back() <= 0)
             {
-                st.pop();
+                remainingAsteroids.push_back(asteroids[i]);
             }
         }
     }
 
-    vector<int> result(st.size());
-    for (int i = st.size() - 1; i >= 0; i--)
-    {
-        result[i] = st.top();
-        st.pop();
-    }
-    return result;
+    return remainingAsteroids;
 }
 
 int main()
