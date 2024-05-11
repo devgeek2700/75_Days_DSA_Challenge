@@ -935,7 +935,7 @@ long long getTrappedWater(vector<int> &arr)
 
 // Sum of Subarray Minimums
 // Mtd - 1
-int sumSubarrayMins(vector<int> &arr) // TC --> O(N^2)  SC --> O(1)
+int sumSubarrayMins1(vector<int> &arr) // TC --> O(N^2)  SC --> O(1)
 {
     int sum = 0;
     int n = arr.size();
@@ -954,7 +954,7 @@ int sumSubarrayMins(vector<int> &arr) // TC --> O(N^2)  SC --> O(1)
 }
 
 // Mtd - 2 using stack
-int sumSubarrayMins1(vector<int> &arr)
+int sumSubarrayMins(vector<int> &arr)
 {
     int n = arr.size();
     stack<pair<int, int>> prev, next;
@@ -968,7 +968,7 @@ int sumSubarrayMins1(vector<int> &arr)
 
         while (!prev.empty() && prev.top().first > arr[i])
         {
-            cout << "prev.top: " << prev.top().first << " and " << prev.top().second << endl;
+            // cout << "prev.top: " << prev.top().first << " and " << prev.top().second << endl;
             count += prev.top().second;
             prev.pop();
         }
@@ -976,12 +976,12 @@ int sumSubarrayMins1(vector<int> &arr)
         left[i] = count;
     }
 
-    cout << "Left Array: ";
-    for (auto i : left)
-    {
-        cout << left[i] << " ";
-    }
-    cout << endl;
+    // cout << "Left Array: ";
+    // for (auto i : left)
+    // {
+    //     cout << left[i] << " ";
+    // }
+    // cout << endl;
 
     // Finding next smaller element for each element
     for (int i = n - 1; i >= 0; i--)
@@ -996,12 +996,71 @@ int sumSubarrayMins1(vector<int> &arr)
         right[i] = count;
     }
 
-    cout << "Right Array: ";
-    for (auto i : right)
+    // cout << "Right Array: ";
+    // for (auto i : right)
+    // {
+    //     cout << right[i] << " ";
+    // }
+    // cout << endl;
+
+    long long result = 0;
+    for (int i = 0; i < n; i++)
     {
-        cout << right[i] << " ";
+        result = (result + arr[i] * left[i] * right[i]) % MOD;
     }
-    cout << endl;
+
+    return result;
+}
+
+// Sum of Subarray Maximumns
+
+int sumSubarrayMaxs(vector<int> &arr)
+{
+    int n = arr.size();
+    stack<pair<int, int>> prev, next;
+    vector<long long> left(n), right(n);
+    const int MOD = 1e9 + 7;
+
+    // Finding previous greater element for each element
+    for (int i = 0; i < n; i++)
+    {
+        int count = 1;
+
+        while (!prev.empty() && prev.top().first < arr[i])
+        {
+            count += prev.top().second;
+            prev.pop();
+        }
+        prev.push({arr[i], count});
+        left[i] = count;
+    }
+
+    // cout << "Left Array: ";
+    // for (int i = 0; i < n; i++)
+    // {
+    //     cout << left[i] << " ";
+    // }
+    // cout << endl;
+
+    // Finding next greater element for each element
+    for (int i = n - 1; i >= 0; i--)
+    {
+        int count = 1;
+        while (!next.empty() && next.top().first <= arr[i])
+        {
+            count += next.top().second;
+            next.pop();
+        }
+        next.push({arr[i], count});
+        right[i] = count;
+    }
+
+    // cout << "Right Array: ";
+    // for (int i = 0; i < n; i++)
+    // {
+    //     cout << right[i] << " ";
+    // }
+    // cout << endl;
 
     long long result = 0;
     for (int i = 0; i < n; i++)
@@ -1013,7 +1072,6 @@ int sumSubarrayMins1(vector<int> &arr)
 }
 
 //  Minimum Sum Subarray
-
 int minimumSum(vector<int> &arr, int n)
 {
     int minVal = INT_MAX;
@@ -1125,6 +1183,123 @@ vector<int> collidingAsteroids(vector<int> &asteroids)
     }
 
     return remainingAsteroids;
+}
+
+//  Subarray Range Sum
+// Mtd - 1 --> using ans to store
+int rangeSum1(vector<int> &arr) // TC --> O(N^3)  SC --> O(N^2)
+{
+    int sum = 0;
+    int n = arr.size();
+
+    for (int i = 0; i < n; i++)
+    {
+
+        for (int j = i; j < n; j++)
+        {
+            int min_val = INT_MAX;
+            int max_val = INT_MIN;
+            for (int k = i; k >= 0; k--)
+            {
+                min_val = min(min_val, arr[k]);
+                max_val = max(max_val, arr[k]);
+            }
+            sum += (max_val - min_val);
+        }
+    }
+
+    return sum;
+}
+
+// Better soln
+//  Mtd - 2 --> using direct to sum using abs
+int rangeSum2(vector<int> &nums) // TC --> O(N^2)  SC --> O(1)
+{
+    int n = nums.size();
+    int sum = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        int min_val = INT_MAX;
+        int max_val = INT_MIN;
+        for (int j = i; j >= 0; j--)
+        {
+            min_val = min(min_val, nums[j]);
+            max_val = max(max_val, nums[j]);
+            sum += (max_val - min_val);
+        }
+    }
+
+    return sum;
+}
+
+// Optimal soln
+//  Mtd - 2 --> using stack
+// X = Maximum Sum Subarray
+// Y = Minimum Sum Subarray
+// sum = X - Y
+int rangeSum(vector<int> &arr) // TC --> O(N^2)  SC --> O(N^2)
+{
+    int n = arr.size();
+    int X = sumSubarrayMaxs(arr);
+    int Y = sumSubarrayMins(arr);
+
+    return X - Y;
+}
+
+//  Remove K Digits to make minimum value
+
+string removeKDigits(string str, int k)
+{
+    int n = str.length();
+    vector<char> ans;
+
+    if (k == 0)
+    {
+        return str;
+    }
+
+    if (n <= k)
+    {
+        return "0";
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (ans.empty())
+        {
+            ans.push_back(str[i]);
+        }
+        else
+        {
+            while (k != 0 && !ans.empty() && str[i] < ans.back())
+            {
+                ans.pop_back();
+                k--;
+            }
+            ans.push_back(str[i]);
+        }
+    }
+
+    // Remove remaning k digits from the end
+
+    while (k-- > 0)
+    {
+        ans.pop_back();
+    }
+
+    // result string
+    string result(ans.begin(), ans.end());
+
+    // Remove front zeros
+    int index = 0;
+    while (index < result.size() && result[index] == '0')
+    {
+        index++;
+    }
+    result = result.substr(index);
+
+    return result.empty() ? "0" : result;
 }
 
 int main()
@@ -1322,14 +1497,18 @@ int main()
     // cout << "Infix String: " << str4 << endl;
     // cout << "Infix to Prefix: " << postfixToPrefixAns << endl;
 
-    vector<int> varr = {0, -2, -4, 2, -4, 4, 4, 0, 5, 3};
+    // vector<int> varr = {7, 3, -4, 5, -1, 2};
+    string str = "10200";
+    int k = 1;
 
-    cout << "Display Element: ";
-    for (int i = 0; i < varr.size(); i++)
-    {
-        cout << varr[i] << " ";
-    }
-    cout << endl;
+    cout << "string is: " << str << endl;
+
+    // cout << "Display Element: ";
+    // for (int i = 0; i < varr.size(); i++)
+    // {
+    //     cout << varr[i] << " ";
+    // }
+    // cout << endl;
 
     // cout << "Next Greater Element: ";
     // vector<int> res = nextGreaterElement(varr, varr.size());
@@ -1352,19 +1531,28 @@ int main()
     // long long res = getTrappedWater(varr);
     // cout << "Trapping Rain Water: " << res << endl;
 
-    // int res = sumSubarrayMins1(varr);
-    // cout << "Sum of Subarray Minimums: " << res << endl;
+    // int resmin = sumSubarrayMins(varr);
+    // cout << "Sum of Subarray Minimums: " << resmin << endl;
+
+    // int resmax = sumSubarrayMaxs(varr);
+    // cout << "Sum of Subarray Maximum: " << resmax << endl;
 
     // int ans = minimumSum(varr, varr.size());
     // cout << " Minimum Sum Subarray: " << ans << endl;
 
-    cout << "Asteroid Collision: ";
-    vector<int> collidingAsteroidsans = collidingAsteroids(varr);
-    for (int i = 0; i < collidingAsteroidsans.size(); i++)
-    {
-        cout << collidingAsteroidsans[i] << " ";
-    }
-    cout << endl;
+    // cout << "Asteroid Collision: ";
+    // vector<int> collidingAsteroidsans = collidingAsteroids(varr);
+    // for (int i = 0; i < collidingAsteroidsans.size(); i++)
+    // {
+    //     cout << collidingAsteroidsans[i] << " ";
+    // }
+    // cout << endl;
+
+    // int rangeSumans = rangeSum(varr);
+    // cout << "Subarray Range Sum: " << rangeSumans << endl;
+
+    string removeKDigitsAns = removeKDigits(str, k);
+    cout << "Remove K Digits: " << removeKDigitsAns << endl;
 
     return 0;
 }
