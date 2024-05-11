@@ -1248,8 +1248,8 @@ int rangeSum(vector<int> &arr) // TC --> O(N^2)  SC --> O(N^2)
 }
 
 //  Remove K Digits to make minimum value
-
-string removeKDigits(string str, int k)
+// Mtd - 1 using vector
+string removeKDigits1(string str, int k)
 {
     int n = str.length();
     vector<char> ans;
@@ -1292,6 +1292,70 @@ string removeKDigits(string str, int k)
     string result(ans.begin(), ans.end());
 
     // Remove front zeros
+    int index = 0;
+    while (index < result.size() && result[index] == '0')
+    {
+        index++;
+    }
+    result = result.substr(index);
+
+    return result.empty() ? "0" : result;
+}
+
+// Mtd - 2 using stack/ Monotonic Stack --> that follow incresing or descresing order
+string removeKDigits(string str, int k)
+{
+    int n = str.length();
+    stack<char> st;
+
+    if (k == 0)
+    {
+        return str;
+    }
+
+    if (n <= k)
+    {
+        return "0";
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (st.empty())
+        {
+            st.push(str[i]);
+        }
+        else
+        {
+            while (k != 0 && !st.empty() && str[i] < st.top())
+            {
+                st.pop();
+                k--;
+            }
+            st.push(str[i]);
+        }
+    }
+
+    // Remove remaning k digits from the end
+
+    while (k-- > 0)
+    {
+        st.pop();
+    }
+
+    // Construct the result string using stringstream
+
+    stringstream ss;
+    while (!st.empty())
+    {
+        ss << st.top();
+        st.pop();
+    }
+    string result = ss.str();
+
+    // Reverse the string to get the correct order
+    reverse(result.begin(), result.end());
+
+    // Remove leading zeros
     int index = 0;
     while (index < result.size() && result[index] == '0')
     {
