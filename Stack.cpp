@@ -1366,6 +1366,136 @@ string removeKDigits(string str, int k)
     return result.empty() ? "0" : result;
 }
 
+//  Largest rectangle in a histogram
+// Mtd - 1 Bructe Force
+int largestRectangle1(vector<int> &heights) // TC --> O(N^2)  SC --> O(1)
+{
+    int n = heights.size();
+    int maxArea = INT_MIN;
+
+    for (int i = 0; i < n; i++)
+    {
+        int minHeight = heights[i];
+
+        for (int j = i; j < n; j++)
+        {
+            minHeight = min(minHeight, heights[j]);
+            int width = j - i + 1;
+            int area = minHeight * width;
+            maxArea = max(area, maxArea);
+        }
+    }
+
+    return maxArea;
+}
+
+// Better Solution
+// Mtd - 2 --> using Stack
+int largestRectangle(vector<int> &heights) // TC -->  O(N)  SC --> O(N)
+{
+    int n = heights.size();
+    int leftSmall[n], rightsmall[n];
+    stack<int> st;
+
+    // left side move
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && heights[i] <= heights[st.top()])
+        {
+            st.pop();
+        }
+
+        if (st.empty())
+        {
+            leftSmall[i] = 0;
+        }
+        else
+        {
+            leftSmall[i] = st.top() + 1;
+        }
+        st.push(i);
+    }
+
+    // after left array till stack is not empty them empty it
+    while (!st.empty())
+    {
+        st.pop();
+    }
+
+    // right side move
+    for (int i = n - 1; i >= 0; i--)
+    {
+        while (!st.empty() && heights[i] <= heights[st.top()])
+        {
+            st.pop();
+        }
+
+        if (st.empty())
+        {
+            rightsmall[i] = n - 1;
+        }
+        else
+        {
+            rightsmall[i] = st.top() - 1;
+        }
+        st.push(i);
+    }
+
+    int maxArea = INT_MIN;
+
+    for (int i = 0; i < n; i++)
+    {
+        maxArea = max(maxArea, ((rightsmall[i] - leftSmall[i] + 1) * heights[i]));
+    }
+    return maxArea;
+}
+
+// Maximal Rectangle
+
+int largestRectanglematrix(vector<int> &dp)
+{
+    stack<int> st;
+    st.push(-1);
+    int max_area = 0;
+    for (int i = 0; i <= dp.size(); i++)
+    {
+        int val = (i == dp.size()) ? -1 : dp[i];
+        while (st.top() != -1 && dp[st.top()] > val)
+        {
+            int height = dp[st.top()];
+            st.pop();
+            int width = i - st.top() - 1;
+            max_area = max(max_area, width * height);
+        }
+        st.push(i);
+    }
+    return max_area;
+}
+
+int maximalRectangle(vector<vector<char>> &matrix)
+{
+    int n = matrix.size();
+    if (n == 0)
+        return 0;
+    int m = matrix[0].size();
+    if (n + m == 2)
+        return matrix[0][0] == '1';
+    vector<int> dp(m, 0);
+    int res = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (matrix[i][j] == '0')
+                dp[j] = 0;
+            else
+                dp[j]++;
+        }
+        res = max(res, largestRectanglematrix(dp));
+    }
+    return res;
+}
+
 int main()
 {
     // int stack1[100], n = 100, top = -1;
@@ -1561,11 +1691,17 @@ int main()
     // cout << "Infix String: " << str4 << endl;
     // cout << "Infix to Prefix: " << postfixToPrefixAns << endl;
 
-    // vector<int> varr = {7, 3, -4, 5, -1, 2};
+    vector<int> varr = {8, 6, 3, 5, 0, 0, 4, 10, 2, 5};
+    vector<vector<char>> matrix = {
+        {'1', '0', '1', '0', '0'},
+        {'1', '0', '1', '1', '1'},
+        {'1', '1', '1', '1', '1'},
+        {'1', '0', '0', '1', '0'}};
+
     string str = "10200";
     int k = 1;
 
-    cout << "string is: " << str << endl;
+    // cout << "string is: " << str << endl;
 
     // cout << "Display Element: ";
     // for (int i = 0; i < varr.size(); i++)
@@ -1573,6 +1709,17 @@ int main()
     //     cout << varr[i] << " ";
     // }
     // cout << endl;
+
+    cout << "Display matrix: " << endl;
+    for (int i = 0; i < matrix.size(); i++)
+    {
+        for (int j = 0; j < matrix[0].size(); j++)
+        {
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
 
     // cout << "Next Greater Element: ";
     // vector<int> res = nextGreaterElement(varr, varr.size());
@@ -1615,8 +1762,14 @@ int main()
     // int rangeSumans = rangeSum(varr);
     // cout << "Subarray Range Sum: " << rangeSumans << endl;
 
-    string removeKDigitsAns = removeKDigits(str, k);
-    cout << "Remove K Digits: " << removeKDigitsAns << endl;
+    // string removeKDigitsAns = removeKDigits(str, k);
+    // cout << "Remove K Digits: " << removeKDigitsAns << endl;
+
+    // int largestRectangleAns = largestRectangle(varr);
+    // cout << "Largest rectangle in a histogram: " << largestRectangleAns << endl;
+
+    int maximalRectangleAns = maximalRectangle(matrix);
+    cout << "Maximal Rectangle: " << maximalRectangleAns << endl;
 
     return 0;
 }
