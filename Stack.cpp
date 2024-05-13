@@ -1391,7 +1391,7 @@ int largestRectangle1(vector<int> &heights) // TC --> O(N^2)  SC --> O(1)
 
 // Better Solution
 // Mtd - 2 --> using Stack
-int largestRectangle(vector<int> &heights) // TC -->  O(N)  SC --> O(N)
+int largestRectangle(vector<int> &heights) // TC -->  O(N*k)  SC --> O(N-l+1)
 {
     int n = heights.size();
     int leftSmall[n], rightsmall[n];
@@ -1494,6 +1494,55 @@ int maximalRectangle(vector<vector<char>> &matrix)
         res = max(res, largestRectanglematrix(dp));
     }
     return res;
+}
+
+//  Maximum In Sliding Windows Of Size K
+// Mtd - 1
+// Bructe force nested loop
+vector<int> slidingWindowMaximum1(vector<int> &nums, int &k) // TC --> O(N^2)  SC --> O(N - K + 1)
+{
+    int n = nums.size();
+    vector<int> allMaxVals;
+    for (int i = 0; i <= n - k; i++)
+    {
+        int maxVal = nums[i];
+        for (int j = i + 1; j < i + k; j++)
+        {
+            maxVal = max(maxVal, nums[j]);
+        }
+        allMaxVals.push_back(maxVal);
+    }
+
+    return allMaxVals;
+}
+
+// Mtd - 2
+// Optimal soln --> Dequeue
+vector<int> slidingWindowMaximum(vector<int> &nums, int &k) // TC --> O(N)  SC --> O(K)
+{
+    int n = nums.size();
+    vector<int> allMaxVals;
+    deque<int> dq;
+    for (int i = 0; i < n; i++)
+    {
+        if (!dq.empty() && dq.front() == i - k)
+        {
+            dq.pop_front();
+        }
+
+        while (!dq.empty() && nums[i] > nums[dq.back()])
+        {
+            dq.pop_back();
+        }
+
+        dq.push_back(i);
+
+        if (i >= k - 1)
+        {
+            allMaxVals.push_back(nums[dq.front()]);
+        }
+    }
+    return allMaxVals;
 }
 
 int main()
@@ -1691,35 +1740,35 @@ int main()
     // cout << "Infix String: " << str4 << endl;
     // cout << "Infix to Prefix: " << postfixToPrefixAns << endl;
 
-    vector<int> varr = {8, 6, 3, 5, 0, 0, 4, 10, 2, 5};
-    vector<vector<char>> matrix = {
-        {'1', '0', '1', '0', '0'},
-        {'1', '0', '1', '1', '1'},
-        {'1', '1', '1', '1', '1'},
-        {'1', '0', '0', '1', '0'}};
+    vector<int> varr = {1,3,-1,-3,5,3,6,7};
+    // vector<vector<char>> matrix = {
+    //     {'1', '0', '1', '0', '0'},
+    //     {'1', '0', '1', '1', '1'},
+    //     {'1', '1', '1', '1', '1'},
+    //     {'1', '0', '0', '1', '0'}};
 
-    string str = "10200";
-    int k = 1;
+    // string str = "10200";
+    int k = 3;
 
     // cout << "string is: " << str << endl;
 
-    // cout << "Display Element: ";
-    // for (int i = 0; i < varr.size(); i++)
-    // {
-    //     cout << varr[i] << " ";
-    // }
-    // cout << endl;
-
-    cout << "Display matrix: " << endl;
-    for (int i = 0; i < matrix.size(); i++)
+    cout << "Display Element: ";
+    for (int i = 0; i < varr.size(); i++)
     {
-        for (int j = 0; j < matrix[0].size(); j++)
-        {
-            cout << matrix[i][j] << " ";
-        }
-        cout << endl;
+        cout << varr[i] << " ";
     }
     cout << endl;
+
+    // cout << "Display matrix: " << endl;
+    // for (int i = 0; i < matrix.size(); i++)
+    // {
+    //     for (int j = 0; j < matrix[0].size(); j++)
+    //     {
+    //         cout << matrix[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
+    // cout << endl;
 
     // cout << "Next Greater Element: ";
     // vector<int> res = nextGreaterElement(varr, varr.size());
@@ -1768,8 +1817,16 @@ int main()
     // int largestRectangleAns = largestRectangle(varr);
     // cout << "Largest rectangle in a histogram: " << largestRectangleAns << endl;
 
-    int maximalRectangleAns = maximalRectangle(matrix);
-    cout << "Maximal Rectangle: " << maximalRectangleAns << endl;
+    // int maximalRectangleAns = maximalRectangle(matrix);
+    // cout << "Maximal Rectangle: " << maximalRectangleAns << endl;
+
+    cout << "Maximum In Sliding Windows Of Size K: ";
+    vector<int> slidingWindowMaximumAns = slidingWindowMaximum(varr, k);
+    for (int i = 0; i < slidingWindowMaximumAns.size(); i++)
+    {
+        cout << slidingWindowMaximumAns[i] << " ";
+    }
+    cout << endl;
 
     return 0;
 }
