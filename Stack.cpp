@@ -1545,6 +1545,7 @@ vector<int> slidingWindowMaximum(vector<int> &nums, int &k) // TC --> O(N)  SC -
     return allMaxVals;
 }
 
+
 int main()
 {
     // int stack1[100], n = 100, top = -1;
@@ -1740,24 +1741,22 @@ int main()
     // cout << "Infix String: " << str4 << endl;
     // cout << "Infix to Prefix: " << postfixToPrefixAns << endl;
 
-    vector<int> varr = {1,3,-1,-3,5,3,6,7};
-    // vector<vector<char>> matrix = {
-    //     {'1', '0', '1', '0', '0'},
-    //     {'1', '0', '1', '1', '1'},
-    //     {'1', '1', '1', '1', '1'},
-    //     {'1', '0', '0', '1', '0'}};
+    vector<int> varr = {4, 2, 3, 3, 6};
+    // vector<vector<int>> matrix = {{0, 0, 1, 0}, {0, 0, 1, 0}, {0, 0, 0, 0}, {0, 0, 1, 0}};
 
     // string str = "10200";
     int k = 3;
+    int n = 4;
 
     // cout << "string is: " << str << endl;
 
-    cout << "Display Element: ";
-    for (int i = 0; i < varr.size(); i++)
-    {
-        cout << varr[i] << " ";
-    }
-    cout << endl;
+    cout << "Display N: " << n << endl;
+    // cout << "Display Element: ";
+    // for (int i = 0; i < varr.size(); i++)
+    // {
+    //     cout << varr[i] << " ";
+    // }
+    // cout << endl;
 
     // cout << "Display matrix: " << endl;
     // for (int i = 0; i < matrix.size(); i++)
@@ -1828,5 +1827,33 @@ int main()
     }
     cout << endl;
 
+    // cout << "Online Stock Span: ";
+    // vector<int> findSpansAns = findSpans(varr);
+    // for (int i = 0; i < findSpansAns.size(); i++)
+    // {
+    //     cout << findSpansAns[i] << " ";
+    // }
+    // cout << endl;
+    // int findCelebrityAns = findCelebrity(n);
+    // cout << "The Celebrity Problem: " << findCelebrityAns << endl;
+
     return 0;
+}
+
+
+vector<int> slidingWindowMaximum12(vector<int> &nums, int &k) // TC --> O(N^2)  SC --> O(N - K + 1)
+{
+    int n = nums.size();
+    vector<int> allMaxVals;
+    for (int i = 0; i <= n - k; i++)
+    {
+        int maxVal = nums[i];
+        for (int j = i + 1; j < i + k; j++)
+        {
+            maxVal = max(maxVal, nums[j]);
+        }
+        allMaxVals.push_back(maxVal);
+    }
+
+    return allMaxVals;
 }
