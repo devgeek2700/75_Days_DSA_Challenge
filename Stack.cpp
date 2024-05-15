@@ -1545,6 +1545,56 @@ vector<int> slidingWindowMaximum(vector<int> &nums, int &k) // TC --> O(N)  SC -
     return allMaxVals;
 }
 
+// May 14
+// Online Stock Span
+// Mtd - 1
+// Bructe force nested loop
+vector<int> findSpans(vector<int> &price) // TC --> O(N^2) SC --> O(N)
+{
+    int n = price.size();
+    vector<int> ans;
+
+    for (int i = 0; i < n; i++)
+    {
+        int count = 1;
+        int stockSmall = price[i];
+
+        for (int j = i; j >= 0; j--)
+        {
+            if (price[j] < stockSmall)
+            {
+                count++;
+            }
+        }
+
+        ans.push_back(count);
+    }
+    return ans;
+}
+
+// Mtd - 2
+// optimal force --> using stack
+vector<int> findSpans1(vector<int> &price) // TC --> O(N^2) SC --> O(N)
+{
+    int n = price.size();
+    stack<pair<int, int>> st;
+    vector<int> ans(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        int span = 1;
+        while (!st.empty() && st.top().first <= price[i])
+        {
+            span += st.top().second;
+            st.pop();
+        }
+        st.push({price[i], span});
+        ans[i] = span;
+    }
+
+    return ans;
+}
+
 
 int main()
 {
@@ -1819,41 +1869,23 @@ int main()
     // int maximalRectangleAns = maximalRectangle(matrix);
     // cout << "Maximal Rectangle: " << maximalRectangleAns << endl;
 
-    cout << "Maximum In Sliding Windows Of Size K: ";
-    vector<int> slidingWindowMaximumAns = slidingWindowMaximum(varr, k);
-    for (int i = 0; i < slidingWindowMaximumAns.size(); i++)
-    {
-        cout << slidingWindowMaximumAns[i] << " ";
-    }
-    cout << endl;
-
-    // cout << "Online Stock Span: ";
-    // vector<int> findSpansAns = findSpans(varr);
-    // for (int i = 0; i < findSpansAns.size(); i++)
+    // cout << "Maximum In Sliding Windows Of Size K: ";
+    // vector<int> slidingWindowMaximumAns = slidingWindowMaximum(varr, k);
+    // for (int i = 0; i < slidingWindowMaximumAns.size(); i++)
     // {
-    //     cout << findSpansAns[i] << " ";
+    //     cout << slidingWindowMaximumAns[i] << " ";
     // }
     // cout << endl;
+
+    cout << "Online Stock Span: ";
+    vector<int> findSpansAns = findSpans(varr);
+    for (int i = 0; i < findSpansAns.size(); i++)
+    {
+        cout << findSpansAns[i] << " ";
+    }
+    cout << endl;
     // int findCelebrityAns = findCelebrity(n);
     // cout << "The Celebrity Problem: " << findCelebrityAns << endl;
 
     return 0;
-}
-
-
-vector<int> slidingWindowMaximum12(vector<int> &nums, int &k) // TC --> O(N^2)  SC --> O(N - K + 1)
-{
-    int n = nums.size();
-    vector<int> allMaxVals;
-    for (int i = 0; i <= n - k; i++)
-    {
-        int maxVal = nums[i];
-        for (int j = i + 1; j < i + k; j++)
-        {
-            maxVal = max(maxVal, nums[j]);
-        }
-        allMaxVals.push_back(maxVal);
-    }
-
-    return allMaxVals;
 }
