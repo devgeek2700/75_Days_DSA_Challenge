@@ -1545,7 +1545,6 @@ vector<int> slidingWindowMaximum(vector<int> &nums, int &k) // TC --> O(N)  SC -
     return allMaxVals;
 }
 
-// May 14
 // Online Stock Span
 // Mtd - 1
 // Bructe force nested loop
@@ -1595,7 +1594,6 @@ vector<int> findSpans1(vector<int> &price) // TC --> O(N^2) SC --> O(N)
     return ans;
 }
 
-// May 15
 //  The Celebrity Problem
 vector<vector<int>> matrix = {{0, 0, 1, 0}, {0, 0, 1, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}};
 
