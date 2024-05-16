@@ -1595,6 +1595,59 @@ vector<int> findSpans1(vector<int> &price) // TC --> O(N^2) SC --> O(N)
     return ans;
 }
 
+// May 15
+//  The Celebrity Problem
+vector<vector<int>> matrix = {{0, 0, 1, 0}, {0, 0, 1, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}};
+
+bool knows(int a, int b)
+{
+    return matrix[a][b];
+}
+
+int findCelebrity(int n)
+{
+    stack<int> st;
+
+    for (int i = 0; i < n; i++)
+    {
+        st.push(i);
+    }
+
+    int count = 0;
+    while (count < n - 1)
+    {
+        int first = st.top();
+        st.pop();
+        int second = st.top();
+        st.pop();
+
+        if (knows(first, second))
+        {
+            st.push(second);
+        }
+        else
+        {
+            st.push(first);
+        }
+        count++;
+    }
+
+    int Celebrity = st.top();
+    st.pop();
+
+    for (int i = 0; i < n; i++)
+    {
+        // If any person doesn't
+        // know 'C' or 'C' doesn't
+        // know any person, return -1
+        if ((i != Celebrity) && (knows(Celebrity, i) || !knows(i, Celebrity)))
+            return -1;
+    }
+
+    return Celebrity;
+}
+
+
 
 int main()
 {
@@ -1877,15 +1930,16 @@ int main()
     // }
     // cout << endl;
 
-    cout << "Online Stock Span: ";
-    vector<int> findSpansAns = findSpans(varr);
-    for (int i = 0; i < findSpansAns.size(); i++)
-    {
-        cout << findSpansAns[i] << " ";
-    }
-    cout << endl;
-    // int findCelebrityAns = findCelebrity(n);
-    // cout << "The Celebrity Problem: " << findCelebrityAns << endl;
+    // cout << "Online Stock Span: ";
+    // vector<int> findSpansAns = findSpans(varr);
+    // for (int i = 0; i < findSpansAns.size(); i++)
+    // {
+    //     cout << findSpansAns[i] << " ";
+    // }
+    // cout << endl;
+
+    int findCelebrityAns = findCelebrity(n);
+    cout << "The Celebrity Problem: " << findCelebrityAns << endl;
 
     return 0;
 }
