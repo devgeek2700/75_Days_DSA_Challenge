@@ -1645,8 +1645,6 @@ int findCelebrity(int n)
     return Celebrity;
 }
 
-
-
 int main()
 {
     // int stack1[100], n = 100, top = -1;
@@ -1940,4 +1938,53 @@ int main()
     cout << "The Celebrity Problem: " << findCelebrityAns << endl;
 
     return 0;
+}
+
+string splitArray(vector<int> &a, int n)
+{
+    unordered_map<int, int> freq;
+
+    // Count the frequency of each element
+    for (int num : a)
+    {
+        freq[num]++;
+    }
+
+    // Check if any element has a frequency of 1
+    for (auto it : freq)
+    {
+        if (it.second == 1)
+        {
+            return "NO";
+        }
+    }
+
+    return "YES";
+}
+
+vector<string> sortArrStr(int n, vector<string> arrStr, char c) {
+    // Create a map for the new alphabetical order starting from 'c'
+    unordered_map<char, int> charOrder;
+    int index = 0;
+    for (char ch = c; ch <= 'z'; ++ch) {
+        charOrder[ch] = index++;
+    }
+    for (char ch = 'a'; ch < c; ++ch) {
+        charOrder[ch] = index++;
+    }
+
+    // Custom comparator function for the new order
+    auto cmp = [&charOrder](const string &a, const string &b) -> bool {
+        int lenA = a.size(), lenB = b.size();
+        for (int i = 0; i < min(lenA, lenB); ++i) {
+            if (charOrder[a[i]] < charOrder[b[i]]) return true;
+            if (charOrder[a[i]] > charOrder[b[i]]) return false;
+        }
+        return lenA < lenB; // If they are equal up to the length of the shorter string
+    };
+
+    // Sort the array with the custom comparator
+    sort(arrStr.begin(), arrStr.end(), cmp);
+
+    return arrStr;
 }
