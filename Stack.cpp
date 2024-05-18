@@ -1645,6 +1645,68 @@ int findCelebrity(int n)
     return Celebrity;
 }
 
+//  LRU Cache Implementation --> implement in O(1)
+class LRUCache
+{
+private:
+    int capacity;
+    list<pair<int, int>> dll;
+    unordered_map<int, list<pair<int, int>>::iterator> cache;
+
+    void moveToHead(int key, int value)
+    {
+        dll.erase(cache[key]);
+        dll.push_front({key, value});
+        cache[key] = dll.begin();
+    }
+
+    void inserttoHead(int key, int value)
+    {
+        dll.push_front({key, value});
+        cache[key] = dll.begin();
+    }
+
+    void removeTail()
+    {
+        auto tail = dll.back();
+        cache.erase(tail.first);
+        dll.pop_back();
+    }
+
+public:
+    LRUCache(int capacity)
+    {
+        this->capacity = capacity;
+    }
+
+    int get(int key)
+    {
+        if (cache.find(key) == cache.end())
+        {
+            return -1;
+        }
+        int value = cache[key]->second;
+        moveToHead(key, value);
+        return value;
+    }
+
+    void put(int key, int value)
+    {
+        if (cache.find(key) != cache.end())
+        {
+            moveToHead(key, value);
+        }
+        else
+        {
+            if (cache.size() >= capacity)
+            {
+                removeTail();
+            }
+            inserttoHead(key, value);
+        }
+    }
+};
+
 int main()
 {
     // int stack1[100], n = 100, top = -1;
@@ -1934,57 +1996,21 @@ int main()
     // }
     // cout << endl;
 
-    int findCelebrityAns = findCelebrity(n);
-    cout << "The Celebrity Problem: " << findCelebrityAns << endl;
+    // int findCelebrityAns = findCelebrity(n);
+    // cout << "The Celebrity Problem: " << findCelebrityAns << endl;
+
+    //  LRU Cache Implementation
+
+    LRUCache cache(3);
+    cout << "LRU Cache Implementation:" << endl;
+    cache.put(1, 1);
+    cache.put(2, 56);
+    cache.put(3, 89);
+    cout << "cache at 2: " << cache.get(2) << endl; // returns 2
+    cache.put(4, 49);
+    cout << "cache at 1: " << cache.get(1) << endl;  // returns -1 (1 was removed)
+    cout << "cache at 3: " << cache.get(3) << endl;  // returns 3
+    cout << "cache at 24: " << cache.get(4) << endl; // returns 4
 
     return 0;
-}
-
-string splitArray(vector<int> &a, int n)
-{
-    unordered_map<int, int> freq;
-
-    // Count the frequency of each element
-    for (int num : a)
-    {
-        freq[num]++;
-    }
-
-    // Check if any element has a frequency of 1
-    for (auto it : freq)
-    {
-        if (it.second == 1)
-        {
-            return "NO";
-        }
-    }
-
-    return "YES";
-}
-
-vector<string> sortArrStr(int n, vector<string> arrStr, char c) {
-    // Create a map for the new alphabetical order starting from 'c'
-    unordered_map<char, int> charOrder;
-    int index = 0;
-    for (char ch = c; ch <= 'z'; ++ch) {
-        charOrder[ch] = index++;
-    }
-    for (char ch = 'a'; ch < c; ++ch) {
-        charOrder[ch] = index++;
-    }
-
-    // Custom comparator function for the new order
-    auto cmp = [&charOrder](const string &a, const string &b) -> bool {
-        int lenA = a.size(), lenB = b.size();
-        for (int i = 0; i < min(lenA, lenB); ++i) {
-            if (charOrder[a[i]] < charOrder[b[i]]) return true;
-            if (charOrder[a[i]] > charOrder[b[i]]) return false;
-        }
-        return lenA < lenB; // If they are equal up to the length of the shorter string
-    };
-
-    // Sort the array with the custom comparator
-    sort(arrStr.begin(), arrStr.end(), cmp);
-
-    return arrStr;
 }
