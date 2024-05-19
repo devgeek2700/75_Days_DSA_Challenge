@@ -1709,20 +1709,73 @@ public:
 
 // LFU Cache --> least frequently used
 class LFUCache {
+private:
+    int capacity, minFreq;
+    unordered_map<int, int> keyToVal;
+    unordered_map<int, int> keyToFreq;
+    unordered_map<int, list<int>> freqToList;
+    unordered_map<int, list<int>::iterator> keyToIter;
+
+    void updateFrequency(int key) {
+        int freq = keyToFreq[key];
+        keyToFreq[key] = freq + 1;
+
+        freqToList[freq].erase(keyToIter[key]);
+        if (freqToList[freq].empty()) {
+            freqToList.erase(freq);
+            if (minFreq == freq) {
+                minFreq++;
+            }
+        }
+
+        freqToList[freq + 1].push_back(key);
+        keyToIter[key] = --freqToList[freq + 1].end();
+    }
+
 public:
     LFUCache(int capacity) {
-        
+        this->capacity = capacity;
+        minFreq = 0;
     }
-    
+
     int get(int key) {
-        
+        if (keyToVal.find(key) == keyToVal.end()) {
+            return -1;
+        }
+        updateFrequency(key);
+        return keyToVal[key];
     }
-    
+
     void put(int key, int value) {
-        
+        if (capacity <= 0) {
+            return;
+        }
+
+        if (keyToVal.find(key) != keyToVal.end()) {
+            keyToVal[key] = value;
+            updateFrequency(key);
+            return;
+        }
+
+        if (keyToVal.size() >= capacity) {
+            int evictKey = freqToList[minFreq].front();
+            freqToList[minFreq].pop_front();
+            if (freqToList[minFreq].empty()) {
+                freqToList.erase(minFreq);
+            }
+
+            keyToVal.erase(evictKey);
+            keyToFreq.erase(evictKey);
+            keyToIter.erase(evictKey);
+        }
+
+        keyToVal[key] = value;
+        keyToFreq[key] = 1;
+        minFreq = 1;
+        freqToList[1].push_back(key);
+        keyToIter[key] = --freqToList[1].end();
     }
 };
-
 
 int main()
 {
@@ -2018,33 +2071,28 @@ int main()
 
     //  LRU Cache Implementation
 
-    LRUCache cache(3);
-    cout << "LRU Cache Implementation:" << endl;
+    // LRUCache cache(3);
+    // cout << "LRU Cache Implementation:" << endl;
+    // cache.put(1, 1);
+    // cache.put(2, 56);
+    // cache.put(3, 89);
+    // cout << "cache at 2: " << cache.get(2) << endl; // returns 2
+    // cache.put(4, 49);
+    // cout << "cache at 1: " << cache.get(1) << endl;  // returns -1 (1 was removed)
+    // cout << "cache at 3: " << cache.get(3) << endl;  // returns 3
+    // cout << "cache at 24: " << cache.get(4) << endl; // returns 4
+
+    LFUCache cache(3);
+    cout << "LFU Cache Implementation:" << endl;
     cache.put(1, 1);
     cache.put(2, 56);
     cache.put(3, 89);
-    cout << "cache at 2: " << cache.get(2) << endl; // returns 2
+    cout << "cache at 2: " << cache.get(2) << endl; // returns 56
     cache.put(4, 49);
     cout << "cache at 1: " << cache.get(1) << endl;  // returns -1 (1 was removed)
-    cout << "cache at 3: " << cache.get(3) << endl;  // returns 3
-    cout << "cache at 24: " << cache.get(4) << endl; // returns 4
+    cout << "cache at 3: " << cache.get(3) << endl;  // returns 89
+    cout << "cache at 4: " << cache.get(4) << endl; // returns 49
+
 
     return 0;
-}
-
-
-
-#include <bits/stdc++.h>
-
-
-vector<int> waveFormArray(vector<int> &arr, int n) {
-    // Sort the array in ascending order
-    sort(arr.begin(), arr.end());
-
-    // Swap adjacent elements to create the wave pattern
-    for (int i = 0; i < n - 1; i += 2) {
-        swap(arr[i], arr[i + 1]);
-    }
-
-    return arr;
 }
