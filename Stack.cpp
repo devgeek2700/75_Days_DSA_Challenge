@@ -1707,6 +1707,23 @@ public:
     }
 };
 
+// LFU Cache --> least frequently used
+class LFUCache {
+public:
+    LFUCache(int capacity) {
+        
+    }
+    
+    int get(int key) {
+        
+    }
+    
+    void put(int key, int value) {
+        
+    }
+};
+
+
 int main()
 {
     // int stack1[100], n = 100, top = -1;
@@ -2013,4 +2030,21 @@ int main()
     cout << "cache at 24: " << cache.get(4) << endl; // returns 4
 
     return 0;
+}
+
+
+
+#include <bits/stdc++.h>
+
+
+vector<int> waveFormArray(vector<int> &arr, int n) {
+    // Sort the array in ascending order
+    sort(arr.begin(), arr.end());
+
+    // Swap adjacent elements to create the wave pattern
+    for (int i = 0; i < n - 1; i += 2) {
+        swap(arr[i], arr[i + 1]);
+    }
+
+    return arr;
 }
