@@ -1707,8 +1707,8 @@ public:
     }
 };
 
-// LFU Cache --> least frequently used
-class LFUCache {
+// LFU Cache --> least frequently used 
+class LFUCache { // TC -->O(1)
 private:
     int capacity, minFreq;
     unordered_map<int, int> keyToVal;
