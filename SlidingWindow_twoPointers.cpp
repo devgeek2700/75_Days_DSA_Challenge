@@ -43,3 +43,36 @@ int main()
     cout << "Hello World!" << endl;
     return 0;
 }
+
+
+
+int countAtMostKDistinct(vector<int>& arr, int n, int k) {
+    if (k == 0) return 0;
+    
+    unordered_map<int, int> freq;
+    int left = 0, right = 0, count = 0, distinctCount = 0;
+
+    while (right < n) {
+        if (freq[arr[right]] == 0) {
+            distinctCount++;
+        }
+        freq[arr[right]]++;
+        right++;
+
+        while (distinctCount > k) {
+            freq[arr[left]]--;
+            if (freq[arr[left]] == 0) {
+                distinctCount--;
+            }
+            left++;
+        }
+
+        count += (right - left);
+    }
+
+    return count;
+}
+
+int goodSubarrays(vector<int>& arr, int n, int b) {
+    return countAtMostKDistinct(arr, n, b) - countAtMostKDistinct(arr, n, b - 1);
+}
