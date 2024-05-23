@@ -50,35 +50,126 @@ int lengthOfLongestSubstring(string str) // TC --> O(N)  SC --> O(n,256)
     return maxLen;
 }
 
-int consecutiveOnes(vector<int> &arr)
-{
-    int max_length = 0;
-    int current_length = 0;
+// Max Consecutive Ones III
+// bructe force solution
 
-    for (int i = 0; i < arr.size(); ++i)
+int consecutiveOnes1(vector<int> &arr, int k) // TC --> O(N^2)  SC --> O(1)
+{
+    int maxLen = INT_MIN;
+    int n = arr.size();
+    for (int i = 0; i < n; i++)
     {
-        if (arr[i] == 1)
+        int currZero = 0;
+        for (int j = i; j < n; j++)
         {
-            current_length++;
-            max_length = max(max_length, current_length);
-        }
-        else
-        {
-            current_length = 0;
+            if (arr[j] == 0)
+            {
+                currZero++;
+            }
+            if (currZero <= k)
+            {
+                int currLen = j - i + 1;
+                maxLen = max(maxLen, currLen);
+            }
+            else
+            {
+                break;
+            }
         }
     }
+    return maxLen;
+}
 
-    return max_length;
+// Better solution
+int consecutiveOnes2(vector<int> &arr, int k) // TC --> O(2N)  SC --> O(1)
+{
+    int maxLen = INT_MIN;
+    int n = arr.size();
+    int left = 0;
+    int right = 0;
+    int currZero = 0;
+
+    while (right < n)
+    {
+        if (arr[right] == 0)
+        {
+            currZero++;
+        }
+
+        while (currZero > k)
+        {
+            if (arr[left] == 0)
+            {
+                currZero--;
+            }
+            left++;
+        }
+
+        if (currZero <= k)
+        {
+            int currLen = right - left + 1;
+            maxLen = max(maxLen, currLen);
+            right++;
+        }
+    }
+    return maxLen;
+}
+
+// Optimal solution
+int consecutiveOnes(vector<int> &arr, int k) // TC --> O(N)  SC --> O(1)
+{
+    int maxLen = INT_MIN;
+    int n = arr.size();
+    int left = 0;
+    int right = 0;
+    int currZero = 0;
+
+    while (right < n)
+    {
+        if (arr[right] == 0)
+        {
+            currZero++;
+        }
+
+        if (currZero > k)
+        {
+            if (arr[left] == 0)
+            {
+                currZero--;
+            }
+            left++;
+        }
+
+        if (currZero <= k)
+        {
+            int currLen = right - left + 1;
+            maxLen = max(maxLen, currLen);
+        }
+        right++;
+    }
+    return maxLen;
 }
 
 int main()
 {
     string str = "abcabcbb";
+    vector<int> varr = {1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0};
+    int k = 2;
 
-    cout << "string is: " << str << endl;
+    // cout << "string is: " << str << endl;
 
-    int result = lengthOfLongestSubstring(str);
-    cout << "Longest Substring Without Repeating Characters: " << result << endl;
+    cout << "Display Element: ";
+    for (int i = 0; i < varr.size(); i++)
+    {
+        cout << varr[i] << " ";
+    }
+    cout << endl;
+
+    // int result = lengthOfLongestSubstring(str);
+    // cout << "Longest Substring Without Repeating Characters: " << result << endl;
+
+    int result = consecutiveOnes(varr, k);
+    cout << "Max Consecutive Ones III: " << result << endl;
 
     return 0;
 }
