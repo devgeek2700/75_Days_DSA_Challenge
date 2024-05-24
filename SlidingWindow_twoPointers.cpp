@@ -235,20 +235,76 @@ int totalFruit(vector<int> &fruits) // TC --> O(N)  SC --> O(1)
     return maxLen;
 }
 
+// Longest Repeating Character Replacement
+// bructe force solution
+int characterReplacement1(string str, int k) // TC --> O(N^2)  SC --> O(n,256)
+{
+    int maxLen = INT_MIN;
+    int maxFreq = INT_MIN;
+    int n = str.length();
+    for (int i = 0; i < n; i++)
+    {
+        map<int, int> mpp;
+        for (int j = i; j < n; j++)
+        {
+            mpp[str[j]]++;
+
+            maxFreq = max(maxFreq, mpp[str[j]]);
+            int changes = (j - i + 1) - maxFreq;
+
+            if (changes <= k)
+            {
+                maxLen = max(maxLen, j - i + 1);
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    return maxLen;
+}
+
+// Better solution
+int characterReplacement(string str, int k) // TC --> O(N)  SC --> O(n,256)
+{
+    int maxLen = INT_MIN;
+    int maxFreq = INT_MIN;
+    int n = str.length();
+    int left = 0;
+    int right = 0;
+    unordered_map<char, int> umpp;
+
+    while (right < n)
+    {
+        umpp[str[right]]++;
+        maxFreq = max(maxFreq, umpp[str[right]]);
+
+        while ((right - left + 1) - maxFreq > k)
+        {
+            umpp[str[left]]--;
+            left++;
+        }
+        maxLen = max(maxLen, right - left + 1);
+        right++;
+    }
+    return maxLen;
+}
+
 int main()
 {
-    string str = "abcabcbb";
+    string str = "ABCCAA";
     vector<int> varr = {3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4};
     int k = 2;
 
-    // cout << "string is: " << str << endl;
+    cout << "string is: " << str << endl;
 
-    cout << "Display Element: ";
-    for (int i = 0; i < varr.size(); i++)
-    {
-        cout << varr[i] << " ";
-    }
-    cout << endl;
+    // cout << "Display Element: ";
+    // for (int i = 0; i < varr.size(); i++)
+    // {
+    //     cout << varr[i] << " ";
+    // }
+    // cout << endl;
 
     // int result = lengthOfLongestSubstring(str);
     // cout << "Longest Substring Without Repeating Characters: " << result << endl;
@@ -256,8 +312,11 @@ int main()
     // int result = consecutiveOnes(varr, k);
     // cout << "Max Consecutive Ones III: " << result << endl;
 
-    int result = totalFruit(varr);
-    cout << "Fruit Into Baskets: " << result << endl;
+    // int result = totalFruit(varr);
+    // cout << "Fruit Into Baskets: " << result << endl;
+
+    int result = characterReplacement(str, k);
+    cout << "Longest Repeating Character Replacement: " << result << endl;
 
     return 0;
 }
