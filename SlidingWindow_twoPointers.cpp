@@ -150,10 +150,95 @@ int consecutiveOnes(vector<int> &arr, int k) // TC --> O(N)  SC --> O(1)
     return maxLen;
 }
 
+// Fruit Into Baskets
+// bructe force solution
+
+int totalFruit1(vector<int> &fruits) // TC --> O(N^2)  SC --> O(1)
+{
+    int maxLen = INT_MIN;
+    int n = fruits.size();
+    for (int i = 0; i < n; i++)
+    {
+        set<int> set;
+        for (int j = i; j < n; j++)
+        {
+            set.insert(fruits[j]);
+
+            if (set.size() <= 2)
+            {
+                maxLen = max(maxLen, j - i + 1);
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    return maxLen;
+}
+
+// better solution
+
+int totalFruit2(vector<int> &fruits) // TC --> O(2N)  SC --> O(1)
+{
+    int maxLen = INT_MIN;
+    int n = fruits.size();
+    int left = 0;
+    int right = 0;
+    unordered_map<int, int> mpp;
+
+    while (right < n)
+    {
+        mpp[fruits[right]]++;
+        while (mpp.size() > 2)
+        {
+            mpp[fruits[left]]--;
+            if (mpp[fruits[left]] == 0)
+            {
+                mpp.erase(fruits[left]);
+            }
+            left++;
+        }
+        maxLen = max(maxLen, right - left + 1);
+        right++;
+    }
+
+    return maxLen;
+}
+
+// Optimal solution
+
+int totalFruit(vector<int> &fruits) // TC --> O(N)  SC --> O(1)
+{
+    int maxLen = INT_MIN;
+    int n = fruits.size();
+    int left = 0;
+    int right = 0;
+    unordered_map<int, int> mpp;
+
+    while (right < n)
+    {
+        mpp[fruits[right]]++;
+        if (mpp.size() > 2)
+        {
+            mpp[fruits[left]]--;
+            if (mpp[fruits[left]] == 0)
+            {
+                mpp.erase(fruits[left]);
+            }
+            left++;
+        }
+        maxLen = max(maxLen, right - left + 1);
+        right++;
+    }
+
+    return maxLen;
+}
+
 int main()
 {
     string str = "abcabcbb";
-    vector<int> varr = {1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0};
+    vector<int> varr = {3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4};
     int k = 2;
 
     // cout << "string is: " << str << endl;
@@ -168,8 +253,11 @@ int main()
     // int result = lengthOfLongestSubstring(str);
     // cout << "Longest Substring Without Repeating Characters: " << result << endl;
 
-    int result = consecutiveOnes(varr, k);
-    cout << "Max Consecutive Ones III: " << result << endl;
+    // int result = consecutiveOnes(varr, k);
+    // cout << "Max Consecutive Ones III: " << result << endl;
+
+    int result = totalFruit(varr);
+    cout << "Fruit Into Baskets: " << result << endl;
 
     return 0;
 }
