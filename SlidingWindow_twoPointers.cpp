@@ -320,3 +320,18 @@ int main()
 
     return 0;
 }
+
+
+#include <bits/stdc++.h> 
+void rotate(vector<int>& arr, int n) {
+    // Store the last element in a temporary variable
+    int temp = arr[n - 1];
+
+    // Shift elements to the right by one position
+    for (int i = n - 1; i > 0; --i) {
+        arr[i] = arr[i - 1];
+    }
+
+    // Move the last element to the first position
+    arr[0] = temp;
+}
