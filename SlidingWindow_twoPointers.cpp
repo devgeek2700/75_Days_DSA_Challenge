@@ -291,20 +291,56 @@ int characterReplacement(string str, int k) // TC --> O(N)  SC --> O(n,256)
     return maxLen;
 }
 
+// Binary Subarrays With Sum
+int Calculateforgoal(vector<int> &nums, int goal) // TC --> O(2*(2N)) SC --> O(1)
+{
+    int n = nums.size();
+    int sum = 0;
+    int left = 0;
+    int right = 0;
+    int count = 0;
+
+    if (goal < 0)
+    {
+        return 0;
+    }
+
+    while (right < n)
+    {
+        sum += nums[right];
+
+        while (sum > goal)
+        {
+            sum -= nums[left];
+            left++;
+        }
+        count += right - left + 1;
+        right++;
+    }
+
+    return count;
+}
+
+int numSubarraysWithSum(vector<int> &nums, int goal)
+{
+    int ans = Calculateforgoal(nums, goal) - Calculateforgoal(nums, goal - 1);
+    return ans;
+}
+
 int main()
 {
     string str = "ABCCAA";
-    vector<int> varr = {3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4};
-    int k = 2;
+    vector<int> varr = {0, 0, 0, 0, 0};
+    int k = 0;
 
-    cout << "string is: " << str << endl;
+    // cout << "string is: " << str << endl;
 
-    // cout << "Display Element: ";
-    // for (int i = 0; i < varr.size(); i++)
-    // {
-    //     cout << varr[i] << " ";
-    // }
-    // cout << endl;
+    cout << "Display Element: ";
+    for (int i = 0; i < varr.size(); i++)
+    {
+        cout << varr[i] << " ";
+    }
+    cout << endl;
 
     // int result = lengthOfLongestSubstring(str);
     // cout << "Longest Substring Without Repeating Characters: " << result << endl;
@@ -315,23 +351,11 @@ int main()
     // int result = totalFruit(varr);
     // cout << "Fruit Into Baskets: " << result << endl;
 
-    int result = characterReplacement(str, k);
-    cout << "Longest Repeating Character Replacement: " << result << endl;
+    // int result = characterReplacement(str, k);
+    // cout << "Longest Repeating Character Replacement: " << result << endl;
+
+    int result = numSubarraysWithSum(varr, k);
+    cout << "Binary Subarrays With Sum: " << result << endl;
 
     return 0;
-}
-
-
-#include <bits/stdc++.h> 
-void rotate(vector<int>& arr, int n) {
-    // Store the last element in a temporary variable
-    int temp = arr[n - 1];
-
-    // Shift elements to the right by one position
-    for (int i = n - 1; i > 0; --i) {
-        arr[i] = arr[i - 1];
-    }
-
-    // Move the last element to the first position
-    arr[0] = temp;
 }
