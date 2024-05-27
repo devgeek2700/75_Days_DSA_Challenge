@@ -327,11 +327,48 @@ int numSubarraysWithSum(vector<int> &nums, int goal)
     return ans;
 }
 
+// Count Number of Nice Subarrays
+
+int CalculateforkOdds(vector<int> &nums, int k) // TC --> O(2*(2N)) SC --> O(1)
+{
+    int n = nums.size();
+    int sum = 0;
+    int left = 0;
+    int right = 0;
+    int count = 0;
+
+    if (k < 0)
+    {
+        return 0;
+    }
+
+    while (right < n)
+    {
+        sum += (nums[right]) % 2;
+
+        while (sum > k)
+        {
+            sum -= (nums[left]) % 2;
+            left++;
+        }
+        count += right - left + 1;
+        right++;
+    }
+
+    return count;
+}
+
+int numberOfSubarrays(vector<int> &nums, int k)
+{
+    int ans = CalculateforkOdds(nums, k) - CalculateforkOdds(nums, k - 1);
+    return ans;
+}
+
 int main()
 {
     string str = "ABCCAA";
-    vector<int> varr = {0, 0, 0, 0, 0};
-    int k = 0;
+    vector<int> varr = {2,4,6};
+    int k = 1;
 
     // cout << "string is: " << str << endl;
 
@@ -354,8 +391,11 @@ int main()
     // int result = characterReplacement(str, k);
     // cout << "Longest Repeating Character Replacement: " << result << endl;
 
-    int result = numSubarraysWithSum(varr, k);
-    cout << "Binary Subarrays With Sum: " << result << endl;
+    // int result = numSubarraysWithSum(varr, k);
+    // cout << "Binary Subarrays With Sum: " << result << endl;
+
+    int result = numberOfSubarrays(varr, k);
+    cout << " Count Number of Nice Subarrays: " << result << endl;
 
     return 0;
 }
