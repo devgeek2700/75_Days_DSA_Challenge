@@ -364,20 +364,81 @@ int numberOfSubarrays(vector<int> &nums, int k)
     return ans;
 }
 
+// Number of Substrings Containing All Three Characters
+// bructe force solution
+int numberOfSubstrings1(string s) // TC --> O(N^2)  SC --> O(1)
+{
+    int n = s.size();
+    int count = 0;
+    for (int i = 0; i < n; i++)
+    {
+        map<char, int> mpp;
+        for (int j = i; j < n; j++)
+        {
+            mpp[s[j] - 'a'] = 1;
+            if (mpp[0] + mpp[1] + mpp[2] == 3)
+            {
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
+// better force solution
+int numberOfSubstrings2(string s) // TC --> O(N^2)  SC --> O(1)
+{
+    int n = s.size();
+    int count = 0;
+    for (int i = 0; i < n; i++)
+    {
+        map<char, int> mpp;
+        for (int j = i; j < n; j++)
+        {
+            mpp[s[j] - 'a'] = 1;
+            if (mpp[0] + mpp[1] + mpp[2] == 3)
+            {
+                count += (n - j);
+                break;
+            }
+        }
+    }
+    return count;
+}
+
+// Optimal force solution
+int numberOfSubstrings(string s) // TC --> O(N)  SC --> O(1)
+{
+    int n = s.size();
+    vector<int> last_seen(3, -1);
+    int count = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        last_seen[s[i] - 'a'] = i;
+        if (last_seen[0] != -1 && last_seen[1] != -1 && last_seen[2] != -1)
+        {
+            count += 1 + min({last_seen[0], last_seen[1], last_seen[2]});
+        }
+    }
+
+    return count;
+}
+
 int main()
 {
-    string str = "ABCCAA";
-    vector<int> varr = {2,4,6};
+    string str = "abcabc";
+    vector<int> varr = {2, 4, 6};
     int k = 1;
 
-    // cout << "string is: " << str << endl;
+    cout << "string is: " << str << endl;
 
-    cout << "Display Element: ";
-    for (int i = 0; i < varr.size(); i++)
-    {
-        cout << varr[i] << " ";
-    }
-    cout << endl;
+    // cout << "Display Element: ";
+    // for (int i = 0; i < varr.size(); i++)
+    // {
+    //     cout << varr[i] << " ";
+    // }
+    // cout << endl;
 
     // int result = lengthOfLongestSubstring(str);
     // cout << "Longest Substring Without Repeating Characters: " << result << endl;
@@ -394,8 +455,11 @@ int main()
     // int result = numSubarraysWithSum(varr, k);
     // cout << "Binary Subarrays With Sum: " << result << endl;
 
-    int result = numberOfSubarrays(varr, k);
-    cout << " Count Number of Nice Subarrays: " << result << endl;
+    // int result = numberOfSubarrays(varr, k);
+    // cout << " Count Number of Nice Subarrays: " << result << endl;
+
+    int result = numberOfSubstrings(str);
+    cout << "No of Substrings Containing All Three Characters: " << result << endl;
 
     return 0;
 }
