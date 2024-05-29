@@ -425,6 +425,24 @@ int numberOfSubstrings(string s) // TC --> O(N)  SC --> O(1)
     return count;
 }
 
+//  Maximum Points You Can Obtain from Cards
+int maximumPoints(int n, vector<vector<int>> &grid)
+{
+    int totalPoints = 0;
+
+    for (int i = 0; i < n; ++i)
+    {
+        totalPoints += grid[i][i];
+
+        if (i != n - 1 - i)
+        {
+            totalPoints += grid[i][n - 1 - i];
+        }
+    }
+
+    return totalPoints;
+}
+
 int main()
 {
     string str = "abcabc";
