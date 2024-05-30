@@ -439,7 +439,8 @@ int maxScore(vector<int> &cardPoints, int k) // TC --> O(2*k)  SC --> O(1)
 
     MaxVal = LeftSum;
 
-   for (int i = k - 1, rightidx = n - 1; i >= 0; i--) {
+    for (int i = k - 1, rightidx = n - 1; i >= 0; i--)
+    {
         LeftSum -= cardPoints[i];
         RightSum += cardPoints[rightidx];
         rightidx--;
@@ -451,20 +452,110 @@ int maxScore(vector<int> &cardPoints, int k) // TC --> O(2*k)  SC --> O(1)
     return MaxVal;
 }
 
+// Longest Substring with At Most K Distinct Characters
+// bructe force
+int getLengthofLongestSubstring1(int k, string s) // TC --> O(N^2) SC --> O(n, 256)
+{
+    int n = s.size();
+    int MaxVal = 0;
+    map<char, int> mpp;
+    for (int i = 0; i < n; i++)
+    {
+        mpp.clear();
+        for (int j = i; j < n; j++)
+        {
+            mpp[s[j]]++;
+            if (mpp.size() <= k)
+            {
+                MaxVal = max(MaxVal, j - i + 1);
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    return MaxVal;
+}
+
+// better force
+int getLengthofLongestSubstring2(int k, string s) // TC --> O(2*N) SC --> O(n, 256)
+{
+    int n = s.size();
+    int MaxVal = 0;
+    int left = 0;
+    int right = 0;
+    map<char, int> mpp;
+
+    while (right < n)
+    {
+        mpp[s[right]]++;
+        while (mpp.size() > k)
+        {
+            mpp[s[left]]--;
+            if (mpp[s[left]] == 0)
+            {
+                mpp.erase(s[left]);
+            }
+            left++;
+        }
+
+        if (mpp.size() <= k)
+        {
+            MaxVal = max(MaxVal, right - left + 1);
+        }
+        right++;
+    }
+
+    return MaxVal;
+}
+
+// Optimal force
+int getLengthofLongestSubstring(int k, string s) // TC --> O(N) SC --> O(n, 256)
+{
+    int n = s.size();
+    int MaxVal = 0;
+    int left = 0;
+    int right = 0;
+    map<char, int> mpp;
+
+    while (right < n)
+    {
+        mpp[s[right]]++;
+        if (mpp.size() > k)
+        {
+            mpp[s[left]]--;
+            if (mpp[s[left]] == 0)
+            {
+                mpp.erase(s[left]);
+            }
+            left++;
+        }
+
+        if (mpp.size() <= k)
+        {
+            MaxVal = max(MaxVal, right - left + 1);
+        }
+        right++;
+    }
+
+    return MaxVal;
+}
+
 int main()
 {
-    string str = "abcabc";
+    string str = "aaabbcccc"; // aaabbccc
     vector<int> varr = {1, 2, 3, 4, 5, 6, 1};
-    int k = 3;
+    int k = 2;
 
-    // cout << "string is: " << str << endl;
+    cout << "String is: " << str << endl;
 
-    cout << "Display Element: ";
-    for (int i = 0; i < varr.size(); i++)
-    {
-        cout << varr[i] << " ";
-    }
-    cout << endl;
+    // cout << "Display Element: ";
+    // for (int i = 0; i < varr.size(); i++)
+    // {
+    //     cout << varr[i] << " ";
+    // }
+    // cout << endl;
 
     // int result = lengthOfLongestSubstring(str);
     // cout << "Longest Substring Without Repeating Characters: " << result << endl;
@@ -487,8 +578,11 @@ int main()
     // int result = numberOfSubstrings(str);
     // cout << "No of Substrings Containing All Three Characters: " << result << endl;
 
-    int result = maxScore(varr, k);
-    cout << "Maximum Points You Can Obtain from Cards: " << result << endl;
+    // int result = maxScore(varr, k);
+    // cout << "Maximum Points You Can Obtain from Cards: " << result << endl;
+
+    int result = getLengthofLongestSubstring(k, str);
+    cout << "Longest Substring with At Most K Distinct Characters: " << result << endl;
 
     return 0;
 }
