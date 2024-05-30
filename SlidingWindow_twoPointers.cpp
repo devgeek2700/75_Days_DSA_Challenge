@@ -426,37 +426,45 @@ int numberOfSubstrings(string s) // TC --> O(N)  SC --> O(1)
 }
 
 //  Maximum Points You Can Obtain from Cards
-int maximumPoints(int n, vector<vector<int>> &grid)
+int maxScore(vector<int> &cardPoints, int k) // TC --> O(2*k)  SC --> O(1)
 {
-    int totalPoints = 0;
-
-    for (int i = 0; i < n; ++i)
+    int n = cardPoints.size();
+    int LeftSum = 0;
+    int RightSum = 0;
+    int MaxVal = 0;
+    for (int i = 0; i < k; i++)
     {
-        totalPoints += grid[i][i];
-
-        if (i != n - 1 - i)
-        {
-            totalPoints += grid[i][n - 1 - i];
-        }
+        LeftSum += cardPoints[i];
     }
 
-    return totalPoints;
+    MaxVal = LeftSum;
+
+   for (int i = k - 1, rightidx = n - 1; i >= 0; i--) {
+        LeftSum -= cardPoints[i];
+        RightSum += cardPoints[rightidx];
+        rightidx--;
+        int CurrSum = LeftSum + RightSum;
+
+        MaxVal = std::max(MaxVal, CurrSum);
+    }
+
+    return MaxVal;
 }
 
 int main()
 {
     string str = "abcabc";
-    vector<int> varr = {2, 4, 6};
-    int k = 1;
+    vector<int> varr = {1, 2, 3, 4, 5, 6, 1};
+    int k = 3;
 
-    cout << "string is: " << str << endl;
+    // cout << "string is: " << str << endl;
 
-    // cout << "Display Element: ";
-    // for (int i = 0; i < varr.size(); i++)
-    // {
-    //     cout << varr[i] << " ";
-    // }
-    // cout << endl;
+    cout << "Display Element: ";
+    for (int i = 0; i < varr.size(); i++)
+    {
+        cout << varr[i] << " ";
+    }
+    cout << endl;
 
     // int result = lengthOfLongestSubstring(str);
     // cout << "Longest Substring Without Repeating Characters: " << result << endl;
@@ -476,8 +484,11 @@ int main()
     // int result = numberOfSubarrays(varr, k);
     // cout << " Count Number of Nice Subarrays: " << result << endl;
 
-    int result = numberOfSubstrings(str);
-    cout << "No of Substrings Containing All Three Characters: " << result << endl;
+    // int result = numberOfSubstrings(str);
+    // cout << "No of Substrings Containing All Three Characters: " << result << endl;
+
+    int result = maxScore(varr, k);
+    cout << "Maximum Points You Can Obtain from Cards: " << result << endl;
 
     return 0;
 }
