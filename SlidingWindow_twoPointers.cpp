@@ -567,7 +567,7 @@ int subarraysWithKDistinct1(vector<int> &nums, int k) // TC --> O(N^2) SC --> O(
     return count;
 }
 
-// Better force
+// Optimal force
 int atMostKDistinct(vector<int> &nums, int k) // TC --> O(N^2) SC --> O(N)
 {
     int n = nums.size();
@@ -601,20 +601,118 @@ int subarraysWithKDistinct(vector<int> &nums, int k) // TC --> O(2*N) SC --> O(N
     return atMostKDistinct(nums, k) - atMostKDistinct(nums, k - 1);
 }
 
+// Minimum Window Substring
+// bructe force
+string minSubstring1(string &str, string &t) // TC --> O(N^2)  SC --> O(N, 256)
+{
+    int n = str.length();
+    int m = t.length();
+    int minVal = INT_MAX;
+    int startIdx = -1;
+
+    for (int i = 0; i < n; i++)
+    {
+        map<char, int> mpp;
+        for (int j = 0; j < m; j++)
+        {
+            mpp[t[j]]++;
+        }
+        int count = 0;
+
+        for (int k = i; k < n; k++)
+        {
+            if (mpp[str[k]] > 0)
+            {
+                count++;
+            }
+            mpp[str[k]]--;
+
+            if (count == m)
+            {
+                if (k - i + 1 < minVal)
+                {
+                    minVal = k - i + 1;
+                    startIdx = i;
+                }
+                break;
+            }
+        }
+    }
+
+    if (startIdx == -1)
+    {
+        return "";
+    }
+
+    return str.substr(startIdx, minVal);
+}
+
+// Optimal force
+string minSubstring(string &str, string &t) // TC --> O(2*N)+O(m)  SC --> O(N, 256)
+{
+    int n = str.length();
+    int m = t.length();
+    int minVal = INT_MAX;
+    int left = 0;
+    int right = 0;
+    int count = 0;
+    int startIdx = -1;
+    map<char, int> mpp;
+
+    for (char c : t)
+    {
+        mpp[c]++;
+    }
+
+    while (right < n)
+    {
+        mpp[str[right]]--;
+        if (mpp[str[right]] >= 0)
+        {
+            count++;
+        }
+
+        while (count == m)
+        {
+            if (right - left + 1 < minVal)
+            {
+                minVal = right - left + 1;
+                startIdx = left;
+            }
+
+            mpp[str[left]]++;
+            if (mpp[str[left]] > 0)
+            {
+                count--;
+            }
+            left++;
+        }
+        right++;
+    }
+
+    if (startIdx == -1)
+    {
+        return "";
+    }
+
+    return str.substr(startIdx, minVal);
+}
+
 int main()
 {
-    string str = "aaabbcccc"; // aaabbccc
+    string str = "ADOBECODEBANC"; // aaabbccc
     vector<int> varr = {1, 2, 1, 3, 4};
     int k = 3;
+    string t = "ABC";
 
-    // cout << "String is: " << str << endl;
+    cout << "String is: " << str << endl;
 
-    cout << "Display Element: ";
-    for (int i = 0; i < varr.size(); i++)
-    {
-        cout << varr[i] << " ";
-    }
-    cout << endl;
+    // cout << "Display Element: ";
+    // for (int i = 0; i < varr.size(); i++)
+    // {
+    //     cout << varr[i] << " ";
+    // }
+    // cout << endl;
 
     // int result = lengthOfLongestSubstring(str);
     // cout << "Longest Substring Without Repeating Characters: " << result << endl;
@@ -643,8 +741,11 @@ int main()
     // int result = getLengthofLongestSubstring(k, str);
     // cout << "Longest Substring with At Most K Distinct Characters: " << result << endl;
 
-    int result = subarraysWithKDistinct(varr, k);
-    cout << "Subarrays with K Different Integers: " << result << endl;
+    // int result = subarraysWithKDistinct(varr, k);
+    // cout << "Subarrays with K Different Integers: " << result << endl;
+
+    string result = minSubstring(str, t);
+    cout << "Minimum Window Substring: " << result << endl;
 
     return 0;
 }
