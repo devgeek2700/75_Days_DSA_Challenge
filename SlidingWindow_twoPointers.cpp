@@ -542,20 +542,79 @@ int getLengthofLongestSubstring(int k, string s) // TC --> O(N) SC --> O(n, 256)
     return MaxVal;
 }
 
+// Subarrays with K Different Integers
+// bructe force
+int subarraysWithKDistinct1(vector<int> &nums, int k) // TC --> O(N^2) SC --> O(N)
+{
+    int n = nums.size();
+    int count = 0;
+    for (int i = 0; i < n; i++)
+    {
+        map<int, int> mpp;
+        for (int j = i; j < n; j++)
+        {
+            mpp[nums[j]]++;
+            if (mpp.size() == k)
+            {
+                count++;
+            }
+            else if (mpp.size() > k)
+            {
+                break;
+            }
+        }
+    }
+    return count;
+}
+
+// Better force
+int atMostKDistinct(vector<int> &nums, int k) // TC --> O(N^2) SC --> O(N)
+{
+    int n = nums.size();
+    int sum = 0;
+    int left = 0;
+    int right = 0;
+    int count = 0;
+    map<int, int> mpp;
+
+    while (right < n)
+    {
+        mpp[nums[right]]++;
+
+        while (mpp.size() > k)
+        {
+            mpp[nums[left]]--;
+            if (mpp[nums[left]] == 0)
+            {
+                mpp.erase(nums[left]);
+            }
+            left++;
+        }
+        count += right - left + 1;
+        right++;
+    }
+    return count;
+}
+
+int subarraysWithKDistinct(vector<int> &nums, int k) // TC --> O(2*N) SC --> O(N)
+{
+    return atMostKDistinct(nums, k) - atMostKDistinct(nums, k - 1);
+}
+
 int main()
 {
     string str = "aaabbcccc"; // aaabbccc
-    vector<int> varr = {1, 2, 3, 4, 5, 6, 1};
-    int k = 2;
+    vector<int> varr = {1, 2, 1, 3, 4};
+    int k = 3;
 
-    cout << "String is: " << str << endl;
+    // cout << "String is: " << str << endl;
 
-    // cout << "Display Element: ";
-    // for (int i = 0; i < varr.size(); i++)
-    // {
-    //     cout << varr[i] << " ";
-    // }
-    // cout << endl;
+    cout << "Display Element: ";
+    for (int i = 0; i < varr.size(); i++)
+    {
+        cout << varr[i] << " ";
+    }
+    cout << endl;
 
     // int result = lengthOfLongestSubstring(str);
     // cout << "Longest Substring Without Repeating Characters: " << result << endl;
@@ -581,35 +640,11 @@ int main()
     // int result = maxScore(varr, k);
     // cout << "Maximum Points You Can Obtain from Cards: " << result << endl;
 
-    int result = getLengthofLongestSubstring(k, str);
-    cout << "Longest Substring with At Most K Distinct Characters: " << result << endl;
+    // int result = getLengthofLongestSubstring(k, str);
+    // cout << "Longest Substring with At Most K Distinct Characters: " << result << endl;
+
+    int result = subarraysWithKDistinct(varr, k);
+    cout << "Subarrays with K Different Integers: " << result << endl;
 
     return 0;
-}
-
-vector<int> maximumsumSubarray(vector<int> &arr , int n)
-{
-     int max_sum = arr[0], current_sum = arr[0];
-    int start = 0, end = 0, temp_start = 0;
-    
-    for (int i = 1; i < n; ++i) {
-        if (current_sum + arr[i] < arr[i]) {
-            current_sum = arr[i];
-            temp_start = i;
-        } else {
-            current_sum += arr[i];
-        }
-
-        if (current_sum > max_sum) {
-            max_sum = current_sum;
-            start = temp_start;
-            end = i;
-        } else if (current_sum == max_sum && (i - temp_start > end - start)) {
-            // If sums are equal, choose the longer subarray
-            start = temp_start;
-            end = i;
-        }
-    }
-    
-    return vector<int>(arr.begin() + start, arr.begin() + end + 1);
 }
