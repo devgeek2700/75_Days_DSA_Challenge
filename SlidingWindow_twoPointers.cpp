@@ -698,12 +698,88 @@ string minSubstring(string &str, string &t) // TC --> O(2*N)+O(m)  SC --> O(N, 2
     return str.substr(startIdx, minVal);
 }
 
+//  Minimum Window Subsequence
+// bructe force
+string minWindow1(string S, string T)
+{
+    int m = S.size();
+    int n = T.size();
+    
+    if (m < n) return ""; // If S is smaller than T, no window is possible
+    
+    int min_length = INT_MAX;
+    string result = "";
+    
+    for (int start = 0; start < m; ++start) {
+        int t_index = 0;
+        
+        for (int end = start; end < m; ++end) {
+            if (S[end] == T[t_index]) {
+                t_index++;
+                if (t_index == n) {
+                    if (end - start + 1 < min_length) {
+                        min_length = end - start + 1;
+                        result = S.substr(start, min_length);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    
+    return result;
+}
+
+
+// otpymal
+string minWindow(string S, string T) {
+    int m = S.size();
+    int n = T.size();
+
+    if (m < n) return ""; // If S is smaller than T, no window is possible
+
+    int start = 0, minStart = 0, minLength = INT_MAX;
+    int tIndex = 0;
+
+    for (int end = 0; end < m; ++end) {
+        if (S[end] == T[tIndex]) {
+            tIndex++;
+            if (tIndex == n) {
+                // When the entire T is found in S, try to minimize the window
+                int tempEnd = end;
+                tIndex--;
+
+                while (tIndex >= 0) {
+                    if (S[end] == T[tIndex]) {
+                        tIndex--;
+                    }
+                    end--;
+                }
+
+                end++; // Move end back to the position where the entire T is matched
+                tIndex++; // Reset tIndex to the first character of T
+
+                if (tempEnd - end + 1 < minLength) {
+                    minStart = end;
+                    minLength = tempEnd - end + 1;
+                }
+
+                // Move start to the next character after the first matched character in T
+                start = end + 1;
+                end = start - 1; // Adjust end back to where start is
+            }
+        }
+    }
+
+    return minLength == INT_MAX ? "" : S.substr(minStart, minLength);
+}
+
 int main()
 {
-    string str = "ADOBECODEBANC"; // aaabbccc
+    string str = "rdew"; // aaabbccc
     vector<int> varr = {1, 2, 1, 3, 4};
     int k = 3;
-    string t = "ABC";
+    string t = "u";
 
     cout << "String is: " << str << endl;
 
@@ -744,8 +820,11 @@ int main()
     // int result = subarraysWithKDistinct(varr, k);
     // cout << "Subarrays with K Different Integers: " << result << endl;
 
-    string result = minSubstring(str, t);
-    cout << "Minimum Window Substring: " << result << endl;
+    // string result = minSubstring(str, t);
+    // cout << "Minimum Window Substring: " << result << endl;
+
+    string result = minWindow(str, t);
+    cout << "Minimum Window Subsequence: " << result << endl;
 
     return 0;
 }
