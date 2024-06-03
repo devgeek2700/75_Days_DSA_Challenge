@@ -828,3 +828,33 @@ int main()
 
     return 0;
 }
+
+
+
+int subarrays(vector<int>& arr, int n) {
+    unordered_map<int, int> cum_sum_freq;
+    int cum_sum = 0;
+    int count = 0;
+
+    // Initialize the hash map with cum_sum = 0
+    cum_sum_freq[0] = 1;
+
+    for (int i = 0; i < n; i++) {
+        // Replace 0 with -1
+        if (arr[i] == 0) {
+            cum_sum += -1;
+        } else {
+            cum_sum += 1;
+        }
+
+        // Check if this cum_sum has been seen before
+        if (cum_sum_freq.find(cum_sum) != cum_sum_freq.end()) {
+            count += cum_sum_freq[cum_sum];
+        }
+
+        // Increment the frequency of the cum_sum in the map
+        cum_sum_freq[cum_sum]++;
+    }
+
+    return count;
+}
