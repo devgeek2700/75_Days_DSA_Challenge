@@ -858,3 +858,32 @@ int subarrays(vector<int>& arr, int n) {
 
     return count;
 }
+
+
+
+#include <bits/stdc++.h>
+
+bool compare(int a, int b) {
+    string strA = to_string(a);
+    string strB = to_string(b);
+    return (strA + strB) > (strB + strA);
+}
+
+string formLargestPossibleNumber(int arr[], int n) {
+    vector<int> nums(arr, arr + n); // Create a vector for efficient sorting
+
+    // Sort the array using the custom comparison function
+    sort(nums.begin(), nums.end(), compare);
+
+    // Handle the case where all elements are zero
+    if (nums[0] == 0 && all_of(nums.begin() + 1, nums.end(), [](int num) { return num == 0; })) {
+        return "0";
+    }
+
+    string largestNumber;
+    for (int num : nums) {
+        largestNumber += to_string(num);
+    }
+
+    return largestNumber;
+}
