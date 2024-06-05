@@ -887,3 +887,42 @@ string formLargestPossibleNumber(int arr[], int n) {
 
     return largestNumber;
 }
+
+
+
+#include <bits/stdc++.h>
+
+vector<int> minSubarray(vector<int> arr, int n, int x) {
+    int start = 0, end = 0;
+    int current_sum = 0;
+    int min_length = INT_MAX;
+    int min_start = -1;
+
+    while (end < n) {
+        // Expand the window by adding the current element to current_sum
+        current_sum += arr[end];
+
+        // While current_sum is greater than X, try to shrink the window from the left
+        while (current_sum > x) {
+            // Update the minimum length and start index if we found a smaller subarray
+            if (end - start + 1 < min_length) {
+                min_length = end - start + 1;
+                min_start = start;
+            }
+            // Shrink the window from the left
+            current_sum -= arr[start];
+            start++;
+        }
+
+        // Move the end pointer to expand the window
+        end++;
+    }
+
+    // If no valid subarray was found, return an empty vector
+    if (min_start == -1) {
+        return {};
+    }
+
+    // Return the minimum length subarray
+    return vector<int>(arr.begin() + min_start, arr.begin() + min_start + min_length);
+}
