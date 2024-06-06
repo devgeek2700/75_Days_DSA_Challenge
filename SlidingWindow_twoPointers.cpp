@@ -926,3 +926,43 @@ vector<int> minSubarray(vector<int> arr, int n, int x) {
     // Return the minimum length subarray
     return vector<int>(arr.begin() + min_start, arr.begin() + min_start + min_length);
 }
+
+
+
+long long maxSubSumKConcat(vector<int> &arr, int n, int k) {
+    // Function to find the maximum subarray sum using Kadane's Algorithm
+    auto kadane = [&](vector<int> &a) {
+        long long max_ending_here = a[0];
+        long long max_so_far = a[0];
+        for (int i = 1; i < a.size(); i++) {
+            max_ending_here = max((long long)a[i], max_ending_here + a[i]);
+            max_so_far = max(max_so_far, max_ending_here);
+        }
+        return max_so_far;
+    };
+
+    // Calculate the sum of the entire array
+    long long total_sum = accumulate(arr.begin(), arr.end(), 0LL);
+
+    // Find the maximum subarray sum for a single instance of arr
+    long long max_kadane = kadane(arr);
+
+    // If K == 1, return the result of kadane on the single array
+    if (k == 1) {
+        return max_kadane;
+    }
+
+    // Create the concatenated array arr + arr
+    vector<int> double_arr(arr.begin(), arr.end());
+    double_arr.insert(double_arr.end(), arr.begin(), arr.end());
+
+    // Find the maximum subarray sum for the double concatenated array
+    long long max_double_kadane = kadane(double_arr);
+
+    // Calculate the result based on total sum of the array
+    if (total_sum > 0) {
+        return max_double_kadane + (k - 2) * total_sum;
+    } else {
+        return max_double_kadane;
+    }
+}
