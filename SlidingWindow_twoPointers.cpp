@@ -966,3 +966,23 @@ long long maxSubSumKConcat(vector<int> &arr, int n, int k) {
         return max_double_kadane;
     }
 }
+
+
+int shortestSubarrayWithSumK(vector<int> &arr, int k) {
+    int n = arr.size();
+    int min_length = INT_MAX;
+    int current_sum = 0;
+    int start = 0;
+
+    for (int end = 0; end < n; end++) {
+        current_sum += arr[end];
+
+        while (current_sum >= k) {
+            min_length = min(min_length, end - start + 1);
+            current_sum -= arr[start];
+            start++;
+        }
+    }
+
+    return (min_length == INT_MAX) ? -1 : min_length;
+}
