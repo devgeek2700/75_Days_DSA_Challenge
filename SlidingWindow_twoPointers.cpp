@@ -986,3 +986,47 @@ int shortestSubarrayWithSumK(vector<int> &arr, int k) {
 
     return (min_length == INT_MAX) ? -1 : min_length;
 }
+
+
+int findPivot(int* arr, int n) {
+    int low = 0, high = n - 1;
+    while (low < high) {
+        int mid = low + (high - low) / 2;
+        if (arr[mid] > arr[high])
+            low = mid + 1;
+        else
+            high = mid;
+    }
+    return low;
+}
+
+int binarySearch(int* arr, int low, int high, int key) {
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (arr[mid] == key)
+            return mid;
+        else if (arr[mid] < key)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+    return -1;
+}
+
+int search(int* arr, int n, int key) {
+    int pivot = findPivot(arr, n);
+
+    // If the array is not rotated (pivot is 0)
+    if (pivot == 0)
+        return binarySearch(arr, 0, n - 1, key);
+
+    // If key is the smallest element
+    if (arr[pivot] == key)
+        return pivot;
+
+    // Determine which part to search
+    if (key >= arr[0])
+        return binarySearch(arr, 0, pivot - 1, key);
+    else
+        return binarySearch(arr, pivot, n - 1, key);
+}
