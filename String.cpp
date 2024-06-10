@@ -3,121 +3,55 @@ using namespace std;
 
 int main()
 {
-    string str = "NehaSingh";
-    string s(5, 's');
-    cout << "S: " << s << endl;
+    // string str = "NehaSingh";
+    // string s(5, 's');
+    // cout << "S: " << s << endl;
 
-    string fname = "neha";
-    string midname = "vinod";
-    string lname = "singh";
-    string surame = fname + " " + lname;
-    string fullname = surame.append(midname);
+    // string fname = "neha";
+    // string midname = "vinod";
+    // string lname = "singh";
+    // string surame = fname + " " + lname;
+    // string fullname = surame.append(midname);
 
-    cout << "surame: " << surame << endl;
-    cout << "fullname: " << fullname << endl;
+    // cout << "surame: " << surame << endl;
+    // cout << "fullname: " << fullname << endl;
 
-    string x = "10";
-    string y = "20";
-    cout << "add(x+y): " << x + y << endl;
+    // string x = "10";
+    // string y = "20";
+    // cout << "add(x+y): " << x + y << endl;
 
-    string txt = "NehaSingh";
-    cout << "length of txt: " << txt.length() << endl;
-    cout << "size of txt: " << txt.size() << endl;
+    // string txt = "NehaSingh";
+    // cout << "length of txt: " << txt.length() << endl;
+    // cout << "size of txt: " << txt.size() << endl;
 
-    string word = "specificcharacter";
-    cout << "Access word: " << word[6] << endl;
+    // string word = "specificcharacter";
+    // cout << "Access word: " << word[6] << endl;
 
-    // Replace the character
-    word[6] = 'O';
-    cout << "Replace char: " << word << endl;
+    // // Replace the character
+    // word[6] = 'O';
+    // cout << "Replace char: " << word << endl;
 
-    // Strings - Special Characters
-    string txt1 = "We are the so-called \"Vikings\" from the north.";
-    cout << "Special Characters: " << txt1 << endl;
+    // // Strings - Special Characters
+    // string txt1 = "We are the so-called \"Vikings\" from the north.";
+    // cout << "Special Characters: " << txt1 << endl;
 
-    // User Input Strings
-    string firstName;
-    string MiddleName;
-    string lastName;
-    cout << "Type your first name: ";
-    cin >> firstName;
-    cout << "Type your Middle Name : ";
-    cin >> MiddleName;
-    cout << "Type your last Name: ";
-    cin >> lastName;
+    // // User Input Strings
+    // string firstName;
+    // string MiddleName;
+    // string lastName;
+    // cout << "Type your first name: ";
+    // cin >> firstName;
+    // cout << "Type your Middle Name : ";
+    // cin >> MiddleName;
+    // cout << "Type your last Name: ";
+    // cin >> lastName;
 
-    cout << "Your Full Name is: " << firstName + " " + MiddleName + " " + lastName;
+    // cout << "Your Full Name is: " << firstName + " " + MiddleName + " " + lastName << endl;
+    // ;
+
+    string str9;
+    getline(cin, str9);
+    cout << "fullname: " << str9;
 
     return 0;
-}
-
-
-
-
-void rearrangeArray(int arr[], int n) {
-    for (int i = 0; i < n; i++) {
-        arr[i] += (arr[arr[i]] % n) * n;
-    }
-    for (int i = 0; i < n; i++) {
-        arr[i] /= n;
-    }
-}
-
-
-
-#include <bits/stdc++.h> 
-vector<int> searchInSortedArray(vector<int> &arr, int n, vector<int> &queries, int q) {
-    vector<int> result;
-    // Iterate through each query
-    for (int i = 0; i < q; i++) {
-        int x = queries[i];
-        int low = 0, high = n - 1;
-        bool found = false;
-        // Binary search
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-            // If element is found
-            if (arr[mid] == x) {
-                found = true;
-                break;
-            }
-            // If element is greater than mid
-            else if (arr[mid] < x)
-                low = mid + 1;
-            // If element is smaller than mid
-            else
-                high = mid - 1;
-        }
-        // If element is found, push 1 to result vector, else push 0
-        if (found)
-            result.push_back(1);
-        else
-            result.push_back(0);
-    }
-    return result;
-}
-
-vector<int> searchInTheArray(vector<int>& arr, vector<int>& queries, int n, int q) {
-    vector<int> result;
-    
-    // Sort the array to optimize searching
-    sort(arr.begin(), arr.end());
-    
-    for (int i = 0; i < q; ++i) {
-        int sum = 0;
-        
-        // Iterate through the array 'arr' to find elements less than or equal to the current query
-        for (int j = 0; j < n; ++j) {
-            if (arr[j] <= queries[i]) {
-                sum += arr[j];
-            }
-            else {
-                break; // Optimization: If the current element is greater than the query, we don't need to check further
-            }
-        }
-        
-        result.push_back(sum);
-    }
-    
-    return result;
 }
