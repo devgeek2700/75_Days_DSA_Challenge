@@ -27,7 +27,7 @@ string sortlexicographically(string str) // TC --> O(2*N)  SC --> O(256)
 
 // Anagram --> rearranging letters of a word to get another word
 
-bool checkAnagram(string str, string t)
+bool checkAnagram(string str, string t) // TC --> O(2*N)  SC --> O(1)
 {
     int n = str.length();
     int m = t.length();
@@ -59,6 +59,61 @@ bool checkAnagram(string str, string t)
     {
         return false;
     }
+}
+
+// Check Isomorphic --> 1 to 1 mapping
+bool checkIsomorphic(string str, string t) // TC --> O(N) SC --> O(1)
+{
+    int n = str.length();
+    int m = t.length();
+    vector<int> s1(128, -1);
+    vector<int> s2(128, -1);
+
+    if (m != n)
+    {
+        return false;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (s1[str[i]] != s2[t[i]])
+        {
+            return false;
+        }
+        s1[str[i]] = i;
+        s2[t[i]] = i;
+    }
+    return true;
+}
+
+// longest common prefix string among array
+
+string longestCommonPrefix(vector<string> str)
+{
+    int n = str.size();
+    sort(str.begin(), str.end());
+
+    string firstStr = str[0];
+    string lastStr = str[n - 1];
+
+    int i = 0;
+    int j = 0;
+    string ans = "";
+
+    while (i < firstStr.size() && j < lastStr.size())
+    {
+        if (firstStr[i] == lastStr[j])
+        {
+            ans += lastStr[j];
+            i++;
+            j++;
+        }
+        else
+        {
+            break;
+        }
+    }
+    return ans;
 }
 
 int main()
@@ -196,16 +251,30 @@ int main()
 
     // sort the string --> lexicographically
 
-    string str = "bank";
-    string t = "atom";
-    cout << "Original string: " << str << endl;
-    cout << "anagram string: " << t << endl;
+    // string str = "paper";
+    // string t = "timle";
+    vector<string> str = {"microscope", "microphone", "microbial"};
+
+    cout << "Original string: ";
+    for (int i = 0; i < str.size(); i++)
+    {
+        cout << str[i] << " ";
+    }
+    cout << endl;
+    // cout << "Other string: " << t << endl;
 
     // auto result = sortlexicographically(str);
     // cout << "Sorted string: " << result << endl;
 
-    auto result = checkAnagram(str, t);
-    cout << "checkAnagram or not?: " << result << endl;
+    // auto result = checkAnagram(str, t);
+    // cout << "checkAnagram or not?: " << result << endl;
 
+    // auto result = checkIsomorphic(str, t);
+    // cout << "Isomorphic or not?: " << result << endl;
+
+    string result = longestCommonPrefix(str);
+    cout << "longest common prefix string among array: " << result << endl;
+
+    // 1:18:45
     return 0;
 }
