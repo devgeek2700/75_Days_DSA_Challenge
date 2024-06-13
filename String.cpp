@@ -34,31 +34,26 @@ bool checkAnagram(string str, string t) // TC --> O(2*N)  SC --> O(1)
     int count = 0;
     map<char, int> freq;
 
+    if (m != n)
+    {
+        return false;
+    }
+
     for (char c : str)
     {
         freq[c]++;
     }
 
-    for (int i = 0; i < m; i++)
+    for (char c : t)
     {
-        if (freq.find(t[i]) != freq.end())
+        if (freq.find(c) == freq.end() || freq[c] == 0)
         {
-            count++;
+            return false;
         }
-        else
-        {
-            break;
-        }
+        freq[c]--;
     }
 
-    if (count == m)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return true;
 }
 
 // Check Isomorphic --> 1 to 1 mapping
@@ -87,8 +82,8 @@ bool checkIsomorphic(string str, string t) // TC --> O(N) SC --> O(1)
 }
 
 // longest common prefix string among array
-
-string longestCommonPrefix(vector<string> str)
+// bructe force
+string longestCommonPrefix1(vector<string> str) // TC --> O(Nlogn*m) + O(min(firtsstr, laststr))  SC --> O(1)
 {
     int n = str.size();
     sort(str.begin(), str.end());
@@ -111,6 +106,85 @@ string longestCommonPrefix(vector<string> str)
         else
         {
             break;
+        }
+    }
+    return ans;
+}
+
+// Better approach
+string longestCommonPrefix(vector<string> &str) // TC --> O(n*m)  SC --> O(1)
+{
+    int n = str.size();
+    if (n == 0)
+        return "";
+
+    string mainStr = str[0];
+    int count = mainStr.size();
+
+    for (int i = 1; i < n; i++)
+    {
+        int j = 0;
+        while (j < mainStr.size() && j < str[i].size() && mainStr[j] == str[i][j])
+        {
+            j++;
+        }
+        count = min(count, j);
+    }
+
+    string ans = mainStr.substr(0, count);
+    return ans;
+}
+
+// Encoding and Decoding
+string encodedDecoded(string str)
+{
+    int n = str.length();
+    string ans = "";
+
+    for (int i = 0; i < n; i++)
+    {
+        if (str[i] != ']')
+        {
+            ans.push_back(str[i]);
+        }
+        else
+        {
+            string reversedStr = "";
+            while (!ans.empty() && ans.back() != '[')
+            {
+                reversedStr.push_back(ans.back());
+                ans.pop_back();
+            }
+
+            // Pop the '[' character
+            if (!ans.empty() && ans.back() == '[')
+            {
+                ans.pop_back();
+            }
+
+            // Reverse the string to get the correct order
+            reverse(reversedStr.begin(), reversedStr.end());
+
+            string num = "";
+            while (!ans.empty() && isdigit(ans.back()))
+            {
+                num.push_back(ans.back());
+                ans.pop_back();
+            }
+
+            // Reverse the number string to get the correct order
+            reverse(num.begin(), num.end());
+            int int_num = stoi(num);
+
+            // Repeat the reversedStr `int_num` times
+            string temp = reversedStr;
+            for (int j = 1; j < int_num; j++)
+            {
+                reversedStr += temp;
+            }
+
+            // Append the repeated string back to ans
+            ans += reversedStr;
         }
     }
     return ans;
@@ -251,17 +325,18 @@ int main()
 
     // sort the string --> lexicographically
 
-    // string str = "paper";
-    // string t = "timle";
-    vector<string> str = {"microscope", "microphone", "microbial"};
+    // string str = "aacc";
+    string str = "2[ab3[cd4[ef]]]";
+    // string t = "ccac";
+    // vector<string> str = {"microscope", "microphone", "microbial"};
 
-    cout << "Original string: ";
-    for (int i = 0; i < str.size(); i++)
-    {
-        cout << str[i] << " ";
-    }
-    cout << endl;
-    // cout << "Other string: " << t << endl;
+    // cout << "Original string: ";
+    // for (int i = 0; i < str.size(); i++)
+    // {
+    //     cout << str[i] << " ";
+    // }
+    // cout << endl;
+    cout << "string: " << str << endl;
 
     // auto result = sortlexicographically(str);
     // cout << "Sorted string: " << result << endl;
@@ -272,8 +347,11 @@ int main()
     // auto result = checkIsomorphic(str, t);
     // cout << "Isomorphic or not?: " << result << endl;
 
-    string result = longestCommonPrefix(str);
-    cout << "longest common prefix string among array: " << result << endl;
+    // string result = longestCommonPrefix(str);
+    // cout << "longest common prefix string among array: " << result << endl;
+
+    string result = encodedDecoded(str);
+    cout << "Encoding and Decoding String: " << result << endl;
 
     // 1:18:45
     return 0;
