@@ -1,2 +1,1 @@
- // auto result = sortlexicographically(str);
-    // cout << "Sorted string: " << result << endl;
+Maximum consecutive 1's fliped k times

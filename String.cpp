@@ -136,7 +136,7 @@ string longestCommonPrefix(vector<string> &str) // TC --> O(n*m)  SC --> O(1)
 }
 
 // Encoding and Decoding
-string encodedDecoded(string str)
+string encodedDecoded(string str) // TC --> O(N)  SC --> O(N)
 {
     int n = str.length();
     string ans = "";
@@ -185,6 +185,62 @@ string encodedDecoded(string str)
 
             // Append the repeated string back to ans
             ans += reversedStr;
+        }
+    }
+    return ans;
+}
+
+// Maximum consecutive 1's fliped k times
+
+int maxConsecutive1sKtimes(string str, int k) // TC --> O(N^2) SC --> O(1)
+{
+    int n = str.length();
+    int maxLen = INT_MIN;
+
+    for (int i = 0; i < n; i++)
+    {
+        int currZero = 0;
+        for (int j = i; j < n; j++)
+        {
+            if (str[j] == '0')
+            {
+                currZero++;
+            }
+
+            if (currZero <= k)
+            {
+                int curLen = j - i + 1;
+                maxLen = max(curLen, maxLen);
+            }
+        }
+    }
+    return maxLen;
+}
+
+// Remove Outermost Parentheses
+string removeOuterParentheses(string s) // TC --> O(N) TC --> O(ans)
+{
+    int n = s.length();
+    string ans = "";
+    int balance = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '(')
+        {
+            if (balance > 0)
+            {
+                ans += s[i];
+            }
+            balance++;
+        }
+        else if (s[i] == ')')
+        {
+            balance--;
+            if (balance > 0)
+            {
+                ans += s[i];
+            }
         }
     }
     return ans;
@@ -326,7 +382,7 @@ int main()
     // sort the string --> lexicographically
 
     // string str = "aacc";
-    string str = "2[ab3[cd4[ef]]]";
+    string str = "(()())(())(()(()))";
     // string t = "ccac";
     // vector<string> str = {"microscope", "microphone", "microbial"};
 
@@ -350,9 +406,14 @@ int main()
     // string result = longestCommonPrefix(str);
     // cout << "longest common prefix string among array: " << result << endl;
 
-    string result = encodedDecoded(str);
-    cout << "Encoding and Decoding String: " << result << endl;
+    // string result = encodedDecoded(str);
+    // cout << "Encoding and Decoding String: " << result << endl;
 
-    // 1:18:45
+    // auto result = maxConsecutive1sKtimes(str, 2);
+    // cout << "Max no of consecutive 1s: " << result << endl;
+
+    auto result = removeOuterParentheses(str);
+    cout << "Remove Outermost Parentheses: " << result << endl;
+
     return 0;
 }
