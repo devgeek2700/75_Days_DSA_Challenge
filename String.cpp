@@ -246,6 +246,79 @@ string removeOuterParentheses(string s) // TC --> O(N) TC --> O(ans)
     return ans;
 }
 
+// Reverse Words in a String
+string reverseWords(string s) // TC --> O(N) SC --> O(N)
+{
+    int n = s.length();
+    string ans = "";
+    string finalAns = "";
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if (s[i] != ' ')
+        {
+            ans += s[i];
+        }
+        else
+        {
+            if (!ans.empty())
+            {
+                reverse(ans.begin(), ans.end());
+                if (!finalAns.empty())
+                {
+                    finalAns += " ";
+                }
+                finalAns += ans;
+                ans = "";
+            }
+        }
+    }
+
+    if (!ans.empty())
+    {
+        reverse(ans.begin(), ans.end());
+        if (!finalAns.empty())
+        {
+            finalAns += " ";
+        }
+        finalAns += ans;
+    }
+
+    return finalAns;
+}
+
+// Largest Odd Number in String
+string largestOddNumber(string str) // TC --> O(N) SC --> O(1)
+{
+    int n = str.length();
+    string largestOdd = "";
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if ((str[i] - '0') % 2 != 0)
+        {
+            largestOdd = str.substr(0, i + 1);
+            break;
+        }
+    }
+    return largestOdd;
+}
+
+// Rotate String
+bool rotateString(string str, string goal)
+{
+    int n = str.length();
+    int m = goal.length();
+
+    if (n != m)
+    {
+        return false;
+    }
+
+    string doubleStr = str + str;
+
+    return (doubleStr.find(goal) != string::npos);
+}
 int main()
 {
     // string str = "NehaSingh";
@@ -338,7 +411,7 @@ int main()
     // reverse(str.begin(), str.end());
     // cout << "string: " << str << endl;
     // string str1 = "Foundation";
-    // reverse(str1.begin() + 2, str1.end());
+    // reverse(0, 2);
     // cout << "string range: " << str1 << endl;
 
     // - Substr() --> substr of given string  --> O(len(str))
@@ -382,7 +455,8 @@ int main()
     // sort the string --> lexicographically
 
     // string str = "aacc";
-    string str = "(()())(())(()(()))";
+    string str = "abcde";
+    string goal = "abced";
     // string t = "ccac";
     // vector<string> str = {"microscope", "microphone", "microbial"};
 
@@ -392,7 +466,8 @@ int main()
     //     cout << str[i] << " ";
     // }
     // cout << endl;
-    cout << "string: " << str << endl;
+    cout << "String: " << str << endl;
+    cout << "Goal: " << goal << endl;
 
     // auto result = sortlexicographically(str);
     // cout << "Sorted string: " << result << endl;
@@ -412,8 +487,17 @@ int main()
     // auto result = maxConsecutive1sKtimes(str, 2);
     // cout << "Max no of consecutive 1s: " << result << endl;
 
-    auto result = removeOuterParentheses(str);
-    cout << "Remove Outermost Parentheses: " << result << endl;
+    // auto result = removeOuterParentheses(str);
+    // cout << "Remove Outermost Parentheses: " << result << endl;
+
+    // auto result = reverseWords(str);
+    // cout << "Reverse Words in a String: " << result << endl;
+
+    // auto result = largestOddNumber(str);
+    // cout << "Largest Odd Number in String: " << result << endl;
+
+    auto result = rotateString(str, goal);
+    cout << "Rotate String: " << result << endl;
 
     return 0;
 }
