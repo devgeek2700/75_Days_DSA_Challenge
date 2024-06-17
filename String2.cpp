@@ -196,10 +196,56 @@ long long int substrCount(string s, int k)
 }
 
 // Longest Palindromic Substring
+string longestPalindrome(string s) // TC --> O() SC --> O()
+{
+    int n = s.length();
+    string maxSubstr = "";
+    int start = 0;
+    int maxSubStr = 1;
+
+    if (n == 0)
+        return "";
+
+    for (int i = 0; i < n; i++)
+    {
+        int left = i - 1;
+        int right = i + 1;
+
+        // Odd
+        while (left >= 0 && right < n && s[left] == s[right])
+        {
+            if ((right - left + 1) > maxSubStr)
+            {
+                maxSubStr = right - left + 1;
+                start = left;
+            }
+            left--;
+            right++;
+        }
+
+        // Even
+        left = i;
+        right = i + 1;
+
+        // Odd
+        while (left >= 0 && right < n && s[left] == s[right])
+        {
+            if ((right - left + 1) > maxSubStr)
+            {
+                maxSubStr = right - left + 1;
+                start = left;
+            }
+            left--;
+            right++;
+        }
+    }
+
+    return s.substr(start, maxSubStr);
+}
 
 int main()
 {
-    string str = "aba";
+    string str = "acf";
     int k = 2;
     cout << "String: " << str << endl;
 
@@ -215,8 +261,11 @@ int main()
     // auto result = myAtoi(str);
     // cout << "String to Integer (atoi): " << result << endl;
 
-    auto result = substrCount(str, k);
-    cout << "Count number of substrings: " << result << endl;
+    // auto result = substrCount(str, k);
+    // cout << "Count number of substrings: " << result << endl;
+
+    auto result = longestPalindrome(str);
+    cout << "Longest Palindromic Substring: " << result << endl;
 
     return 0;
 }
