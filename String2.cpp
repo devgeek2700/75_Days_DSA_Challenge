@@ -120,9 +120,87 @@ int myAtoi(string str) // TC --> O(N) SC --> O(1)
     return sign * ans;
 }
 
+// Count number of substrings
+long long int atMostKDistinct(string s, int k) // TC --> O(N^2) SC --> O(1)
+{
+    int n = s.length();
+    int count = 0;
+    map<char, int> mpp;
+    for (int i = 0; i < n; i++)
+    {
+        mpp.clear();
+        for (int j = i; j < n; j++)
+        {
+            mpp[s[j]]++;
+            if (mpp.size() <= k)
+            {
+                count++;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    return count;
+}
+
+long long int substrCount1(string s, int k)
+{
+    if (k == 0)
+    {
+        return 0;
+    }
+
+    return atMostKDistinct(s, k) - atMostKDistinct(s, k - 1);
+}
+
+// optimal solution
+long long int atMostKDistinct1(string s, int k) // TC --> O(N) SC --> O(n, 256)
+{
+    int n = s.size();
+    int count = 0;
+    int left = 0;
+    int right = 0;
+    map<char, int> mpp;
+
+    while (right < n)
+    {
+        mpp[s[right]]++;
+        while (mpp.size() > k)
+        {
+            mpp[s[left]]--;
+            if (mpp[s[left]] == 0)
+            {
+                mpp.erase(s[left]);
+            }
+            left++;
+        }
+
+        // All substrings from left to right end are valid when mpp.size() <= k
+        count += (right - left + 1);
+        right++;
+    }
+
+    return count;
+}
+
+long long int substrCount(string s, int k)
+{
+    if (k == 0)
+    {
+        return 0;
+    }
+
+    return atMostKDistinct1(s, k) - atMostKDistinct1(s, k - 1);
+}
+
+// Longest Palindromic Substring
+
 int main()
 {
-    string str = "+9";
+    string str = "aba";
+    int k = 2;
     cout << "String: " << str << endl;
 
     // auto result = frequencySort(str);
@@ -134,8 +212,11 @@ int main()
     // auto result = romanToInt(str);
     // cout << "Roman to Integer: " << result << endl;
 
-    auto result = myAtoi(str);
-    cout << "String to Integer (atoi): " << result << endl;
+    // auto result = myAtoi(str);
+    // cout << "String to Integer (atoi): " << result << endl;
+
+    auto result = substrCount(str, k);
+    cout << "Count number of substrings: " << result << endl;
 
     return 0;
 }
