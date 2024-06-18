@@ -196,7 +196,7 @@ long long int substrCount(string s, int k)
 }
 
 // Longest Palindromic Substring
-string longestPalindrome(string s) // TC --> O() SC --> O()
+string longestPalindrome(string s) // TC --> O(N^2) SC --> O(1)
 {
     int n = s.length();
     string maxSubstr = "";
@@ -243,9 +243,40 @@ string longestPalindrome(string s) // TC --> O() SC --> O()
     return s.substr(start, maxSubStr);
 }
 
+// Sum of Beauty of All Substrings
+int beautySum(string s) // TC --> O(N^2) SC -- O(1)
+{
+    int n = s.length();
+    unordered_map<char, int> freq;
+    int diffFreq;
+    int beautySum = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        freq.clear();
+        for (int j = i; j < n; j++)
+        {
+            freq[s[j]]++;
+
+            if (freq.size() >= 2)
+            {
+                int maxFreq = 0, minFreq = INT_MAX;
+                for (auto it = freq.begin(); it != freq.end(); it++)
+                {
+                    maxFreq = max(maxFreq, it->second);
+                    minFreq = min(minFreq, it->second);
+                }
+                diffFreq = maxFreq - minFreq;
+                beautySum += diffFreq;
+            }
+        }
+    }
+    return beautySum;
+}
+
 int main()
 {
-    string str = "acf";
+    string str = "aabcb";
     int k = 2;
     cout << "String: " << str << endl;
 
@@ -264,8 +295,11 @@ int main()
     // auto result = substrCount(str, k);
     // cout << "Count number of substrings: " << result << endl;
 
-    auto result = longestPalindrome(str);
-    cout << "Longest Palindromic Substring: " << result << endl;
+    // auto result = longestPalindrome(str);
+    // cout << "Longest Palindromic Substring: " << result << endl;
+
+    auto result = beautySum(str);
+    cout << "Sum of Beauty of All Substrings: " << result << endl;
 
     return 0;
 }
