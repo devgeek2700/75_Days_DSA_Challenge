@@ -1,9 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define MOD 1000000007
 
 // Pow(x, n)
 // bructe force
-double myPow1(double x, int n)
+double myPow1(double x, int n) // TC --> O(logn) SC --> O(1)
 {
     double ans = 1.0;
     long long nn = n;
@@ -34,7 +35,7 @@ double myPow1(double x, int n)
 
 // Power of n Recursion
 
-double myPow(double x, int n)
+double myPow(double x, int n) // TC --> O(logn) SC --> O(n)
 {
     if (n == 0)
     {
@@ -60,7 +61,7 @@ double myPow(double x, int n)
 
 // String to Integer (atoi)
 
-int recursionmyAtoi(string str, int i, int sign, int ans)
+int recursionmyAtoi(string str, int i, int sign, int ans) // TC --> O(n) SC --> O(1)
 {
     if (i >= str.length() || !isdigit(str[i]))
     {
@@ -81,10 +82,12 @@ int recursionmyAtoi(string str, int i, int sign, int ans)
     return recursionmyAtoi(str, i + 1, sign, ans);
 }
 
-int myAtoi(string str)
+int myAtoi(string str) // TC --> O(n) SC --> O(1)
+
 {
     int n = str.length();
     int i = 0;
+    vector<int> digitpassing;
 
     // Check leading whitespace.
     while (i <= n && str[i] == ' ')
@@ -117,19 +120,115 @@ int myAtoi(string str)
     return 0;
 }
 
+// Count Good Numbers
+
+// power function using recursin
+long long modExp(long long base, long long exp, long long mod)
+
+{
+    long long result = 1;
+    while (exp > 0)
+    {
+        if (exp % 2 == 1)
+        {
+            result = (result * base) % mod;
+        }
+        base = (base * base) % mod;
+        exp /= 2;
+    }
+    return result;
+}
+
+int countGoodNumbers(long long n) // TC --> O(log n) SC --> O(log n)
+{
+
+    long long EvenIdx = (n + 1) / 2;
+    long long OddIdx = (n / 2);
+
+    long long evenCombinations = modExp(5, EvenIdx, MOD);
+    long long oddCombinations = modExp(4, OddIdx, MOD);
+
+    long long TotalCombinations = (evenCombinations * oddCombinations) % MOD;
+    return TotalCombinations;
+}
+
+// Sort a stack
+
+void insertSortedOrder(stack<int> &sortedstack, int topVal)
+{
+    // if stack is empty or top element is smaller or equal to value
+
+    if (sortedstack.empty() || sortedstack.top() <= topVal)
+    {
+        sortedstack.push(topVal);
+        return;
+    }
+
+    // pop elements greater than value and insert value
+    int top = sortedstack.top();
+    sortedstack.pop();
+    insertSortedOrder(sortedstack, topVal);
+    sortedstack.push(top);
+}
+
+stack<int> SortedStack(stack<int> &st) // TC --> O(N^2) SC --> O(N)
+{
+    stack<int> sortedstack;
+
+    while (!st.empty())
+    {
+        int temp = st.top();
+        st.pop();
+
+        insertSortedOrder(sortedstack, temp);
+    }
+
+    return sortedstack;
+}
+
 int main()
 {
     // double x = 2.00000;
-    // int n = -2;
-    string str = "words and 987";
+    // int n = 80;
+    // string str = "1337c0d3";
+    stack<int> st;
+    st.push(11);
+    st.push(2);
+    st.push(32);
+    st.push(3);
+    st.push(41);
+
+    cout << "Original stack numbers are: ";
+    stack<int> stCopy = st;
+    while (!stCopy.empty())
+    {
+        cout << stCopy.top() << " ";
+        stCopy.pop();
+    }
+    cout << endl;
+
     // cout << "x: " << x << " and n: " << n << endl;
-    cout << "str: " << str << endl;
+    // cout << "str: " << str << endl;
+    // cout << "N: " << n << endl;
 
     // auto result = myPow(x, n);
     // cout << "Pow(x, n): " << result << endl;
 
-    auto result = myAtoi(str);
-    cout << "String to Integer (atoi): " << result << endl;
+    // auto result = myAtoi(str);
+    // cout << "String to Integer (atoi): " << result << endl;
+
+    // auto result = countGoodNumbers(n);
+    // cout << "Count Good Numbers: " << result << endl;
+
+    stack<int> sortedSt = SortedStack(st);
+    cout << "Sorted numbers are: ";
+
+    while (!sortedSt.empty())
+    {
+        cout << sortedSt.top() << " ";
+        sortedSt.pop();
+    }
+    cout << endl;
 
     return 0;
 }
