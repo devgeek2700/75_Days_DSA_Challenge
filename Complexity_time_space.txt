@@ -1,0 +1,3 @@
+time complexity != Actual time taken to run the program
+
+time complexity --> input size will affect the no. of operations

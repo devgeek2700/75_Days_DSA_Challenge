@@ -186,17 +186,56 @@ stack<int> SortedStack(stack<int> &st) // TC --> O(N^2) SC --> O(N)
     return sortedstack;
 }
 
+// Reverse a stack using recursion
+
+void swapStackValues(stack<int> &st, int top) // TC --> O(N)
+{
+    if (st.empty())
+    {
+        st.push(top);
+    }
+    else
+    {
+        int temptop = st.top();
+        st.pop();
+        swapStackValues(st, top);
+        st.push(temptop);
+    }
+}
+
+void Reverse(stack<int> &st) // TC --> O(N)
+{
+
+    if (!st.empty())
+    {
+        int top = st.top();
+        st.pop();
+        Reverse(st);
+        swapStackValues(st, top);
+    }
+}
+
+void Reversestack(stack<int> &st) // TC --> O(N^2) SC --> O(1)
+{
+    if (st.empty())
+    {
+        return;
+    }
+
+    Reverse(st);
+}
+
 int main()
 {
     // double x = 2.00000;
     // int n = 80;
     // string str = "1337c0d3";
     stack<int> st;
-    st.push(11);
+    st.push(6);
+    st.push(7);
+    st.push(1);
     st.push(2);
-    st.push(32);
     st.push(3);
-    st.push(41);
 
     cout << "Original stack numbers are: ";
     stack<int> stCopy = st;
@@ -220,13 +259,23 @@ int main()
     // auto result = countGoodNumbers(n);
     // cout << "Count Good Numbers: " << result << endl;
 
-    stack<int> sortedSt = SortedStack(st);
-    cout << "Sorted numbers are: ";
+    // stack<int> sortedSt = SortedStack(st);
+    // cout << "Sorted numbers are: ";
 
-    while (!sortedSt.empty())
+    // while (!sortedSt.empty())
+    // {
+    //     cout << sortedSt.top() << " ";
+    //     sortedSt.pop();
+    // }
+    // cout << endl;
+
+    Reversestack(st);
+    cout << "Reverse a stack using recursion: ";
+
+    while (!st.empty())
     {
-        cout << sortedSt.top() << " ";
-        sortedSt.pop();
+        cout << st.top() << " ";
+        st.pop();
     }
     cout << endl;
 
