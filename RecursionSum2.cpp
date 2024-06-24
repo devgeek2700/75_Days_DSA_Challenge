@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+const int MOD = 1e9 + 7;
 
 // Generate all binary strings without consecutive 1’s
 
@@ -111,14 +112,89 @@ vector<vector<int>> subsets(vector<int> &nums)
     return result;
 }
 
+// Better String
+
+void generateAllsubsequences(unordered_set<string> &result, int currIdx, string &str, string &subsequences) // TC --> O(n*2^n)  SC -->  O(n*2^n)
+{
+    int n = str.length();
+    if (currIdx == n)
+    {
+        result.insert(subsequences);
+        return;
+    }
+
+    // NOT include that particular element
+    generateAllsubsequences(result, currIdx + 1, str, subsequences);
+
+    // IF included that particular element
+    subsequences.push_back(str[currIdx]);
+    generateAllsubsequences(result, currIdx + 1, str, subsequences);
+    // for back tracking so that next element gets thet org subset before inserting this element for its operation
+    subsequences.pop_back();
+}
+
+unordered_set<string> subsequences(string &str)
+{
+    // for n = 2^n substring can be Generated
+    unordered_set<string> result;
+    string subsequences;
+    generateAllsubsequences(result, 0, str, subsequences);
+    return result;
+}
+
+string betterString(string str1, string str2)
+{
+
+    unordered_set<string> result1 = subsequences(str1);
+    unordered_set<string> result2 = subsequences(str2);
+    if (result2.size() > result1.size())
+    {
+        return str2;
+    }
+    else
+    {
+        return str1;
+    }
+}
+
+// Perfect Sum Problem
+int perfectSum(int arr[], int n, int sum)
+{
+    if (sum == 0)
+    {
+        return 1;
+    }
+
+    if (n == 0)
+    {
+        return 0;
+    }
+
+    // Exclude
+    int Exclude = perfectSum(arr, n - 1, sum) % MOD;
+
+    // Include
+    int IncludedArrSum = 0;
+    if (arr[n - 1] <= sum)
+    {
+        IncludedArrSum = perfectSum(arr, n - 1, sum - arr[n - 1]) % MOD;
+    }
+}
+
 int main()
 {
     // int n = 3;
+    // string str1 = "abc";
+    // string str2 = "bdb";
+    int arr[] = {5, 2, 3, 10, 6, 8};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int sum = 10;
 
     // cout << "Binary strings of size " << k << " without consecutive 1's: ";
     // generateAllStrings(k);
     // cout << endl;
-    // cout << "N: " << n << endl;
+    // cout << "str1: " << str1 << endl;
+    cout << "N: " << n << endl;
 
     // vector<string> result = generateParenthesis(n);
 
@@ -128,20 +204,23 @@ int main()
     //     cout << str << " ";
     // }
 
-    vector<int> nums = {1, 2, 3, 4, 5};
-    vector<vector<int>> result = subsets(nums);
+    // vector<int> nums = {1, 2, 3, 4, 5};
+    // vector<vector<int>> result = subsets(nums);
 
-    cout << "Generate Subsets: " << result.size() << endl;
-    for (const auto &subset : result)
-    {
-        cout << "{ ";
-        for (int num : subset)
-        {
-            cout << num << " ";
-        }
-        cout << "} ";
-    }
-    cout << endl;
+    // cout << "Generate Subsets: " << result.size() << endl;
+    // for (const auto &subset : result)
+    // {
+    //     cout << "{ ";
+    //     for (int num : subset)
+    //     {
+    //         cout << num << " ";
+    //     }
+    //     cout << "} ";
+    // }
+    // cout << endl;
+
+    // cout << "Better String: " << betterString(str1, str2) << endl;
+    cout << "Perfect Sum Problem: " << perfectSum(arr, n, sum) << endl;
 
     return 0;
 }
