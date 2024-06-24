@@ -28,6 +28,10 @@ class Teacher{
     Methods
 };
 
+********************************* RUN TIME & COMPLIE TIME *************************************
+-- Compile time is the period when the programming code is converted to the machine code
+-- Runtime is the period of time when a program is running and generally occurs after compile time.
+
 
 ***** Access Modifiers *******
 - private --> data & methods accessible inside class
@@ -50,6 +54,7 @@ class Teacher{
 -- Special Method invoked automatically at time of "OBJECT CREATION".
 -- used for initialisation
 -- "this" Special pointer in C++ that points to the current object
+-- member variable = parameter ----> this->name = name
 
 # Same name as class
 # Constructor doesn't have a return type
@@ -72,3 +77,68 @@ class Teacher{
 - syntax --> ~classNAme(){}
 - Only deallocate statically alloacted memory
 - in C++ if alloacted memory using "new" keyword --> "delete" keyword id use to deallocate
+
+
+
+***************************** INHERITANCE ************************
+-- when properties & member functionsof base class are passed on to the derived class.
+parents/Base class ------> child/derived class
+-- code resuability
+
+// In default calling --> not customized
+-- first parent class constrcutor is called then child class constrcutor class
+-- first child class destructor is called then parent class destructor class
+
+
+***************************** TYPES OF INHERITANCE ************************
+- Single Inheritance  Parent ---> child
+- Multi-level Inheritance  Parent ---> Parent ---> Parent ---> child
+- Multiple Inheritance  Parent1 + Parent2 ---> child
+- Hierarchial Inheritance  Parent1 ---> child1 + child2
+- Hybrid Inheritance Parent1 ---> child1 + child2-->Child2SON
+
+***************************** POLYMORPHISM ************************
+-- ability of object to take on different forms or behanve in different ways depending on the context in which they are used
+-- For eg: constrcutor overloading
+
+***************************** TYPES OF POLYMORPHISM ************************
+-- compile time polymorphism   --> static -->during complie time
+1) function overloading  
+2) constrcutor overloading
+3) operator overloading
+
+-- runtime polymorphism
+1) function overriding 
+-- parent class function is said to be overridden
+2) Virtual overriding 
+-- is a member function that u expect to be redefined in derived Classes -->add "virtual" keyword before function
+-- dynamic nature
+-- always delaxre in base class and called in child class in a overridden
+-- called during runtime
+
+
+-- Function overloading --> allows multiple functions to share the same name, but they must have different parameters.
+-- Function overriding --> Parent and child both both same function(same no of parameters) with different implemention  ---> depends upon Inheritance
+
+
+***************************** ABSTRACTION ************************
+-- Hiding all unnecessary details & showing only the important parts
+-- 1) using Access Modifiers  
+-- hiding data --> private
+-- Showing to all data --> public  
+-- to keep private but inhert so make them --> proctected
+
+-- 2) using Abstract Class --> idea that can be implemented later with valid values
+-- provide a base class from which other Classes can be derived
+-- this class can't create Classes and are meant to be inherited
+-- Abstract class{}
+
+
+
+
+********************* static keyword ******************
+1) static variables
+-- var declared as static in function are created and initialised once for a lifetime of the program
+2) static Objects
+-- var declared in a class are created & initialisedonce.
+-- they are shared by all the Objects of the class

@@ -191,8 +191,6 @@ public:
     {
         cout << "Hii, I'm deleting.. I'm DESTRUCTOR" << endl;
         delete (Cgpaptr); // if not delete then lead to memory leak/wastage
-
-        // 01.:14:41
     }
 
     void getInfo()
@@ -202,6 +200,316 @@ public:
     }
 };
 
+// INHERITANCE
+// single Inheritance
+// Person  --> Student1
+class Person
+{
+public:
+    string name;
+    int age;
+
+    // Person(string name, int age)
+    // {
+    //     // member variable = parameter
+    //     this->name = name;
+    //     this->age = age;
+    // }
+
+    // Person()
+    // {
+    //     cout << "I'm Parent(Person) Class Constructor" << endl;
+    // }
+
+    // ~Person()
+    // {
+    //     cout << "I'm Person(parent) Class destrcutor" << endl;
+    // }
+};
+
+class Student1 : public Person
+{
+public:
+    // name, age, rollno
+
+    int rollno;
+
+    // Student1(string name, int age, int rollno) : Person(name, age)
+    // {
+    //     this->rollno = rollno;
+    //     cout << "I'm Student1(child) Class Constructor" << endl;
+    // }
+
+    // ~Student1()
+    // {
+    //     cout << "I'm Student1(child) Class destrcutor" << endl;
+    // }
+
+    // void getInfoStd()
+    // {
+    //     cout << "std Name: " << name << endl;
+    //     cout << "std age: " << age << endl;
+    //     cout << "std rollno: " << rollno << endl;
+    // }
+};
+
+// Multi-level Inheritance
+// Person  --> Student1 --> GradStd
+class GradStd : public Student1
+{
+public:
+    string reserachTopic;
+
+    void getInfoStd()
+    {
+        cout << " Name: " << name << endl;
+        cout << " age: " << age << endl;
+        cout << " rollno: " << rollno << endl;
+        cout << " reserachTopic: " << reserachTopic << endl;
+    }
+};
+
+// Multiple Inheritance
+// Parent1 + Parent2 ---> child
+class Student2
+{
+public:
+    string name;
+    int rollno;
+};
+
+class Teacher2
+{
+public:
+    string subject;
+    double salary;
+};
+
+class TeacherAssistant : public Student2, public Teacher2
+{
+public:
+    int stdYr;
+
+    void getInfoStd()
+    {
+        cout << "Name: " << name << endl;
+        cout << "Roll No: " << rollno << endl;
+        cout << "Year: " << stdYr << endl;
+        cout << "Subject: " << subject << endl;
+        cout << "Salary: " << salary << endl;
+    }
+};
+
+// Hierarchial Inheritance
+// Parent ---> child1 + child2
+class Person2
+{
+public:
+    string name;
+    int age;
+};
+
+class student3 : public Person2
+{
+public:
+    int stdYr;
+    void getInfoStd()
+    {
+        cout << "Name: " << name << endl;
+        cout << "age: " << age << endl;
+        cout << "Year: " << stdYr << endl;
+    }
+};
+
+class Teacher3 : public Person2
+{
+public:
+    double salary;
+
+    void getInfoStd()
+    {
+        cout << "Name: " << name << endl;
+        cout << "age: " << age << endl;
+        cout << "Salary: " << salary << endl;
+    }
+};
+
+// Hybrid Inheritance
+// Parent1 ---> child1 + child2
+//                    |
+//                    |
+//                Grandchild
+
+class HPerson
+{
+public:
+    string name;
+    int age;
+};
+
+// Derived class from HPerson
+class HStudent : virtual public HPerson
+{
+public:
+    int rollNo;
+};
+
+// Derived class from HPerson
+class HTeacher : virtual public HPerson
+{
+public:
+    string subject;
+    double salary;
+};
+
+// Derived class from HStudent and HTeacher (Multiple Inheritance)
+class HTeachingAssistant : public HStudent, public HTeacher
+{
+public:
+    int year;
+
+    void displayTAInfo()
+    {
+        cout << "Name: " << name << endl; // Resolving ambiguity
+        cout << "Age: " << age << endl;   // Resolving ambiguity
+        cout << "Roll No: " << rollNo << endl;
+        cout << "Subject: " << subject << endl;
+        cout << "Salary: " << salary << endl;
+        cout << "Year: " << year << endl;
+    }
+};
+
+// Constructor Overloading
+class Animal
+{
+public:
+    string name;
+    string subject;
+    int age;
+
+    Animal()
+    {
+        cout << "non-paramtized constructor" << endl;
+    }
+
+    Animal(string name)
+    {
+        this->name = name;
+        cout << "paramtized constructor" << endl;
+    }
+
+    void displayInfo()
+    {
+        cout << "Name: " << name << endl;
+        cout << "Age: " << age << endl;
+        cout << "Subject: " << subject << endl;
+    }
+
+    void displayInfo(string name, string subject, int age)
+    {
+        cout << "Name: " << name << endl;
+        cout << "Age: " << age << endl;
+        cout << "Subject: " << subject << endl;
+    }
+
+    void show(int x)
+    {
+        cout << "Value of x: " << x << endl;
+    }
+
+    void show(char ch)
+    {
+        cout << "Value of ch: " << ch << endl;
+    }
+};
+
+// Function Overidding
+class Parent
+{
+public:
+    void show()
+    {
+        cout << "Parent Class" << endl;
+    }
+
+    virtual void Hello()
+    {
+        cout << "Parent Class Virtual Function" << endl;
+    }
+};
+
+class child
+{
+public:
+    void show()
+    {
+        cout << "Child Class Overidded Parent Class" << endl;
+    }
+
+    void Hello()
+    {
+        cout << "Child Class Virtual Function" << endl;
+    }
+};
+
+// ABSTRACTION
+// objects can't be created
+class Shape
+{
+    virtual void draw() = 0; // pure virtual function it automatically becomes Abstract
+};
+
+class Circle
+{
+public:
+    void draw()
+    {
+        cout << "Drawing a Circle" << endl;
+    }
+};
+
+// static keyword
+// static function
+void Function()
+{
+    int x = 0;
+    cout << "X: " << x << endl;
+    x++;
+}
+
+void staticFunction()
+{
+    static int x = 0; // this statement will run only one time rest all code will run evrytime
+    cout << "X: " << x << endl;
+    x++;
+}
+
+// static class
+
+class IncX
+{
+public:
+    int x;
+
+    void incx()
+    {
+        x = x + 1;
+    }
+};
+
+class ABC
+{
+public:
+    ABC()
+    {
+        cout << "Constructor" << endl;
+    }
+
+    ~ABC()
+    {
+        cout << "destructor" << endl;
+    }
+};
 int main()
 {
     // Teacher t1("Mr. Aditya Yadav", "OOPs", "Pune", 30, 10000.00); // Automatically CONSTRUCTOR Call
@@ -254,7 +562,7 @@ int main()
     // }
 
     // Copy Constructor
-    collegeStudent clgstd1("Alice Deo", 9.1);
+    // collegeStudent clgstd1("Alice Deo", 9.1);
 
     // Deep Copy Constructor
 
@@ -262,7 +570,109 @@ int main()
     // *clgstd2.Cgpaptr = 5.6;
     // clgstd2.name = "Neha Singh";
     // clgstd2.getInfo();
-    clgstd1.getInfo();
+    // clgstd1.getInfo();
+
+    // INHERITANCE
+
+    // Student1 s1("Neha Singh", 20, 12876);
+    // s1.getInfoStd();
+
+    // GradStd gd1;
+    // gd1.name = "Vivek Singh";
+    // gd1.age = 20;
+    // gd1.rollno = 4567;
+    // gd1.reserachTopic = "AI&ML";
+    // gd1.getInfoStd();
+
+    // TeacherAssistant ta;
+    // ta.name = "John Doe";
+    // ta.age = 20;
+    // ta.stdYr = 3;
+    // ta.subject = "Mathematics";
+    // ta.salary = 35000.00;
+
+    // ta.getInfoStd();
+
+    // student3 s3;
+    // s3.name = "John Doe";
+    // s3.age = 20;
+    // s3.stdYr = 3;
+    // s3.getInfoStd();
+
+    // Teacher3 t3;
+    // t3.name = "lida young";
+    // t3.age = 20;
+    // t3.salary = 35000.00;
+    // t3.getInfoStd();
+
+    // HTeachingAssistant Hdta;
+    // Hdta.name = "Ruchi Singh";
+    // Hdta.rollNo = 456;
+    // Hdta.subject = "Maths";
+    // Hdta.salary = 50000;
+    // Hdta.year = 2;
+    // Hdta.displayTAInfo();
+
+    // POLYMORPHISM
+    // compile time polymorphism
+    // Constructor Overloading
+    // Animal a;
+    // // Animal a("Bird");
+    // a.name = "Neha Singh";
+    // a.age = 67;
+    // a.subject = "Science";
+
+    // // function Overloading
+    // a.displayInfo();
+    // a.displayInfo("Vivek Gupta", "Biology", 89);
+    // a.show(1);
+    // a.show('h');
+
+    // Run time polymorphism
+    // Function Overidding
+    // child ch;
+    // Parent p;
+
+    // ch.show();
+    // p.show();
+
+    // virtual Function Overidding
+    // child ch;
+    // ch.Hello();
+
+    // Circle c;
+    // c.draw();
+
+    // normal function
+    // Function();
+
+    // static function
+    // staticFunction();
+    // staticFunction();
+    // staticFunction();
+
+    // IncX ix;
+    // IncX ix1;
+    // ix.x = 100;
+    // ix1.x = 200;
+    // cout << "obj: " << ix1.x << endl;
+    // ix1.incx();
+    // cout << "obj after: " << ix1.x << endl;
+
+    if (true)
+    {
+        ABC abj;
+    }
+
+    cout << "end of main" << endl;
+    cout << "*******************************" << endl;
+
+    if (true)
+    {
+       static ABC abj;
+    }
+
+    cout << "end of main" << endl;
 
     return 0;
 }
