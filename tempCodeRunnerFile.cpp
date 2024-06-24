@@ -1,32 +1,4 @@
-void generateAllStringsfuther(char str[], int k, int currStart)
-{
-
-    if (currStart == k)
-    {
-
-        // Terminate binary string
-        str[currStart] = '\0';
-        cout << str << " ";
-        return;
-    }
-
-    // currStart - 1 --> 1 0 _
-
-    if (str[currStart - 1] == '1')
-    {
-        str[currStart] = '0';
-        generateAllStringsfuther(str, k, currStart + 1);
-    }
-
-    if (str[currStart - 1] == '0')
-    {
-        // currStart - 0 --> 0 0 _
-        str[currStart] = '0';
-        generateAllStringsfuther(str, k, currStart + 1);
-
-        // currStart - 0 --> 0 1 _
-
-        str[currStart] = '1';
-        generateAllStringsfuther(str, k, currStart + 1);
-    }
-}
+~collegeStudent()
+    // {
+    //     cout << "Hii, I'm deleting.. I'm DESTRUCTOR" << endl;
+    // }

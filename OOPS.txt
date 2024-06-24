@@ -1,0 +1,74 @@
+OOPs --> Object Objected programming
+
+- vector
+- string
+- stack     --> all theis libraries existe in STL because of OOPs 
+                because implementing this internally OOPS has been used!
+
+
+************** Classes & Objects *************************
+- Objects --> entities in the real world // khass memeory space nahi lete hai
+- Classes --> like blueprint of Objects   --> blueprint means how the object will look like  // this take memeory space
+- for eg:- toyota made a bluprint and using this blueprint it made car1, care2, care3..  // so car1, car2 --> Objects blueprint --> class
+- Propteries/attributes -- is value or qulaity of object
+- Methods/memeber functions --> is nothing but a peiece of code/function written inside class
+
+class -->blueprint
+     |
+     |
+obj1 car1
+obj1 car2
+obj1 car3
+
+
+// Syntax
+
+class Teacher{
+    properties
+    Methods
+};
+
+
+***** Access Modifiers *******
+- private --> data & methods accessible inside class
+- public --> data & methods accessible to everyone
+- proctected --> data & methods accessible inside class & to its derived class
+
+*************** 4 Pillars of OOPs ********************
+- Encapsulation
+- Abstraction
+- Inheritance
+- Polymorphism
+
+***************************** ENCAPSULATION ************************
+-- wrapping up of data & member functions in single unit called class
+-- Helps in data hiding  --> by " private " keyword
+
+
+
+***************************** CONSTRUCTOR ************************
+-- Special Method invoked automatically at time of "OBJECT CREATION".
+-- used for initialisation
+-- "this" Special pointer in C++ that points to the current object
+
+# Same name as class
+# Constructor doesn't have a return type
+# Only called once(automatically), at object CREATION
+# Memory alloaction happens when constrcutor is called
+
+***************************** TYPES OF CONSTRUCTOR ************************
+- Non Parameterized  --> Teacher(){}
+- Parameterized  --> Teacher(int a, int b){}   // there can be same name constructor just the name of the parameter should be different called as constrcutor Overloading --> is an example of polymorphism
+- Copy  --> specail default constrcutor to copy properties of one object into another
+
+******* Types of Copy CONSTRUCTOR ***********
+- Shallow Copy  --> obj copies all of the member values from one obj to another // it gives issues when we have dynamic memory alloaction value so we need deep copy
+- Deep Copy --> not only copies of memeber values but also make copies of any dynamically alloacted memeory that the member point to
+
+
+***************************** DESTRUCTOR ************************
+- opposite of constrcutor
+- deallocate
+- syntax --> ~classNAme(){}
+- Only deallocate statically alloacted memory
+- in C++ if alloacted memory using "new" keyword --> "delete" keyword id use to deallocate

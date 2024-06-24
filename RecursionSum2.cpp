@@ -74,7 +74,7 @@ void generateAllParentheses(vector<string> &result, int n, int open, int close, 
     }
 }
 
-vector<string> generateParenthesis(int n)
+vector<string> generateParenthesis(int n) // TC --> O(n*2^n)  SC -->  O(n*2^n)
 {
     vector<string> result;
     generateAllParentheses(result, n, 0, 0, "");
@@ -83,7 +83,7 @@ vector<string> generateParenthesis(int n)
 
 // Generate Subsets
 
-void generateAllSubset(vector<vector<int>> &result, int currIdx, vector<int> &nums, vector<int> &subset)
+void generateAllSubset(vector<vector<int>> &result, int currIdx, vector<int> &nums, vector<int> &subset) // TC --> O(n*2^n)  SC -->  O(n*2^n)
 {
     int n = nums.size();
     if (currIdx == n)
@@ -128,7 +128,7 @@ int main()
     //     cout << str << " ";
     // }
 
-    vector<int> nums = {1,2,3,4,5};
+    vector<int> nums = {1, 2, 3, 4, 5};
     vector<vector<int>> result = subsets(nums);
 
     cout << "Generate Subsets: " << result.size() << endl;
