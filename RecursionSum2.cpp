@@ -158,28 +158,7 @@ string betterString(string str1, string str2)
 }
 
 // Perfect Sum Problem
-int perfectSum(int arr[], int n, int sum)
-{
-    if (sum == 0)
-    {
-        return 1;
-    }
 
-    if (n == 0)
-    {
-        return 0;
-    }
-
-    // Exclude
-    int Exclude = perfectSum(arr, n - 1, sum) % MOD;
-
-    // Include
-    int IncludedArrSum = 0;
-    if (arr[n - 1] <= sum)
-    {
-        IncludedArrSum = perfectSum(arr, n - 1, sum - arr[n - 1]) % MOD;
-    }
-}
 
 int main()
 {
@@ -220,7 +199,7 @@ int main()
     // cout << endl;
 
     // cout << "Better String: " << betterString(str1, str2) << endl;
-    cout << "Perfect Sum Problem: " << perfectSum(arr, n, sum) << endl;
+    // cout << "Perfect Sum Problem: " << perfectSum(arr, n, sum) << endl;
 
     return 0;
 }
