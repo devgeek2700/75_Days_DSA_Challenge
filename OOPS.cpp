@@ -510,6 +510,55 @@ public:
         cout << "destructor" << endl;
     }
 };
+
+// Friend Function
+
+class Box
+{
+private:
+    double width;
+
+public:
+    Box() : width(0) {}
+
+    // friend function delacare
+    friend void setWidth(Box &b, double w);
+
+    void displayWidth()
+    {
+        cout << "Width: " << width << endl;
+    }
+};
+
+void setWidth(Box &b, double w)
+{
+    b.width = w;
+}
+
+// Friend Class
+class Engine;
+
+class Car
+{
+private:
+    string model;
+    double price;
+
+public:
+    Car(string m, double p) : model(m), price(p) {}
+    friend class Engine;
+};
+
+class Engine
+{
+public:
+    void displayCarDetails(Car &c)
+    {
+        cout << "Model: " << c.model << endl;
+        cout << "Price: " << c.price << endl;
+    }
+};
+
 int main()
 {
     // Teacher t1("Mr. Aditya Yadav", "OOPs", "Pune", 30, 10000.00); // Automatically CONSTRUCTOR Call
@@ -659,20 +708,31 @@ int main()
     // ix1.incx();
     // cout << "obj after: " << ix1.x << endl;
 
-    if (true)
-    {
-        ABC abj;
-    }
+    // if (true)
+    // {
+    //     ABC abj;
+    // }
 
-    cout << "end of main" << endl;
-    cout << "*******************************" << endl;
+    // cout << "end of main" << endl;
+    // cout << "*******************************" << endl;
 
-    if (true)
-    {
-       static ABC abj;
-    }
+    // if (true)
+    // {
+    //     static ABC abj;
+    // }
 
-    cout << "end of main" << endl;
+    // cout << "end of main" << endl;
 
+    // Friend Function
+    // Box b;
+    // setWidth(b, 20.8);
+    // b.displayWidth();
+
+    // Friend Class
+    Car car("Tesla Model S", 799999);
+    Engine eg;
+    eg.displayCarDetails(car);
+
+    
     return 0;
 }

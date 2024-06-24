@@ -142,3 +142,12 @@ parents/Base class ------> child/derived class
 2) static Objects
 -- var declared in a class are created & initialisedonce.
 -- they are shared by all the Objects of the class
+
+
+
+************************* Friend Function *****************
+-- A friend function is a function that is not a member of a class but has the privilege to access the class's private and protected members.
+
+
+************************* Friend Class *****************
+-- A friend class is a class whose members have access to the private and protected members of another class.
