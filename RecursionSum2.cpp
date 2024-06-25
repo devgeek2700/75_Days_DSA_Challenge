@@ -159,21 +159,52 @@ string betterString(string str1, string str2)
 
 // Perfect Sum Problem
 
+int perfectSumHelper(int arr[], int n, int sum, int count, int currIdx)
+{
+    if (currIdx == n)
+    {
+        if (sum == 0)
+        {
+            count++;
+        }
+        return count;
+    }
+
+    // if the element is included
+    count = perfectSumHelper(arr, n, sum - arr[currIdx], count, currIdx + 1);
+
+    // if the element is exclude
+    count = perfectSumHelper(arr, n, sum, count, currIdx + 1);
+
+    return count;
+}
+
+int perfectSum(int arr[], int n, int sum) // TC --> O(n*2^n)  SC -->  O(1)
+{
+    return perfectSumHelper(arr, n, sum, 0, 0);
+}
 
 int main()
 {
     // int n = 3;
     // string str1 = "abc";
     // string str2 = "bdb";
-    int arr[] = {5, 2, 3, 10, 6, 8};
+    int arr[] = {2, 3, 5};
+    int sum = 5;
     int n = sizeof(arr) / sizeof(arr[0]);
-    int sum = 10;
+
+    cout << "Display Array: ";
+    for (int i; i < n; i++)
+    {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
 
     // cout << "Binary strings of size " << k << " without consecutive 1's: ";
     // generateAllStrings(k);
     // cout << endl;
     // cout << "str1: " << str1 << endl;
-    cout << "N: " << n << endl;
+    // cout << "N: " << n << endl;
 
     // vector<string> result = generateParenthesis(n);
 
@@ -199,7 +230,7 @@ int main()
     // cout << endl;
 
     // cout << "Better String: " << betterString(str1, str2) << endl;
-    // cout << "Perfect Sum Problem: " << perfectSum(arr, n, sum) << endl;
+    cout << "Perfect Sum Problem: " << perfectSum(arr, n, sum) << endl;
 
     return 0;
 }
