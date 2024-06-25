@@ -184,17 +184,43 @@ int perfectSum(int arr[], int n, int sum) // TC --> O(n*2^n)  SC -->  O(1)
     return perfectSumHelper(arr, n, sum, 0, 0);
 }
 
+// Subset Sum
+bool isSubsetPresentHelper(int n, int k, vector<int> &a, int currIdx, int currSum)
+{
+    if (k == currSum)
+    {
+        return true;
+    }
+
+    if (currIdx == n)
+    {
+        return false;
+    }
+
+    // if the element is included
+    bool include = isSubsetPresentHelper(n, k, a, currIdx + 1, currSum + a[currIdx]);
+
+    // if the element is exclude
+    bool exclude = isSubsetPresentHelper(n, k, a, currIdx + 1, currSum);
+
+    return include || exclude;
+}
+
+bool isSubsetPresent(int n, int k, vector<int> &a)
+{
+    return isSubsetPresentHelper(n, k, a, 0, 0);
+}
+
 int main()
 {
     // int n = 3;
     // string str1 = "abc";
     // string str2 = "bdb";
-    int arr[] = {2, 3, 5};
-    int sum = 5;
-    int n = sizeof(arr) / sizeof(arr[0]);
+    vector<int> arr = {4, 2, 5, 6, 7};
+    int k = 14;
 
     cout << "Display Array: ";
-    for (int i; i < n; i++)
+    for (int i; i < arr.size(); i++)
     {
         cout << arr[i] << " ";
     }
@@ -230,7 +256,8 @@ int main()
     // cout << endl;
 
     // cout << "Better String: " << betterString(str1, str2) << endl;
-    cout << "Perfect Sum Problem: " << perfectSum(arr, n, sum) << endl;
+    // cout << "Perfect Sum Problem: " << perfectSum(arr, n, sum) << endl;
+    cout << "Is Subset sum: " << isSubsetPresent(arr.size(), k, arr) << endl;
 
     return 0;
 }
