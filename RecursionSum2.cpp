@@ -211,13 +211,49 @@ bool isSubsetPresent(int n, int k, vector<int> &a)
     return isSubsetPresentHelper(n, k, a, 0, 0);
 }
 
+// Combination Sum
+
+void combinationSumHelper(vector<int> &candidates, int target, vector<vector<int>> &ans, vector<int> &subset, int currIdx, int n)
+{
+    if (currIdx == n)
+    {
+        if (target == 0)
+        {
+            ans.push_back(subset);
+        }
+        return;
+    }
+
+    if (target < 0 || currIdx == n)
+    {
+        return;
+    }
+
+    // if the element is included
+    subset.push_back(candidates[currIdx]);
+    combinationSumHelper(candidates, target - candidates[currIdx], ans, subset, currIdx, n);
+    subset.pop_back();
+
+    // if the element is exclude
+    combinationSumHelper(candidates, target, ans, subset, currIdx + 1, n);
+}
+
+vector<vector<int>> combinationSum(vector<int> &candidates, int target)
+{
+    int n = candidates.size();
+    vector<vector<int>> ans;
+    vector<int> subset;
+    combinationSumHelper(candidates, target, ans, subset, 0, n);
+    return ans;
+}
+
 int main()
 {
     // int n = 3;
     // string str1 = "abc";
     // string str2 = "bdb";
-    vector<int> arr = {4, 2, 5, 6, 7};
-    int k = 14;
+    vector<int> arr = {2};
+    int k = 1;
 
     cout << "Display Array: ";
     for (int i; i < arr.size(); i++)
@@ -257,7 +293,21 @@ int main()
 
     // cout << "Better String: " << betterString(str1, str2) << endl;
     // cout << "Perfect Sum Problem: " << perfectSum(arr, n, sum) << endl;
-    cout << "Is Subset sum: " << isSubsetPresent(arr.size(), k, arr) << endl;
+    // cout << "Is Subset sum: " << isSubsetPresent(arr.size(), k, arr) << endl;
+
+    vector<vector<int>> result = combinationSum(arr, k);
+
+    cout << "Combination Sum: " << result.size() << endl;
+    for (const auto &subset : result)
+    {
+        cout << "{ ";
+        for (int num : subset)
+        {
+            cout << num << " ";
+        }
+        cout << "} ";
+    }
+    cout << endl;
 
     return 0;
 }
