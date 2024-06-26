@@ -238,7 +238,7 @@ void combinationSumHelper(vector<int> &candidates, int target, vector<vector<int
     combinationSumHelper(candidates, target, ans, subset, currIdx + 1, n);
 }
 
-vector<vector<int>> combinationSum(vector<int> &candidates, int target)
+vector<vector<int>> combinationSum(vector<int> &candidates, int target) // TC --> O(2^n)  SC -->  O(k*2^n)
 {
     int n = candidates.size();
     vector<vector<int>> ans;
@@ -247,13 +247,53 @@ vector<vector<int>> combinationSum(vector<int> &candidates, int target)
     return ans;
 }
 
+// Combination Sum II
+void combinationSumHelper(vector<int> &candidates, int target, set<vector<int>> &ansSet, vector<int> &subset, int currIdx)
+{
+
+    if (target == 0)
+    {
+        ansSet.insert(subset);
+        return;
+    }
+
+    if (target < 0 || currIdx == candidates.size())
+    {
+        return;
+    }
+
+    // if the element is included
+    for (int i = currIdx; i < candidates.size(); i++)
+    {
+        if (i > currIdx && candidates[i] == candidates[i - 1])
+        {
+            continue;
+        }
+        subset.push_back(candidates[i]);
+        combinationSumHelper(candidates, target - candidates[i], ansSet, subset, i + 1);
+        subset.pop_back();
+    }
+}
+
+vector<vector<int>> combinationSum2(vector<int> &candidates, int target)
+{
+
+    int n = candidates.size();
+    sort(candidates.begin(), candidates.end());
+    set<vector<int>> ansSet;
+    vector<int> subset;
+    combinationSumHelper(candidates, target, ansSet, subset, 0);
+    vector<vector<int>> ans(ansSet.begin(), ansSet.end());
+    return ans;
+}
+
 int main()
 {
     // int n = 3;
     // string str1 = "abc";
     // string str2 = "bdb";
-    vector<int> arr = {2};
-    int k = 1;
+    vector<int> arr = {10,1,2,7,6,1,5};
+    int k = 8;
 
     cout << "Display Array: ";
     for (int i; i < arr.size(); i++)
@@ -295,9 +335,23 @@ int main()
     // cout << "Perfect Sum Problem: " << perfectSum(arr, n, sum) << endl;
     // cout << "Is Subset sum: " << isSubsetPresent(arr.size(), k, arr) << endl;
 
-    vector<vector<int>> result = combinationSum(arr, k);
+    // vector<vector<int>> result = combinationSum(arr, k);
 
-    cout << "Combination Sum: " << result.size() << endl;
+    // cout << "Combination Sum: " << result.size() << endl;
+    // for (const auto &subset : result)
+    // {
+    //     cout << "{ ";
+    //     for (int num : subset)
+    //     {
+    //         cout << num << " ";
+    //     }
+    //     cout << "} ";
+    // }
+    // cout << endl;
+
+    vector<vector<int>> result = combinationSum2(arr, k);
+
+    cout << "Combination Sum 2: " << result.size() << endl;
     for (const auto &subset : result)
     {
         cout << "{ ";
@@ -305,7 +359,7 @@ int main()
         {
             cout << num << " ";
         }
-        cout << "} ";
+        cout << "}, ";
     }
     cout << endl;
 
