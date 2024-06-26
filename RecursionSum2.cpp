@@ -287,12 +287,36 @@ vector<vector<int>> combinationSum2(vector<int> &candidates, int target)
     return ans;
 }
 
+// Subset Sums
+void subsetSumsHelper(vector<int> &arr, vector<int> &ans, int currIdx, int sum)
+{
+    if (currIdx == arr.size())
+    {
+        ans.push_back(sum);
+        return;
+    }
+
+    // Include the current element
+    subsetSumsHelper(arr, ans, currIdx + 1, sum + arr[currIdx]);
+
+    // Exclude the current element
+    subsetSumsHelper(arr, ans, currIdx + 1, sum);
+}
+
+vector<int> subsetSums(vector<int> arr, int n) // TC --> O(2^n)  SC --> O(2^n)
+{
+    vector<int> ans;
+    subsetSumsHelper(arr, ans, 0, 0);
+    sort(ans.begin(), ans.end());
+    return ans;
+}
+
 int main()
 {
     // int n = 3;
     // string str1 = "abc";
     // string str2 = "bdb";
-    vector<int> arr = {10,1,2,7,6,1,5};
+    vector<int> arr = {5, 2, 1};
     int k = 8;
 
     cout << "Display Array: ";
@@ -349,17 +373,26 @@ int main()
     // }
     // cout << endl;
 
-    vector<vector<int>> result = combinationSum2(arr, k);
+    // vector<vector<int>> result = combinationSum2(arr, k);
 
-    cout << "Combination Sum 2: " << result.size() << endl;
-    for (const auto &subset : result)
+    // cout << "Combination Sum 2: " << result.size() << endl;
+    // for (const auto &subset : result)
+    // {
+    //     cout << "{ ";
+    //     for (int num : subset)
+    //     {
+    //         cout << num << " ";
+    //     }
+    //     cout << "}, ";
+    // }
+    // cout << endl;
+
+    vector<int> result = subsetSums(arr, arr.size());
+
+    cout << "Subset Sums: ";
+    for (int i = 0; i < result.size(); i++)
     {
-        cout << "{ ";
-        for (int num : subset)
-        {
-            cout << num << " ";
-        }
-        cout << "}, ";
+        cout << result[i] << " ";
     }
     cout << endl;
 
