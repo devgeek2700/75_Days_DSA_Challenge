@@ -345,20 +345,93 @@ vector<vector<int>> subsetsWithDup(vector<int> &nums)
     return result;
 }
 
+// Combination Sum III
+
+void combinationSum3Helper(int k, int n, int currIdx, vector<int> &subset, vector<vector<int>> &ansSet)
+{
+    {
+        if (k == 0 && n == 0)
+        {
+            ansSet.push_back(subset);
+            return;
+        }
+
+        if (k < 0 || n < 0 || currIdx > 9)
+        {
+            return;
+        }
+
+        // NOT include that particular element
+        combinationSum3Helper(k, n, currIdx + 1, subset, ansSet);
+
+        // IF included that particular element
+        subset.push_back(currIdx);
+        combinationSum3Helper(k - 1, n - currIdx, currIdx + 1, subset, ansSet);
+        // for back tracking so that next element gets thet org subset before inserting this element for its operation
+        subset.pop_back();
+    }
+}
+
+vector<vector<int>> combinationSum3(int k, int n)
+{
+    vector<vector<int>> ansSet;
+    vector<int> subset;
+    combinationSum3Helper(k, n, 1, subset, ansSet);
+    return ansSet;
+}
+
+// Letter Combinations of a Phone Number
+
+void letterCombinationsHelper(string &digits, int currIdx, unordered_map<char, string> phoneMap, string &currStr, vector<string> &ans)
+{
+    if (currIdx == digits.length())
+    {
+        ans.push_back(currStr);
+        return;
+    }
+
+    char storeDigit = digits[currIdx];
+    const string &letters = phoneMap.at(storeDigit);
+    for (char letter : letters)
+    {
+        currStr.push_back(letter);
+        letterCombinationsHelper(digits, currIdx + 1, phoneMap, currStr, ans);
+        currStr.pop_back();
+    }
+}
+
+vector<string> letterCombinations(string digits) // TC --> O(4^n) SC --> O(n*4^n)
+{
+    if (digits.empty())
+    {
+        return {};
+    }
+
+    unordered_map<char, string> phoneMap = {
+        {'2', "abc"}, {'3', "def"}, {'4', "ghi"}, {'5', "jkl"}, {'6', "mno"}, {'7', "pqrs"}, {'8', "tuv"}, {'9', "wxyz"}};
+
+    vector<string> ans;
+    string currStr;
+    letterCombinationsHelper(digits, 0, phoneMap, currStr, ans);
+    return ans;
+}
+
 int main()
 {
     // int n = 3;
     // string str1 = "abc";
     // string str2 = "bdb";
+    string digits = "89";
     vector<int> arr = {0};
-    int k = 8;
+    int k = 4;
+    int n = 1;
 
-    cout << "Display Array: ";
-    for (int i; i < arr.size(); i++)
-    {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
+    cout << "digits:  " << digits << endl;
+    // for (int i; i < arr.size(); i++)
+    // {
+    //     cout << arr[i] << " ";
+    // }
+    // cout << endl;
 
     // cout << "Binary strings of size " << k << " without consecutive 1's: ";
     // generateAllStrings(k);
@@ -430,19 +503,41 @@ int main()
     // }
     // cout << endl;
 
-    vector<vector<int>> result = subsetsWithDup(arr);
+    // vector<vector<int>> result = subsetsWithDup(arr);
 
-    cout << "Subset Sum II: " << result.size() << endl;
-    for (const auto &subset : result)
+    // cout << "Subset Sum II: " << result.size() << endl;
+    // for (const auto &subset : result)
+    // {
+    //     cout << "{ ";
+    //     for (int num : subset)
+    //     {
+    //         cout << num << " ";
+    //     }
+    //     cout << "}, ";
+    // }
+    // cout << endl;
+
+    // vector<vector<int>> result = combinationSum3(k, n);
+
+    // cout << "Combination Sum III: " << result.size() << endl;
+    // for (const auto &subset : result)
+    // {
+    //     cout << "{ ";
+    //     for (int num : subset)
+    //     {
+    //         cout << num << " ";
+    //     }
+    //     cout << "}, ";
+    // }
+    // cout << endl;
+
+    cout << "Letter Combinations of a Phone Number: ";
+    vector<string> combinations = letterCombinations(digits);
+
+    for (const string &combination : combinations)
     {
-        cout << "{ ";
-        for (int num : subset)
-        {
-            cout << num << " ";
-        }
-        cout << "}, ";
+        cout << combination << " ";
     }
-    cout << endl;
 
     return 0;
 }
