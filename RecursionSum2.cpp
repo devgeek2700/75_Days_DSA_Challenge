@@ -311,12 +311,46 @@ vector<int> subsetSums(vector<int> arr, int n) // TC --> O(2^n)  SC --> O(2^n)
     return ans;
 }
 
+// Subset Sums - II
+
+void subsetsWithDupHelper(vector<int> &arr, set<vector<int>> &ansSet, int currIdx, vector<int> &subset)
+{
+    {
+        if (currIdx == arr.size())
+        {
+            ansSet.insert(subset);
+            return;
+        }
+
+        // NOT include that particular element
+        subsetsWithDupHelper(arr, ansSet, currIdx + 1, subset);
+
+        // IF included that particular element
+        subset.push_back(arr[currIdx]);
+        subsetsWithDupHelper(arr, ansSet, currIdx + 1, subset);
+        // for back tracking so that next element gets thet org subset before inserting this element for its operation
+        subset.pop_back();
+    }
+}
+
+vector<vector<int>> subsetsWithDup(vector<int> &nums)
+{
+    sort(nums.begin(), nums.end());
+    set<vector<int>> ansSet;
+    vector<int> subset;
+    subsetsWithDupHelper(nums, ansSet, 0, subset);
+
+    // Convert set to vector
+    vector<vector<int>> result(ansSet.begin(), ansSet.end());
+    return result;
+}
+
 int main()
 {
     // int n = 3;
     // string str1 = "abc";
     // string str2 = "bdb";
-    vector<int> arr = {5, 2, 1};
+    vector<int> arr = {0};
     int k = 8;
 
     cout << "Display Array: ";
@@ -387,12 +421,26 @@ int main()
     // }
     // cout << endl;
 
-    vector<int> result = subsetSums(arr, arr.size());
+    // vector<int> result = subsetSums(arr, arr.size());
 
-    cout << "Subset Sums: ";
-    for (int i = 0; i < result.size(); i++)
+    // cout << "Subset Sums: ";
+    // for (int i = 0; i < result.size(); i++)
+    // {
+    //     cout << result[i] << " ";
+    // }
+    // cout << endl;
+
+    vector<vector<int>> result = subsetsWithDup(arr);
+
+    cout << "Subset Sum II: " << result.size() << endl;
+    for (const auto &subset : result)
     {
-        cout << result[i] << " ";
+        cout << "{ ";
+        for (int num : subset)
+        {
+            cout << num << " ";
+        }
+        cout << "}, ";
     }
     cout << endl;
 
