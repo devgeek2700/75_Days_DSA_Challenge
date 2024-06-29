@@ -42,23 +42,77 @@ vector<vector<string>> partition(string s)
     return ansSet;
 }
 
+// Word Search
+
+bool existHelper(vector<vector<char>> &board, string word, int row, int col, int currIdx)
+{
+    if (currIdx == word.length())
+    {
+        return true;
+    }
+
+    if (row < 0 || col < 0 || row >= board.size() || col >= board[0].size())
+    {
+        return false;
+    }
+
+    if (board[row][col] != word[currIdx])
+    {
+        return false;
+    }
+
+    char temp = board[row][col];
+    board[row][col] = '#';
+    // right                                                     // left                                                 // up                                                 // down
+    bool found = existHelper(board, word, row + 1, col, currIdx + 1) || existHelper(board, word, row - 1, col, currIdx + 1) || existHelper(board, word, row, col - 1, currIdx + 1) || existHelper(board, word, row, col + 1, currIdx + 1);
+    board[row][col] = temp;
+    return found;
+}
+
+bool exist(vector<vector<char>> &board, string word) // TC --> O(n*m*4^n)  SC --> O(word.len)
+{
+    int bn = board.size();
+    int wn = word.size();
+    if (bn == 0 || wn == 0)
+    {
+        return false;
+    }
+
+    for (int i = 0; i < bn; i++)
+    {
+        for (int j = 0; j < board[0].size(); j++)
+        {
+            if (existHelper(board, word, i, j, 0))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 int main()
 {
-    string str = "a";
+    vector<vector<char>> board = {
+        {'A', 'B', 'C', 'E'},
+        {'S', 'F', 'C', 'S'},
+        {'A', 'D', 'E', 'E'}};
+    string word = "ABCB";
 
-    cout << "str:  " << str << endl;
-
-    cout << "Palindrome Partitioning: ";
-    vector<vector<string>> result = partition(str);
-
-    for (const auto &combination : result)
+    cout << "Board characters: " << endl;
+    for (const auto &row : board)
     {
-        for (const auto &word : combination)
+        for (char ch : row)
         {
-            cout << word << " ";
+            cout << ch << " ";
         }
         cout << endl;
     }
+
+    cout << "Word to search: " << word << endl;
+
+    bool result = exist(board, word);
+    cout << "Word Search result: " << result << endl;
 
     return 0;
 }
