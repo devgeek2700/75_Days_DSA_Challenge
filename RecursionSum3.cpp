@@ -91,28 +91,112 @@ bool exist(vector<vector<char>> &board, string word) // TC --> O(n*m*4^n)  SC --
     return false;
 }
 
+// N-Queens
+
+bool canFill(int row, int currCol, vector<string> &board, int n)
+{
+    int i, j;
+    // check upper left diagonal
+    for (i = row, j = currCol; i >= 0 && j >= 0; i--, j--)
+    {
+        if (board[i][j] == 'Q')
+        {
+            return false;
+        }
+    }
+
+    // check row-wise
+    for (i = row, j = currCol; j >= 0; j--)
+    {
+        if (board[i][j] == 'Q')
+        {
+            return false;
+        }
+    }
+
+    // check lower right diagonal
+    for (i = row, j = currCol; i < n && j >= 0; i++, j--)
+    {
+        if (board[i][j] == 'Q')
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void solveNQueensHelper(int n, vector<string> &board, vector<vector<string>> &res, int currCol)
+{
+    if (currCol == n)
+    {
+        res.push_back(board);
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (canFill(i, currCol, board, n))
+        {
+            board[i][currCol] = 'Q';
+            solveNQueensHelper(n, board, res, currCol + 1);
+            board[i][currCol] = '.';
+        }
+    }
+}
+
+vector<vector<string>> solveNQueens(int n)
+{
+    vector<vector<string>> res;
+    vector<string> board(n);
+    string s(n, '.');
+    for (int i = 0; i < n; i++)
+    {
+        board[i] = s;
+    }
+
+    solveNQueensHelper(n, board, res, 0);
+    return res;
+}
+
 int main()
 {
-    vector<vector<char>> board = {
-        {'A', 'B', 'C', 'E'},
-        {'S', 'F', 'C', 'S'},
-        {'A', 'D', 'E', 'E'}};
-    string word = "ABCB";
+    int n = 1;
+    cout << "the value of n: " << n << endl;
 
-    cout << "Board characters: " << endl;
-    for (const auto &row : board)
+    // vector<vector<char>> board = {
+    //     {'A', 'B', 'C', 'E'},
+    //     {'S', 'F', 'C', 'S'},
+    //     {'A', 'D', 'E', 'E'}};
+    // string word = "ABCB";
+
+    // cout << "Board characters: " << endl;
+    // for (const auto &row : board)
+    // {
+    //     for (char ch : row)
+    //     {
+    //         cout << ch << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    // cout << "Word to search: " << word << endl;
+
+    // bool result = exist(board, word);
+    // cout << "Word Search result: " << result << endl;
+
+    vector<vector<string>> result = solveNQueens(n);
+    cout << "N Queens: " << endl;
+    for (const auto &board : result)
     {
-        for (char ch : row)
+        for (const auto &row : board)
         {
-            cout << ch << " ";
+            for (char ch : row)
+            {
+                cout << ch << " ";
+            }
+            cout << endl;
         }
         cout << endl;
     }
-
-    cout << "Word to search: " << word << endl;
-
-    bool result = exist(board, word);
-    cout << "Word Search result: " << result << endl;
-
     return 0;
 }
