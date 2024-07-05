@@ -321,16 +321,19 @@ bool checkrthreeules(vector<vector<char>> &board, int row, int col, char ch)
 {
     for (int i = 0; i < 9; i++)
     {
+        // check the col
         if (board[i][col] == ch)
         {
             return false;
         }
 
+        // check the row
         if (board[row][i] == ch)
         {
             return false;
         }
 
+        // check the box
         if (board[3 * (row / 3) + i / 3][3 * (col / 3) + i % 3] == ch)
         {
             return false;
@@ -363,7 +366,7 @@ bool solveSudokuHelper(vector<vector<char>> &board)
                         }
                     }
                 }
-            return false;
+                return false;
             }
         }
     }
@@ -374,6 +377,41 @@ void solveSudoku(vector<vector<char>> &board)
 {
     solveSudokuHelper(board);
 }
+
+// Expression Add Operators
+void addOperatorsHelper(vector<string>& res, string path, string num, int target, int currPos, long long currEval, long long currMul) {
+    if (currPos == num.length()) {
+        if (currEval == target) {
+            res.push_back(path);
+        }
+        return;
+    }
+
+    for (int i = currPos; i < num.length(); ++i) {
+        // Prevent numbers with leading zeroes
+        if (i != currPos && num[currPos] == '0') break;
+        
+        string currStr = num.substr(currPos, i - currPos + 1);
+        long long curr = stoll(currStr);
+
+        if (currPos == 0) {
+            // First number in the expression
+            addOperatorsHelper(res, path + currStr, num, target, i + 1, curr, curr);
+        } else {
+            addOperatorsHelper(res, path + "+" + currStr, num, target, i + 1, currEval + curr, curr);
+            addOperatorsHelper(res, path + "-" + currStr, num, target, i + 1, currEval - curr, -curr);
+            addOperatorsHelper(res, path + "*" + currStr, num, target, i + 1, currEval - currMul + currMul * curr, currMul * curr);
+        }
+    }
+}
+
+vector<string> addOperators(string num, int target) {
+    vector<string> res;
+    if (num.empty()) return res;
+    addOperatorsHelper(res, "", num, target, 0, 0, 0);
+    return res;
+}
+
 
 int main()
 {
@@ -460,27 +498,41 @@ int main()
     // bool result = graphColoring(graph, m, 3);
     // cout << "M-Coloring Problem: " << (result ? "Possible" : "Not Possible") << endl;
 
-    vector<char> initialVector = {
-        '5', '3', '.', '.', '7', '.', '.', '.', '.',
-        '6', '.', '.', '1', '9', '5', '.', '.', '.',
-        '.', '9', '8', '.', '.', '.', '.', '6', '.',
-        '8', '.', '.', '.', '6', '.', '.', '.', '3',
-        '4', '.', '.', '8', '.', '3', '.', '.', '1',
-        '7', '.', '.', '.', '2', '.', '.', '.', '6',
-        '.', '6', '.', '.', '.', '.', '2', '8', '.',
-        '.', '.', '.', '4', '1', '9', '.', '.', '5',
-        '.', '.', '.', '.', '8', '.', '.', '7', '9'};
+    // vector<char> initialVector = {
+    //     '5', '3', '.', '.', '7', '.', '.', '.', '.',
+    //     '6', '.', '.', '1', '9', '5', '.', '.', '.',
+    //     '.', '9', '8', '.', '.', '.', '.', '6', '.',
+    //     '8', '.', '.', '.', '6', '.', '.', '.', '3',
+    //     '4', '.', '.', '8', '.', '3', '.', '.', '1',
+    //     '7', '.', '.', '.', '2', '.', '.', '.', '6',
+    //     '.', '6', '.', '.', '.', '.', '2', '8', '.',
+    //     '.', '.', '.', '4', '1', '9', '.', '.', '5',
+    //     '.', '.', '.', '.', '8', '.', '.', '7', '9'};
 
-    vector<vector<char>> board(9, vector<char>(9, '.'));
-    vectorToBoard(initialVector, board);
+    // vector<vector<char>> board(9, vector<char>(9, '.'));
+    // vectorToBoard(initialVector, board);
 
-    cout << "Initial Board:" << endl;
-    displayBoard(board);
+    // cout << "Initial Board:" << endl;
+    // displayBoard(board);
 
-    solveSudoku(board);
+    // solveSudoku(board);
 
-    cout << "\nSolved Board:" << endl;
-    displayBoard(board);
+    // cout << "\nSolved Board:" << endl;
+    // displayBoard(board);
+
+   string num = "232";
+    int target = 8;
+
+    cout << "Input string: " << num << endl;
+    cout << "Target value: " << target << endl;
+
+    vector<string> result = addOperators(num, target);
+
+    cout << "\nExpressions that evaluate to " << target << ":" << endl;
+    for (const auto &expr : result)
+    {
+        cout << expr << endl;
+    }
 
     return 0;
 }
