@@ -10,7 +10,7 @@ using namespace std;
 void mergeSort(int arr[], int low, int mid, int high)
 {
     int left = low;
-    int right = mid + 1;
+    int right = mid + 1; // starts at the beginning of the second subarray
     int temp[high - low + 1];
     int indextemp = 0;
 

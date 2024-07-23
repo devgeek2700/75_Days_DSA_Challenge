@@ -455,8 +455,8 @@ int main()
     // sort the string --> lexicographically
 
     // string str = "aacc";
-    string str = "abcde";
-    string goal = "abced";
+    string str = "bank";
+    string goal = "atom";
     // string t = "ccac";
     // vector<string> str = {"microscope", "microphone", "microbial"};
 
