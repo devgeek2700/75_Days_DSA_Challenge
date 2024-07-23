@@ -448,9 +448,60 @@ vector<vector<int>> insert(vector<vector<int>> &intervals, vector<int> &newInter
 }
 
 // Merge Intervals
-vector<vector<int>> merge(vector<vector<int>> &intervals)
+vector<vector<int>> merge(vector<vector<int>> &intervals) // TC --> O(nlogn +n) SC --> O(N)
 {
+    vector<vector<int>> ans;
+    int n = intervals.size();
+
+    if (n == 0)
+    {
+        return ans;
+    }
+
+    sort(intervals.begin(), intervals.end());
+    vector<int> temp = intervals[0];
+
+    for (auto it : intervals)
+    {
+        // if it overlaped with temp varibale
+        if (it[0] <= temp[1])
+        {
+            temp[1] = max(temp[1], it[1]);
+        }
+        else
+        {
+            ans.push_back(temp);
+            temp = it;
+        }
+    }
+    ans.push_back(temp);
+    return ans;
 }
+
+// Non-overlapping Intervals
+int eraseOverlapIntervals(vector<vector<int>> &intervals)
+{
+    int n = intervals.size();
+    if (n == 0)
+    {
+        return 0;
+    }
+
+    sort(intervals.begin(), intervals.end());
+    int count = 1;
+    int lasttime = intervals[0][1];
+
+    for (int i = 0; i < n; i++)
+    {
+        if (intervals[i][0] >= lasttime)
+        {
+            count++;
+            lasttime = intervals[i][1];
+        }
+    }
+    return n - count;
+}
+
 int main()
 {
     // vector<int> g = {1, 5, 3, 3, 4};
@@ -507,15 +558,22 @@ int main()
     // int C = 3;
     // cout << "Page Faults in LRU: " << pageFaults(n, C, pages) << endl;
 
-    vector<vector<int>> intervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
+    // vector<vector<int>> intervals = {{1, 2}, {2,3},{3,4},{1,3}};
 
-    vector<vector<int>> result = merge(intervals);
+    // vector<vector<int>> result = merge(intervals);
 
-    cout << "Merged Intervals: ";
-    for (const auto &interval : result)
-    {
-        cout << "[" << interval[0] << "," << interval[1] << "] ";
-    }
-    cout << endl;
+    // cout << "Non-overlapping Intervals: ";
+    // for (const auto &interval : result)
+    // {
+    //     cout << "[" << interval[0] << "," << interval[1] << "] ";
+    // }
+    // cout << endl;
+
+    vector<vector<int>> intervals = {{1, 2}, {1, 2}, {1, 2}};
+
+    int result = eraseOverlapIntervals(intervals);
+
+    cout << "Non-overlapping Intervals: " << result << endl;
+
     return 0;
 }
