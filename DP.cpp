@@ -313,7 +313,9 @@ int robHelper(vector<int> &nums, int start, int end, vector<int> &dp)
     return dp[start] = max(robCurrent, skipCurrent);
 }
 
-int rob2(vector<int> &nums)
+// Memoization
+
+int rob2(vector<int> &nums) // TC --> O(N) SC --> O(N) + O(N)
 {
     int n = nums.size();
     if (n == 0)
@@ -326,6 +328,40 @@ int rob2(vector<int> &nums)
 
     vector<int> dp2(n, -1);
     int robLastHouse = robHelper(nums, 1, n - 1, dp2);
+
+    return max(robFirstHouse, robLastHouse);
+}
+
+int robHelpert(const vector<int> &nums, int start, int end)
+{
+    int n = end - start + 1;
+    if (n == 0)
+        return 0;
+    if (n == 1)
+        return nums[start];
+
+    vector<int> dp(n, 0);
+    dp[0] = nums[start];
+    dp[1] = max(nums[start], nums[start + 1]);
+
+    for (int i = 2; i < n; ++i)
+    {
+        dp[i] = max(dp[i - 1], nums[start + i] + dp[i - 2]);
+    }
+
+    return dp[n - 1];
+}
+// Tabulation
+int rob2t(vector<int> &nums) // TC --> O(N) SC --> O(N)
+{
+    int n = nums.size();
+    if (n == 0)
+        return 0;
+    if (n == 1)
+        return nums[0];
+
+    int robFirstHouse = robHelpert(nums, 0, n - 2);
+    int robLastHouse = robHelpert(nums, 1, n - 1);
 
     return max(robFirstHouse, robLastHouse);
 }
@@ -375,9 +411,7 @@ int maximumPoints(vector<vector<int>> &arr, int n) // TC --> O(N) SC --> O(3*N) 
     int days = arr.size();
     if (days == 0)
         return 0;
-
     vector<vector<int>> dp(days, vector<int>(n, -1));
-
     return maximumPointsHelper(arr, days - 1, -1, n, dp);
 }
 
@@ -386,7 +420,7 @@ int main()
     int n = 3;
     int k = 1;
     vector<int> nums = {1, 2, 3};
-    vector<vector<int>> arr = {{1, 2, 5}, {3, 1, 1}, {3, 3, 3}};
+    vector<vector<int>> arr = {{10, 40, 70}, {20, 50, 80}, {30, 60, 90}};
     // cout << "Value is: " << Fibonacci(n, dp) << endl;
     // cout << "Value t is: " << Fibonaccit(n, dp) << endl;
     // cout << "Value sop is: " << Fibonaccits(n, dp) << endl;
@@ -404,6 +438,7 @@ int main()
     // cout << "House Robber t: " << robt(nums) << endl;
 
     // cout << "House Robber II: " << rob2(nums) << endl;
+    // cout << "House Robber t II: " << rob2t(nums) << endl;
 
     cout << "Geek's Training: " << maximumPoints(arr, arr[0].size()) << endl;
 
