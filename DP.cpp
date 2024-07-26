@@ -219,11 +219,174 @@ int minimizeCostkt(vector<int> &height, int n, int k) // TC --> O(N) SC --> O(N)
     return minimizeCostktHelper(height, n, k, dp);
 }
 
+// House Robber
+int robHelper(vector<int> &nums, int n, vector<int> &dp)
+{
+    if (n < 0)
+    {
+        return 0;
+    }
+
+    if (n == 0)
+    {
+        return nums[0];
+    }
+
+    if (dp[n] != -1)
+    {
+        return dp[n];
+    }
+
+    int pickedIdx = nums[n] + robHelper(nums, n - 2, dp);
+    int notpickedIdx = robHelper(nums, n - 1, dp);
+
+    return dp[n] = max(pickedIdx, notpickedIdx);
+}
+
+// Memoization               recusion stack space and dp array
+int rob(vector<int> &nums) // TC --> O(N) SC --> O(N) + O(N)
+{
+    int n = nums.size();
+    if (n == 0)
+        return 0;
+    vector<int> dp(n, -1);
+    return robHelper(nums, n - 1, dp);
+}
+
+int robHelpert(vector<int> &nums, int n, vector<int> &dp)
+{
+    if (n == 0)
+    {
+        return 0;
+    }
+    if (n == 1)
+    {
+        return nums[0];
+    }
+
+    dp[0] = nums[0];
+    dp[1] = max(nums[0], nums[1]);
+
+    for (int i = 2; i < n; i++)
+    {
+        dp[i] = max(nums[i] + dp[i - 2], dp[i - 1]);
+    }
+
+    return dp[n - 1];
+}
+
+// Tabulation                                  dp array
+int robt(vector<int> &nums) // TC --> O(N) SC --> O(N)
+{
+    int n = nums.size();
+    if (n == 0)
+        return 0;
+    vector<int> dp(n, -1);
+    return robHelpert(nums, n, dp);
+}
+
+// House Robber II arranged in circle
+int robHelper(vector<int> &nums, int start, int end, vector<int> &dp)
+{
+    if (start > end)
+    {
+        return 0;
+    }
+
+    if (start == end)
+    {
+        return nums[start];
+    }
+
+    if (dp[start] != -1)
+    {
+        return dp[start];
+    }
+
+    // so even can we out first val and calulate on rest -->  ans 1
+    // or we can leave out last val and calulate on rest -->  ans 2
+    // ans = max(ans 1, ans 2)
+
+    int robCurrent = nums[start] + robHelper(nums, start + 2, end, dp);
+    int skipCurrent = robHelper(nums, start + 1, end, dp);
+
+    return dp[start] = max(robCurrent, skipCurrent);
+}
+
+int rob2(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 0)
+        return 0;
+    if (n == 1)
+        return nums[0];
+
+    vector<int> dp1(n, -1);
+    int robFirstHouse = robHelper(nums, 0, n - 2, dp1);
+
+    vector<int> dp2(n, -1);
+    int robLastHouse = robHelper(nums, 1, n - 1, dp2);
+
+    return max(robFirstHouse, robLastHouse);
+}
+
+// Geek's Training
+int maximumPointsHelper(const vector<vector<int>> &arr, int day, int last, int n, vector<vector<int>> &dp)
+{
+    if (day == 0)
+    {
+        int maxPoints = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (i != last)
+            {
+                maxPoints = max(maxPoints, arr[day][i]);
+            }
+        }
+        return maxPoints;
+    }
+
+    if (last != -1 && dp[day][last] != -1)
+    {
+        return dp[day][last];
+    }
+
+    int maxPoints = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (i != last)
+        {
+            int CurrPoints = arr[day][i] + maximumPointsHelper(arr, day - 1, i, n, dp);
+            maxPoints = max(maxPoints, CurrPoints);
+        }
+    }
+
+    if (last != -1)
+    {
+        dp[day][last] = maxPoints;
+    }
+
+    return maxPoints;
+}
+
+// Memoization
+int maximumPoints(vector<vector<int>> &arr, int n) // TC --> O(N) SC --> O(3*N) + O(3*N)
+{
+    int days = arr.size();
+    if (days == 0)
+        return 0;
+
+    vector<vector<int>> dp(days, vector<int>(n, -1));
+
+    return maximumPointsHelper(arr, days - 1, -1, n, dp);
+}
+
 int main()
 {
     int n = 3;
     int k = 1;
-    vector<int> height = {10, 20, 10};
+    vector<int> nums = {1, 2, 3};
+    vector<vector<int>> arr = {{1, 2, 5}, {3, 1, 1}, {3, 3, 3}};
     // cout << "Value is: " << Fibonacci(n, dp) << endl;
     // cout << "Value t is: " << Fibonaccit(n, dp) << endl;
     // cout << "Value sop is: " << Fibonaccits(n, dp) << endl;
@@ -234,7 +397,15 @@ int main()
     // cout << "climbStairs is: " << minimumEnergy(height, n) << endl;
     // cout << "climbStairs t is: " << minimumEnergyt(height, n) << endl;
 
-    cout << "Minimum energy required: " << minimizeCost(height, n, k) << endl;
-    cout << "Minimum energy required t: " << minimizeCostkt(height, n, k) << endl;
+    // cout << "Minimum energy required: " << minimizeCost(height, n, k) << endl;
+    // cout << "Minimum energy required t: " << minimizeCostkt(height, n, k) << endl;
+
+    // cout << "House Robber: " << rob(nums) << endl;
+    // cout << "House Robber t: " << robt(nums) << endl;
+
+    // cout << "House Robber II: " << rob2(nums) << endl;
+
+    cout << "Geek's Training: " << maximumPoints(arr, arr[0].size()) << endl;
+
     return 0;
 }
