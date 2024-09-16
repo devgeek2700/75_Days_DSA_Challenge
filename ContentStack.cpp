@@ -505,7 +505,7 @@ int lenOfLongSubarr(int A[], int N, int K)
 
         if (sum == K)
         {
-            maxLen = std::max(maxLen, right - left + 1);
+            maxLen = max(maxLen, right - left + 1);
         }
         right++;
     }
