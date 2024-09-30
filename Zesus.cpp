@@ -1261,6 +1261,84 @@ int reversePairs(vector<int> &nums)
     mergeSort(nums, 0, n - 1, count);
     return count;
 }
+
+// Count Inversions
+long long int inversionCount1(vector<long long> &arr)
+{
+    int n = arr.size();
+    long long count = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            if (arr[i] > arr[j])
+            {
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
+// Count Inversions -> optimal soln
+long long mergeinvcnt(vector<long long> &arr, int low, int mid, int high)
+{
+    vector<int> temp(high - low + 1);
+    int left = low;
+    int right = mid + 1;
+    int k = 0;
+    long long count = 0;
+
+    while (left <= mid && right <= high)
+    {
+        if (arr[left] <= arr[right])
+        {
+            temp[k++] = arr[left++];
+        }
+        else
+        {
+            temp[k++] = arr[right++];
+            count += mid - left + 1; // Count inversions
+        }
+    }
+
+    while (left <= mid)
+    {
+        temp[k++] = arr[left++];
+    }
+
+    while (right <= high)
+    {
+        temp[k++] = arr[right++];
+    }
+
+    for (int i = 0; i < temp.size(); i++)
+    {
+        arr[low + i] = temp[i];
+    }
+    return count;
+}
+
+long long mergesortincnt(vector<long long> &arr, int low, int high)
+{
+    long long count = 0;
+    if (low >= high)
+    {
+        return count;
+    }
+
+    int mid = (low + high) / 2;
+    count += mergesortincnt(arr, low, mid);
+    count += mergesortincnt(arr, mid + 1, high);
+    count += mergeinvcnt(arr, low, mid, high);
+    return count;
+}
+
+long long int inversionCount(vector<long long> &arr)
+{
+    return mergesortincnt(arr, 0, arr.size() - 1);
+}
+
 // maximum Product Subarray
 int maxProduct(vector<int> &nums)
 {
@@ -1277,6 +1355,365 @@ int maxProduct(vector<int> &nums)
         }
     }
     return maxProd;
+}
+
+// ************************* BINARY SERACH EASY ***************************
+// Binary Search
+int search(vector<int> &nums, int target)
+{
+    int n = nums.size();
+    int low = 0;
+    int high = n - 1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (nums[mid] == target)
+        {
+            return mid;
+        }
+
+        else if (nums[mid] > target)
+        {
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return -1;
+}
+
+// Lower Bound in a Sorted Array --> smallest index such that arr[idx] > x
+int lowerBound1(vector<int> &arr, int target)
+{
+    int n = arr.size();
+    int low = 0;
+    int high = n - 1;
+    int ans = -1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (arr[mid] <= target)
+        {
+            ans = mid;
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+    return ans;
+}
+
+int lowerBound(vector<int> &arr, int target)
+{
+    auto lowerboundans = lower_bound(arr.begin(), arr.end(), target) - arr.begin();
+    return lowerboundans;
+}
+
+// Upper Bound in a Sorted Array --> smallest index such that arr[idx] > x
+int upperBound1(vector<int> &arr, int target)
+{
+    int n = arr.size();
+    int low = 0;
+    int high = n - 1;
+    int ans = -1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (arr[mid] >= target)
+        {
+            ans = mid;
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return ans;
+}
+
+int upperBound(vector<int> &arr, int target)
+{
+    auto upperboundans = upper_bound(arr.begin(), arr.end(), target) - arr.begin();
+    return upperboundans;
+}
+
+// Search Insert Position
+int searchInsert(vector<int> &nums, int target)
+{
+    int n = nums.size();
+    int low = 0;
+    int high = n - 1;
+    int ans = n;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (nums[mid] >= target)
+        {
+            ans = mid;
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return ans;
+}
+
+//  Ceil The Floor  --> ceil = lower bound
+pair<int, int> getFloorAndCeil(vector<int> &arr, int n, int x)
+{
+    int low = 0;
+    int high = n - 1;
+    int ceil = -1;
+    int floor = -1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (arr[mid] == x)
+        {
+            ceil = floor = arr[mid];
+            break;
+        }
+        else if (arr[mid] > x)
+        {
+            ceil = arr[mid];
+            high = mid - 1;
+        }
+        else
+        {
+            floor = arr[mid];
+            low = mid + 1;
+        }
+    }
+    return {floor, ceil};
+}
+
+// Find First and Last Position of Element in Sorted Array
+// first --> lower bound / ceil
+// last --> upper bound / floor
+vector<int> searchRange(vector<int> &nums, int target)
+{
+    int n = nums.size();
+    int first = lower_bound(nums.begin(), nums.end(), target) - nums.begin();
+    int last = upper_bound(nums.begin(), nums.end(), target) - nums.begin() - 1;
+
+    if (first >= n || nums[first] != target)
+    {
+        return {-1, -1};
+    }
+
+    return {first, last};
+}
+
+// Number of occurrence
+int count(vector<int> &nums, int n, int target)
+{
+    int first = lower_bound(nums.begin(), nums.end(), target) - nums.begin();
+    int last = upper_bound(nums.begin(), nums.end(), target) - nums.begin() - 1;
+
+    if (first >= n || nums[first] != target)
+    {
+        return 0;
+    }
+
+    return last - first + 1;
+}
+
+// Search in Rotated Sorted Array - I
+int searchrotated(vector<int> &nums, int target)
+{
+    int n = nums.size();
+    int low = 0;
+    int high = n - 1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        if (nums[mid] == target)
+        {
+            return mid;
+        }
+
+        // left half sorted
+        if (nums[low] <= nums[mid])
+        {
+            if (nums[low] <= target && target <= nums[mid])
+            {
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
+        // right half sorted
+        else
+        {
+            if (nums[mid] <= nums[high])
+            {
+                if (nums[mid] <= target && target <= nums[high])
+                {
+                    low = mid + 1;
+                }
+                else
+                {
+                    high = mid - 1;
+                }
+            }
+        }
+    }
+    return -1;
+}
+
+//  Search In Rotated Sorted Array (II) --> dulpicates
+bool searchrotated2(vector<int> &nums, int target)
+{
+
+    int n = nums.size();
+    int low = 0;
+    int high = n - 1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        if (nums[mid] == target)
+        {
+            return 1;
+        }
+
+        if (nums[low] == nums[mid] && nums[mid] == nums[high])
+        {
+            low++;
+            high--;
+            continue;
+        }
+
+        // left half sorted
+        if (nums[low] <= nums[mid])
+        {
+            if (nums[low] <= target && target <= nums[mid])
+            {
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
+        // right half sorted
+        else
+        {
+            if (nums[mid] <= nums[high])
+            {
+                if (nums[mid] <= target && target <= nums[high])
+                {
+                    low = mid + 1;
+                }
+                else
+                {
+                    high = mid - 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+// Find Minimum in Rotated Sorted Array
+int findMin(vector<int> &nums)
+{
+    int n = nums.size();
+    int low = 0;
+    int high = n - 1;
+    int minVal = INT_MAX;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (nums[low] <= nums[high])
+        {
+            minVal = min(minVal, nums[low]);
+            break;
+        }
+
+        // left half sorted
+        if (nums[low] <= nums[mid])
+        {
+            minVal = min(minVal, nums[low]);
+            low = mid + 1;
+        }
+        // right half sorted
+        else
+        {
+            minVal = min(minVal, nums[mid]);
+            high = mid - 1;
+        }
+    }
+    return minVal;
+}
+
+// Find Kth Rotation
+int findKRotation(vector<int> &nums)
+{
+    int n = nums.size();
+    int low = 0;
+    int high = n - 1;
+    int minVal = INT_MAX;
+    int minIdx = 0;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (nums[low] <= nums[high])
+        {
+            if (nums[low] < minVal)
+            {
+                minIdx = low;
+                minVal = nums[low];
+            }
+            break;
+        }
+
+        // left half sorted
+        if (nums[low] <= nums[mid])
+        {
+            if (nums[low] < minVal)
+            {
+                minIdx = low;
+                minVal = nums[low];
+            }
+            low = mid + 1;
+        }
+        // right half sorted
+        else
+        {
+            if (nums[mid] < minVal)
+            {
+                minIdx = mid;
+                minVal = nums[mid];
+            }
+            high = mid - 1;
+        }
+    }
+    return minIdx;
 }
 
 int main()
@@ -1579,8 +2016,41 @@ int main()
     //     cout << it << " ";
     // }
 
-    vector<int> nums = {1, 3, 2, 3, 1};
-    cout << "Number of reverse pairs: " << reversePairs(nums) << endl;
+    // vector<int> nums = {1, 3, 2, 3, 1};
+    // cout << "Number of reverse pairs: " << reversePairs(nums) << endl;
+
+    // vector<long long> arr = {2, 4, 1, 3, 5};
+    // cout << "Count Inversions: " << inversionCount(arr) << endl;
+
+    vector<int> nums = {5, 1, 2, 3, 4};
+    int x = 3;
+    // int ans = search(nums, target);
+    // cout << "Element found at index: " << ans << endl;
+
+    // int ans2 = upperBound(nums, target);
+    // cout << "Upper Bound: " << ans2 << endl;
+
+    // pair<int, int> result = getFloorAndCeil(nums, nums.size(), x);
+
+    // cout << "Floor index: " << result.first << endl;
+    // cout << "Ceil index: " << result.second << endl;
+
+    // vector<int> result = searchRange(nums, x);
+
+    // cout << "First position: " << result[0] << endl;
+    // cout << "Last position: " << result[1] << endl;
+
+    // int result = count(nums, nums.size(), x);
+    // cout << "Number of occurrences of " << x << ": " << result << endl;
+
+    // int result = searchrotated(nums, x);
+    // cout << "Element found at index: " << result << endl;
+
+    // int result = searchrotated2(nums, x);
+    // cout << "Element found at index: " << result << endl;
+
+    int rotationIndex = findKRotation(nums);
+    cout << "The array is rotated " << rotationIndex << " times." << endl;
 
     return 0;
 }
