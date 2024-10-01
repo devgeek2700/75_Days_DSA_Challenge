@@ -1716,6 +1716,351 @@ int findKRotation(vector<int> &nums)
     return minIdx;
 }
 
+// Single Element in a Sorted Array
+// (even, odd),... single value ... (odd, even)
+// (even , odd) --> I'm on left half and my sigle value will be on right half
+// (odd,even) --> I'm on right half and my sigle value will be on left half
+int singleNonDuplicate(vector<int> &nums)
+{
+    int n = nums.size();
+    int low = 1;
+    int high = n - 2;
+
+    if (n == 1)
+    {
+        return nums[0];
+    }
+    if (nums[0] != nums[1])
+    {
+        return nums[0];
+    }
+
+    if (nums[n - 1] != nums[n - 2])
+    {
+        return nums[n - 1];
+    }
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (nums[mid] != nums[mid + 1] && nums[mid] != nums[mid - 1])
+        {
+            return nums[mid];
+        }
+        else
+        {
+            if ((mid % 2 == 1 && nums[mid - 1] == nums[mid]) || (mid % 2 == 0 && nums[mid + 1] == nums[mid]))
+            {
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
+            }
+        }
+    }
+    return -1;
+}
+
+// Find Peak Element
+int findPeakElement(vector<int> &nums)
+{
+    int n = nums.size();
+    int low = 1;
+    int high = n - 2;
+    int peak = 0;
+
+    if (n == 1)
+    {
+        return n;
+    }
+
+    if (nums[0] > nums[1])
+    {
+        return 0;
+    }
+
+    if (nums[n - 1] > nums[n - 2])
+    {
+        return n - 1;
+    }
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if ((nums[mid] > nums[mid - 1]) && (nums[mid] > nums[mid + 1]))
+        {
+            return mid;
+        }
+        else
+        {
+            if (nums[mid] < nums[mid + 1])
+            {
+                low = mid + 1;
+            }
+            else if (nums[mid] > nums[mid - 1])
+            {
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
+    }
+    return -1;
+}
+
+// ************************* BINARY SERACH MEDIUM ***************************
+
+// Square root of a number
+long long int floorSqrt(long long int n)
+{
+    int low = 1;
+    int high = n;
+    int ans = 1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if (mid * mid <= n)
+        {
+            ans = mid;
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+    return ans;
+}
+
+// Find Nth root of M
+int calculate(int mid, int n, int m)
+{
+    long long ans = 1;
+
+    for (int i = 1; i <= n; i++)
+    {
+        ans = ans * mid;
+        if (ans > m)
+        {
+            return 2;
+        }
+    }
+
+    if (ans == m)
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
+int NthRoot(int n, int m)
+{
+    int low = 1;
+    int high = m;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        int midNum = calculate(mid, n, m);
+
+        if (midNum == 1)
+        {
+            return mid;
+        }
+
+        else if (midNum == 0)
+        {
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+    return -1;
+}
+
+// Koko Eating Bananas
+int MinNoOfBananas(vector<int> &piles, int mid, int h)
+{
+    int totalHours = 0;
+
+    for (int i = 0; i < piles.size(); i++)
+    {
+        totalHours += ceil(double(piles[i]) / mid);
+    }
+    return totalHours;
+}
+
+int minEatingSpeed(vector<int> &piles, int h)
+{
+    int n = piles.size();
+    int low = 1;
+    int high = *max_element(piles.begin(), piles.end());
+    int ans = high;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        int requiredAns = MinNoOfBananas(piles, mid, h);
+        if (requiredAns <= h)
+        {
+            ans = mid;
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return ans;
+}
+
+// Minimum Number of Days to Make m Bouquets
+// m -->  no of Bouquets
+// k -->  adjacent flowers required
+
+bool possibleDay(vector<int> &bloomDay, int m, int k, int day)
+{
+    int count = 0;
+    int noOfbouquet = 0;
+    for (int i = 0; i < bloomDay.size(); i++)
+    {
+        if (bloomDay[i] <= day)
+        {
+            count++;
+        }
+        else
+        {
+            noOfbouquet += (count / k);
+            count = 0;
+        }
+    }
+    noOfbouquet += (count / k);
+
+    if (noOfbouquet >= m)
+    {
+        true;
+    }
+    else
+    {
+        false;
+    }
+}
+
+int minDays(vector<int> &bloomDay, int m, int k)
+{
+    if (m * k > bloomDay.size()) // If it's impossible to make 'm' bouquets
+        return -1;
+
+    int low = *min_element(bloomDay.begin(), bloomDay.end());
+    int high = *max_element(bloomDay.begin(), bloomDay.end());
+    int ans = -1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        bool canMake = possibleDay(bloomDay, m, k, mid);
+
+        if (canMake)
+        {
+            ans = mid;
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return ans;
+}
+
+// Find the Smallest Divisor Given a Threshold
+int calDivisor(vector<int> &nums, int mid)
+{
+    int totalDivisor = 0;
+
+    for (int i = 0; i < nums.size(); i++)
+    {
+        totalDivisor += ceil(double(nums[i]) / mid);
+    }
+    return totalDivisor;
+}
+
+int smallestDivisor(vector<int> &nums, int threshold)
+{
+    int n = nums.size();
+    int low = 1;
+    int high = *max_element(nums.begin(), nums.end());
+    int ans = high;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        int requiredAns = calDivisor(nums, mid);
+        if (requiredAns <= threshold)
+        {
+            ans = mid;
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return ans;
+}
+
+// Capacity To Ship Packages Within D Days
+int minnofindDays(vector<int> &weights, int mid) {
+    int noofDays = 1;  // Start with the first day
+    int load = 0;
+
+    for (int i = 0; i < weights.size(); i++) {
+        if (load + weights[i] > mid) {  
+            noofDays += 1;
+            load = weights[i];  
+        } else {
+            load += weights[i];  
+        }
+    }
+    return noofDays;
+}
+
+
+int shipWithinDays(vector<int> &weights, int days)
+{
+    int low = *max_element(weights.begin(), weights.end());
+    int high = accumulate(weights.begin(), weights.end(), 0);
+    int ans = -1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        int requiredAns = minnofindDays(weights, mid);
+
+        if (requiredAns <= days)
+        {
+            ans = mid;
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return ans;
+}
+
 int main()
 {
     // vector<int> arr = {-5, 8, -14, 2, 4, 12};
@@ -2022,8 +2367,10 @@ int main()
     // vector<long long> arr = {2, 4, 1, 3, 5};
     // cout << "Count Inversions: " << inversionCount(arr) << endl;
 
-    vector<int> nums = {5, 1, 2, 3, 4};
-    int x = 3;
+    vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int days = 5;
+    // int k = 2;
+    // int x = 3;
     // int ans = search(nums, target);
     // cout << "Element found at index: " << ans << endl;
 
@@ -2049,8 +2396,17 @@ int main()
     // int result = searchrotated2(nums, x);
     // cout << "Element found at index: " << result << endl;
 
-    int rotationIndex = findKRotation(nums);
-    cout << "The array is rotated " << rotationIndex << " times." << endl;
+    // int rotationIndex = findKRotation(nums);
+    // cout << "The array is rotated " << rotationIndex << " times." << endl;
+
+    // cout << "The single non-duplicate element is: " << singleNonDuplicate(nums) << endl;
+    // cout << "The Peak element is: " << findPeakElement(nums) << endl;
+    // cout << "The Square root of a number is: " << floorSqrt(4) << endl;
+    // cout << "The Nth root of M is: " << NthRoot(3, 9) << endl;
+    // cout << "The Mininmum no.of Bananas: " << minEatingSpeed(nums, h) << endl;
+    // cout << "Minimum number of days: " << minDays(nums, m, k) << endl;
+    // cout << "The Smallest Divisor Given a Threshold: " << smallestDivisor(nums, threshold) << endl;
+    cout << "Capacity to Ship Packages within D Days: " << shipWithinDays(nums, days) << endl;
 
     return 0;
 }

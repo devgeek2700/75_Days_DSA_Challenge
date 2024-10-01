@@ -566,11 +566,6 @@ vector<int> rearrangeArray(vector<int> &nums)
     return ans;
 }
 
-// Next Permutation
-void nextPermutation(vector<int> &nums)
-{
-    int n = nums.size();
-}
 
 int main()
 {
