@@ -414,12 +414,98 @@ int kthElement(int k, vector<int> &arr1, vector<int> &arr2)
     return -1; // Fallback case (should not be reached)
 }
 
+// ************************* BINARY SERACH 2D Array ***************************
+// Row with max 1s
+int lowerBound(vector<int> &arr, int target) // lb/up/first occurrence of 1 --> bcoz we need to find first occurrence of 1
+{
+    auto lowerboundans = lower_bound(arr.begin(), arr.end(), target) - arr.begin();
+    return lowerboundans;
+}
+
+int rowWithMax1s(vector<vector<int>> &arr)
+{
+    int n = arr.size();
+    int maxCount = 0;
+    int maxIdx = -1;
+
+    for (int i = 0; i < n; i++)
+    {
+        int count_ones = n - lowerBound(arr[i], 1);
+        if (count_ones > maxCount)
+        {
+            maxCount = count_ones;
+            maxIdx = i;
+        }
+    }
+    return maxIdx;
+}
+
+// Search a 2D Matrix
+bool searchMatrix1(vector<vector<int>> &matrix, int target)
+{
+    int n = matrix.size();    // row
+    int m = matrix[0].size(); // col
+    int low = 0, high = (n * m - 1);
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        int row = mid / m;
+        int col = mid % m;
+
+        if (matrix[row][col] == target)
+        {
+            return true;
+        }
+        else if (matrix[row][col] > target)
+        {
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return false;
+}
+
+// Search a 2D Matrix II
+bool searchMatrix(vector<vector<int>> &matrix, int target)
+{
+    int n = matrix.size();
+    int m = matrix[0].size();
+    int row = 0;
+    int col = m - 1;
+
+    while (row < n && col >= 0)
+    {
+        if (matrix[row][col] == target)
+        {
+            return true;
+        }
+        else if (matrix[row][col] > target)
+        {
+            col--;
+        }
+        else
+        {
+            row++;
+        }
+    }
+    return false;
+}
+
+// Find a Peak Element II
+vector<int> findPeakGrid(vector<vector<int>> &mat)
+{
+}
+
 int main()
 {
 
-    vector<int> nums1 = {2, 3, 6, 7, 9};
-    vector<int> nums2 = {1, 4, 8, 10};
-    int k = 5;
+    // vector<int> nums1 = {2, 3, 6, 7, 9};
+    // vector<int> nums2 = {1, 4, 8, 10};
+    // int k = 5;
     // int m = 2;
     // cout << "The largest minimum distance is: " << aggressiveCows(nums, k) << endl;
     // cout << "The largest minimum distance is: " << findPages(nums, n, m) << endl;
@@ -429,8 +515,22 @@ int main()
     // double median = findMedianSortedArrays(nums1, nums2);
     // cout << "The median is: " << median << endl;
 
-    int result = kthElement(k, nums1, nums2);
-    cout << "The " << k << "-th element is: " << result << endl;
+    // int result = kthElement(k, nums1, nums2);
+    // cout << "The " << k << "-th element is: " << result << endl;
+
+    vector<vector<int>> matrix = {
+        {1, 4},
+        {3, 2}};
+    int target = 20;
+
+    // int result = rowWithMax1s(matrix);
+    // cout << "Row with max 1s index is: " << result << endl;
+
+    // int result = searchMatrix(matrix, target);
+    // cout << "Search a 2D Matrix: " << result << endl;
+
+    // bool result = searchMatrix(matrix, target);
+    // cout << "Search a 2D Matrix: " << (result ? "True" : "False") << endl;
 
     return 0;
 }
