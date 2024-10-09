@@ -496,8 +496,91 @@ bool searchMatrix(vector<vector<int>> &matrix, int target)
 }
 
 // Find a Peak Element II
+int FindMaxNuminCol(vector<vector<int>> &mat, int n, int m, int midcol)
+{
+    int maxValCol = -1;
+    int maxNumidx = -1;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (mat[i][midcol] > maxValCol)
+        {
+            maxValCol = mat[i][midcol];
+            maxNumidx = i;
+        }
+    }
+    return maxNumidx;
+}
+
 vector<int> findPeakGrid(vector<vector<int>> &mat)
 {
+    int n = mat.size();
+    int m = mat[0].size();
+    int low = 0;
+    int high = m - 1;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        int maxRowIdx = FindMaxNuminCol(mat, n, m, mid);
+        int left = mid - 1 >= 0 ? mat[maxRowIdx][mid - 1] : -1;
+        int right = mid + 1 < m ? mat[maxRowIdx][mid + 1] : -1;
+
+        if (mat[maxRowIdx][mid] > left && mat[maxRowIdx][mid] > right)
+        {
+            return {maxRowIdx, mid};
+        }
+        else if (mat[maxRowIdx][mid] > left)
+        {
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    return {-1, -1};
+}
+
+// Median in a row-wise sorted Matrix
+// need to find greater than (n*m)/2
+
+int upperBound(vector<int> &arr, int target)
+{
+    return upper_bound(arr.begin(), arr.end(), target) - arr.begin();
+}
+
+int CountsmallerEqual(vector<vector<int>> &matrix, int n, int m, int mid)
+{
+    int count = 0;
+    for (int i = 0; i < n; i++)
+    {
+        count += upperBound(matrix[i], mid); // Counting in each row
+    }
+    return count;
+}
+
+int median(vector<vector<int>> &matrix, int R, int C)
+{
+    int low = matrix[0][0];
+    int high = matrix[R - 1][C - 1];
+    int req = (R * C) / 2;
+
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        int SmallerEquals = CountsmallerEqual(matrix, R, C, mid);
+
+        if (SmallerEquals <= req)
+        {
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+    return low;
 }
 
 int main()
@@ -519,9 +602,10 @@ int main()
     // cout << "The " << k << "-th element is: " << result << endl;
 
     vector<vector<int>> matrix = {
-        {1, 4},
-        {3, 2}};
-    int target = 20;
+        {1, 3, 5},
+        {2, 6, 9},
+        {3, 6, 9}};
+    // int target = 20;
 
     // int result = rowWithMax1s(matrix);
     // cout << "Row with max 1s index is: " << result << endl;
@@ -531,6 +615,14 @@ int main()
 
     // bool result = searchMatrix(matrix, target);
     // cout << "Search a 2D Matrix: " << (result ? "True" : "False") << endl;
+
+    // vector<int> peak = findPeakGrid(matrix);
+    // cout << "Peak element found at: [" << peak[0] << ", " << peak[1] << "]" << endl;
+
+    int R = matrix.size();
+    int C = matrix[0].size();
+
+    cout << "Median of the matrix is: " << median(matrix, R, C) << endl;
 
     return 0;
 }
