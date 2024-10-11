@@ -583,6 +583,214 @@ int median(vector<vector<int>> &matrix, int R, int C)
     return low;
 }
 
+// ************************* STRING EASY ***************************
+// sort the string --> lexicographically
+
+string sortlexicographically(string str)
+{
+    int n = str.size();
+    vector<int> freq(26, 0);
+
+    for (int i = 0; i < n; i++)
+    {
+        freq[str[i] - 'a']++;
+    }
+
+    int j = 0;
+    for (int i = 0; i < freq.size(); i++)
+    {
+        while (freq[i]--)
+        {
+            str[j] = i + 'a';
+            j++;
+        }
+    }
+    return str;
+}
+
+// Anagram --> rearranging letters of a word to get another word
+
+bool checkAnagram(string str, string t) // TC --> O(2*N)  SC --> O(1)
+{
+    int n = str.size();
+    int m = t.size();
+    map<char, int> freq;
+
+    if (m != n)
+    {
+        return false;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        freq[str[i]]++;
+    }
+
+    for (auto ch : t)
+    {
+        if (freq.find(ch) == freq.end() || freq[ch] == 0)
+        {
+            return false;
+        }
+        freq[ch]--;
+    }
+    return true;
+}
+
+// Check Isomorphic --> 1 to 1 mapping
+bool checkIsomorphic(string str, string t)
+{
+    int n = str.size();
+    int m = t.size();
+    vector<int> s1(128, -1);
+    vector<int> s2(128, -1);
+
+    if (m != n)
+    {
+        return false;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (s1[str[i]] != s2[t[i]])
+        {
+            return false;
+        }
+        s1[str[i]] = i;
+        s2[str[i]] = i;
+    }
+    return true;
+}
+
+// // longest common prefix string among array
+string longestCommonPrefix(vector<string> &str)
+{
+    int n = str.size();
+    if (n == 0)
+    {
+        return "";
+    }
+
+    string mainStr = str[0];
+    int count = mainStr.size();
+
+    for (int i = 1; i < n; i++)
+    {
+        int j = 0;
+        while (j < mainStr.size() && j < str[i].size() && mainStr[j] == str[i][j])
+        {
+            j++;
+        }
+        count = min(count, j);
+    }
+
+    string ans = mainStr.substr(0, count);
+    return ans;
+}
+
+// Remove outermost Paranthesis
+string removeOuterParentheses(string s)
+{
+    int n = s.size();
+    string ans = "";
+    int balance = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '(')
+        {
+            if (balance > 0)
+            {
+                ans += s[i];
+            }
+            balance++;
+        }
+        else if (s[i] == ')')
+        {
+            balance--;
+            if (balance > 0)
+            {
+                ans += s[i];
+            }
+        }
+    }
+    return ans;
+}
+
+// Reverse Words in a String
+string reverseWords(string s)
+{
+    int n = s.length();
+    string ans = "";
+    string finalAns = "";
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if (s[i] != ' ')
+        {
+            ans += s[i];
+        }
+        else
+        {
+            if (!ans.empty())
+            {
+                reverse(ans.begin(), ans.end());
+                if (!finalAns.empty())
+                {
+                    finalAns += " ";
+                }
+                finalAns += ans;
+                ans = "";
+            }
+        }
+    }
+
+    if (!ans.empty())
+    {
+        reverse(ans.begin(), ans.end());
+        if (!finalAns.empty())
+        {
+            finalAns += " ";
+        }
+        finalAns += ans;
+        ans = "";
+    }
+
+    return finalAns;
+}
+
+// Largest Odd Number in String
+string largestOddNumber(string str)
+{
+    int n = str.size();
+    string largestOddNumber = "";
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if ((str[i] - '0') % 2 != 0)
+        {
+            largestOddNumber = str.substr(0, i + 1);
+            break;
+        }
+    }
+    return largestOddNumber;
+}
+
+// Rotate String
+bool rotateString(string s, string goal)
+{
+    int n = s.size();
+    int m = goal.size();
+
+    if (n != m)
+    {
+        return false;
+    }
+
+    string doubleStr = s + s;
+    return (doubleStr.find(goal) != string::npos);
+}
+
 int main()
 {
 
@@ -601,10 +809,10 @@ int main()
     // int result = kthElement(k, nums1, nums2);
     // cout << "The " << k << "-th element is: " << result << endl;
 
-    vector<vector<int>> matrix = {
-        {1, 3, 5},
-        {2, 6, 9},
-        {3, 6, 9}};
+    // vector<vector<int>> matrix = {
+    //     {1, 3, 5},
+    //     {2, 6, 9},
+    //     {3, 6, 9}};
     // int target = 20;
 
     // int result = rowWithMax1s(matrix);
@@ -619,10 +827,39 @@ int main()
     // vector<int> peak = findPeakGrid(matrix);
     // cout << "Peak element found at: [" << peak[0] << ", " << peak[1] << "]" << endl;
 
-    int R = matrix.size();
-    int C = matrix[0].size();
+    // int R = matrix.size();
+    // int C = matrix[0].size();
 
-    cout << "Median of the matrix is: " << median(matrix, R, C) << endl;
+    // cout << "Median of the matrix is: " << median(matrix, R, C) << endl;
+
+    string str = "abcde";
+    string goal = "abced";
+
+    vector<string> strs = {"flower", "flow", "flight"};
+
+    // auto result = sortlexicographically(str);
+    // cout << "Sorted string: " << result << endl;
+
+    // auto result = checkAnagram(str, t);
+    // cout << "Sorted string: " << result << endl;
+
+    // auto result = checkIsomorphic(str, t);
+    // cout << "Sorted string: " << result << endl;
+
+    // auto result = longestCommonPrefix(strs);
+    // cout << "Sorted string: " << result << endl;
+
+    // auto result = removeOuterParentheses(str);
+    // cout << "Remove Outermost Parentheses: " << result << endl;
+
+    // auto result = reverseWords(str);
+    // cout << "Reverse Words in a String: " << result << endl;
+
+    // auto result = largestOddNumber(str);
+    // cout << "Largest Odd Number in String: " << result << endl;
+
+    auto result = rotateString(str, goal);
+    cout << "Rotate String: " << result << endl;
 
     return 0;
 }
