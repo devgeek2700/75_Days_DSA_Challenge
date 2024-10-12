@@ -791,6 +791,231 @@ bool rotateString(string s, string goal)
     return (doubleStr.find(goal) != string::npos);
 }
 
+// Sort Characters By Frequency
+string frequencySort(string s)
+{
+    int n = s.size();
+    unordered_map<char, int> mpp;
+
+    for (int i = 0; i < n; i++)
+    {
+        mpp[s[i]]++;
+    }
+
+    vector<pair<char, int>> freqlist(mpp.begin(), mpp.end());
+    sort(freqlist.begin(), freqlist.end(), [](const pair<char, int> &a, const pair<char, int> &b)
+         { return a.second > b.second; });
+
+    string result;
+    for (auto &pair : freqlist)
+    {
+        result.append(pair.second, pair.first);
+    }
+    return result;
+}
+
+// Maximum Nesting Depth of the Parentheses
+int maxDepth(string s)
+{
+    int n = s.size();
+    int maxDepth = INT_MIN;
+    int currDepth = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '(')
+        {
+            currDepth++;
+            maxDepth = max(currDepth, maxDepth);
+        }
+        else if (s[i] == ')')
+        {
+            currDepth--;
+        }
+    }
+    return maxDepth;
+}
+
+// Roman to Integer
+int romanToInt(string s)
+{
+    int n = s.size();
+    int total = 0;
+    unordered_map<char, int> roman = {{'I', 1}, {'V', 5}, {'X', 10}, {'L', 50}, {'C', 100}, {'D', 500}, {'M', 1000}};
+
+    for (int i = 0; i < n; i++)
+    {
+        if (i + 1 < n && roman[s[i]] < roman[s[i + 1]])
+        {
+            total -= roman[s[i]];
+        }
+        else
+        {
+            total += roman[s[i]];
+        }
+    }
+    return total;
+}
+
+// String to Integer (atoi)
+int myAtoi(string s)
+{
+    int n = s.size();
+    int i = 0;
+
+    // Check leading whitespace.
+    while (i <= n && s[i] == ' ')
+    {
+        i++;
+    }
+
+    // Check sign character.
+    int sign = 1;
+    if (i < n && (s[i] == '+' || s[i] == '-'))
+    {
+        if (s[i] == '-')
+        {
+            sign = -1;
+        }
+        i++;
+    }
+
+    long long ans = 0;
+    while (i < n && isdigit(s[i]))
+    {
+        ans = ans * 10 + (s[i] - '0');
+        if (sign * ans <= INT_MIN)
+        {
+            return INT_MIN;
+        }
+
+        if (sign * ans >= INT_MAX)
+        {
+            return INT_MAX;
+        }
+        i++;
+    }
+    return sign * ans;
+}
+
+// Count number of substrings
+long long int atMostKDistinct(string s, int k)
+{
+    long long int count = 0;
+    int n = s.size();
+    int left = 0;
+    int right = 0;
+    map<char, int> mpp;
+
+    while (right < n)
+    {
+        mpp[s[right]]++;
+        while (mpp.size() > k)
+        {
+            mpp[s[left]]--;
+            if (mpp[s[left]] == 0)
+            {
+                mpp.erase(s[left]);
+            }
+            left++;
+        }
+
+        count += (right - left + 1);
+        right++;
+    }
+    return count;
+}
+
+long long int substrCount(string s, int k)
+{
+    if (k <= 0)
+    {
+        return 0;
+    }
+
+    return atMostKDistinct(s, k) - atMostKDistinct(s, k - 1);
+}
+
+// Longest Palindromic Substring
+string longestPalindrome(string s)
+{
+    int n = s.length();
+    string maxSubWord = "";
+    int start = 0;
+    int maxSubCount = 1;
+
+    if (n == 0)
+    {
+        return "";
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        int left = i - 1;
+        int right = i + 1;
+
+        // ODD
+
+        while (left >= 0 && right < n && s[left] == s[right])
+        {
+            if ((right - left + 1) > maxSubCount)
+            {
+                maxSubCount = right - left + 1;
+                start = left;
+            }
+            left--;
+            right++;
+        }
+
+        // EVEN
+        left = i;
+        right = i + 1;
+
+        while (left >= 0 && right < n && s[left] == s[right])
+        {
+            if ((right - left + 1) > maxSubCount)
+            {
+                maxSubCount = right - left + 1;
+                start = left;
+            }
+            left--;
+            right++;
+        }
+    }
+    return s.substr(start, maxSubCount);
+}
+
+// Sum of Beauty of All Substrings
+int beautySum(string s)
+{
+    int n = s.size();
+    int beautySum = 0;
+    unordered_map<char, int> freq;
+    int diffFreq;
+
+    for (int i = 0; i < n; i++)
+    {
+        unordered_map<char, int> freq;
+
+        for (int j = i; j < n; j++)
+        {
+            freq[s[j]]++;
+
+            if (freq.size() >= 2)
+            {
+                int maxFreq = 0, minFreq = INT_MAX;
+                for (auto &entry : freq)
+                {
+                    maxFreq = max(maxFreq, entry.second);
+                    minFreq = min(minFreq, entry.second);
+                }
+                beautySum += (maxFreq - minFreq);
+            }
+        }
+    }
+    return beautySum;
+}
+
 int main()
 {
 
@@ -832,10 +1057,11 @@ int main()
 
     // cout << "Median of the matrix is: " << median(matrix, R, C) << endl;
 
-    string str = "abcde";
-    string goal = "abced";
+    string str = "aabcbaa";
+    int k = 2;
+    // string goal = "abced";
 
-    vector<string> strs = {"flower", "flow", "flight"};
+    // vector<string> strs = {"flower", "flow", "flight"};
 
     // auto result = sortlexicographically(str);
     // cout << "Sorted string: " << result << endl;
@@ -858,8 +1084,26 @@ int main()
     // auto result = largestOddNumber(str);
     // cout << "Largest Odd Number in String: " << result << endl;
 
-    auto result = rotateString(str, goal);
-    cout << "Rotate String: " << result << endl;
+    // auto result = rotateString(str, goal);
+    // cout << "Rotate String: " << result << endl;
+
+    // auto result = frequencySort(str);
+    // cout << "Sort Characters By Frequency: " << result << endl;
+
+    // auto result = maxDepth(str);
+    // cout << "Maximum Nesting Depth of the Parentheses: " << result << endl;
+
+    // auto result = romanToInt(str);
+    // cout << "Roman to Integer: " << result << endl;
+
+    // auto result = substrCount(str, k);
+    // cout << "Count number of substrings: " << result << endl;
+
+    // auto result = longestPalindrome(str);
+    // cout << "Longest Palindromic Substring: " << result << endl;
+
+    auto result = beautySum(str);
+    cout << "Sum of Beauty of All Substrings: " << result << endl;
 
     return 0;
 }
