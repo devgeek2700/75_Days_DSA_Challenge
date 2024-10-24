@@ -1016,6 +1016,8 @@ int beautySum(string s)
     return beautySum;
 }
 
+
+
 int main()
 {
 
@@ -1057,8 +1059,8 @@ int main()
 
     // cout << "Median of the matrix is: " << median(matrix, R, C) << endl;
 
-    string str = "aabcbaa";
-    int k = 2;
+    // string str = "aabcbaa";
+    // int k = 2;
     // string goal = "abced";
 
     // vector<string> strs = {"flower", "flow", "flight"};
@@ -1102,8 +1104,12 @@ int main()
     // auto result = longestPalindrome(str);
     // cout << "Longest Palindromic Substring: " << result << endl;
 
-    auto result = beautySum(str);
-    cout << "Sum of Beauty of All Substrings: " << result << endl;
+    // auto result = beautySum(str);
+    // cout << "Sum of Beauty of All Substrings: " << result << endl;
+
+    int x = 56;
+    int *y = &x;
+    cout << "Address of x: " << &x << endl;
 
     return 0;
 }
