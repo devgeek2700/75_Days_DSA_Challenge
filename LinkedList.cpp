@@ -337,7 +337,7 @@ int main()
     cout << "length of LL: " << lengthOfLL(Head) << endl;
     cout << "Search an Element: " << checkPresent(Head, val) << endl;
     // New Head After deleeting from Node
-    // Head = deletionHead(Head);
+    Head = deletionHead(Head);
     // cout << "Deletion at HEAD: ";
     // Head = deletionHead(Head);
     // printLinkedList(Head);
