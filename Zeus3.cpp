@@ -190,6 +190,33 @@ Node *deletionAtValue(Node *Head, int Value)
     return Head;
 }
 
+// Insertion at HEAD
+
+Node *InsertionHead(Node *Head, int insValue)
+{
+    Node *newNode = new Node(insValue, Head);
+    return newNode;
+}
+
+// Insertion at LAST
+Node *InsertionLast(Node *Head, int insValue)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return new Node(insValue);
+    }
+
+    Node *temp = Head;
+    while (temp->next != NULL)
+    {
+        temp = temp->next;
+    }
+
+    Node *newLastNode = new Node(insValue);
+    temp->next = newLastNode;
+    return Head;
+}
+
 int main()
 {
     // int x = 56;
@@ -230,15 +257,25 @@ int main()
     // cout << "Deletion at LAST: ";
     // printLinkedList(Head);
 
-    // Deletion at POSITION
-    Head = deletionAtPosition(Head, 4);
-    cout << "Deletion at Position: ";
-    printLinkedList(Head);
+    // // Deletion at POSITION
+    // Head = deletionAtPosition(Head, 4);
+    // cout << "Deletion at Position: ";
+    // printLinkedList(Head);
 
     // Deletion at VALUE
     // Head = deletionAtValue(Head, 50);
     // cout << "Deletion at Value: ";
     // printLinkedList(Head);
+
+    // Insertion at HEAD
+    Head = InsertionHead(Head, 90);
+    cout << "Insertion at Head: ";
+    printLinkedList(Head);
+
+    // Insertion at LAST
+    Head = InsertionLast(Head, 44);
+    cout << "Insertion at Last: ";
+    printLinkedList(Head);
 
     return 0;
 }

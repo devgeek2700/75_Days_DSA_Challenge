@@ -365,7 +365,7 @@ int main()
     cout << "Insertion at Head: ";
     printLinkedList(Head);
 
-    // Insertion at HEAD
+    // Insertion at LAST
     Head = InsertionLast(Head, 44);
     cout << "Insertion at Last: ";
     printLinkedList(Head);
