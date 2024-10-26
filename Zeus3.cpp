@@ -217,6 +217,133 @@ Node *InsertionLast(Node *Head, int insValue)
     return Head;
 }
 
+// Insertion at AFTER POSITION
+Node *InsertionAtafterPosition(Node *Head, int k, int insValue)
+{
+
+    if (Head == NULL || Head->next == NULL)
+    {
+        return new Node(insValue);
+    }
+
+    if (k == 1)
+    {
+        Node *newHeadNode = new Node(insValue, Head);
+        return newHeadNode;
+    }
+
+    Node *temp = Head;
+    int count = 0;
+
+    while (temp->next != NULL)
+    {
+        count++;
+        if (count == k)
+        {
+            Node *newafterPosNode = new Node(insValue, Head);
+            newafterPosNode->next = temp->next;
+            temp->next = newafterPosNode;
+            break;
+        }
+        temp = temp->next;
+    }
+    return Head;
+}
+
+// Insertion at BEFORE POSITION
+
+Node *InsertionAtbeforePosition(Node *Head, int k, int insValue)
+{
+
+    if (Head == NULL || Head->next == NULL)
+    {
+        return new Node(insValue);
+    }
+
+    if (k == 1)
+    {
+        Node *newHeadNode = new Node(insValue, Head);
+        return newHeadNode;
+    }
+
+    Node *temp = Head;
+    int count = 0;
+
+    while (temp->next != NULL)
+    {
+        count++;
+        if (count == k - 1)
+        {
+            Node *newbeforePosNode = new Node(insValue, Head);
+            newbeforePosNode->next = temp->next;
+            temp->next = newbeforePosNode;
+            break;
+        }
+        temp = temp->next;
+    }
+    return Head;
+}
+
+// Insertion at AFTER VALUE
+Node *InsertionAtAfterValue(Node *Head, int Value, int insValue)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return new Node(insValue);
+    }
+
+    if (Head->data == Value)
+    {
+        Node *newHeadNode = new Node(insValue, Head);
+        return newHeadNode;
+    }
+
+    Node *temp = Head;
+
+    while (temp->next != NULL)
+    {
+        if (temp->data == Value)
+        {
+            Node *newbeforeValNode = new Node(insValue, Head);
+            newbeforeValNode->next = temp->next;
+            temp->next = newbeforeValNode;
+            break;
+        }
+        temp = temp->next;
+    }
+    return Head;
+}
+
+// Insertion at BEFORE VALUE
+Node *InsertionAtBeforeValue(Node *Head, int Value, int insValue)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return new Node(insValue);
+    }
+
+    if (Head->data == Value)
+    {
+        Node *newHeadNode = new Node(insValue, Head);
+        return newHeadNode;
+    }
+
+    Node *temp = Head;
+
+    while (temp->next != NULL)
+    {
+        if (temp->next->data == Value)
+        {
+            Node *newbeforeValNode = new Node(insValue, Head);
+            newbeforeValNode->next = temp->next;
+            temp->next = newbeforeValNode;
+            break;
+        }
+        temp = temp->next;
+    }
+    return Head;
+}
+
 int main()
 {
     // int x = 56;
@@ -267,14 +394,38 @@ int main()
     // cout << "Deletion at Value: ";
     // printLinkedList(Head);
 
-    // Insertion at HEAD
-    Head = InsertionHead(Head, 90);
-    cout << "Insertion at Head: ";
+    // // Insertion at HEAD
+    // Head = InsertionHead(Head, 90);
+    // cout << "Insertion at Head: ";
+    // printLinkedList(Head);
+
+    // // Insertion at LAST
+    // Head = InsertionLast(Head, 44);
+    // cout << "Insertion at Last: ";
+    // printLinkedList(Head);
+
+    // // Insertion at AFTER POSITION
+    // Head = InsertionAtafterPosition(Head, 2, 244);
+    // Head = InsertionAtafterPosition(Head, 3, 7002);
+    // cout << "Insertion at Position: ";
+    // printLinkedList(Head);
+
+    // // Insertion at AFTER POSITION
+    // Head = InsertionAtbeforePosition(Head, 4, 100);
+    // Head = InsertionAtbeforePosition(Head, 2, 555);
+    // cout << "Insertion at Position: ";
+    // printLinkedList(Head);
+
+    // Insertion at  AFTER VALUE
+    Head = InsertionAtAfterValue(Head, 30, 300);
+    Head = InsertionAtAfterValue(Head, 50, 676);
+    cout << "Insertion at after Value: ";
     printLinkedList(Head);
 
-    // Insertion at LAST
-    Head = InsertionLast(Head, 44);
-    cout << "Insertion at Last: ";
+    // Insertion at  BEFORE VALUE
+    Head = InsertionAtBeforeValue(Head, 10, 100);
+    Head = InsertionAtBeforeValue(Head, 40, 888);
+    cout << "Insertion at before Value: ";
     printLinkedList(Head);
 
     return 0;
