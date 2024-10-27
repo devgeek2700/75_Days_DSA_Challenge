@@ -395,7 +395,149 @@ void printDoublyLinkedList(Node *Head)
         cout << curr->data << " <-> ";
         curr = curr->next;
     }
-    cout << "nullptr" << endl;
+    cout << "NULL" << endl;
+}
+
+//  Deletion at HEAD
+Node *DeleteHeadDLL(Node *Head)
+{
+    if (Head == NULL)
+    {
+        delete Head;
+        return NULL;
+    }
+
+    Node *oldNode = Head;
+    Head = Head->next;
+    Head->prev = NULL;
+    oldNode->next = NULL;
+    delete oldNode;
+    return Head;
+}
+
+//  Deletion at LAST
+Node *DeleteTailDLL(Node *Head)
+{
+    if (Head == NULL)
+    {
+        return NULL;
+    }
+
+    if (Head->next == NULL)
+    {
+        delete Head;
+        return NULL;
+    }
+    Node *tailNode = Head;
+
+    while (tailNode->next != NULL)
+    {
+        tailNode = tailNode->next;
+    }
+
+    Node *newtail = tailNode->prev;
+    newtail->next = NULL;
+    tailNode->prev = NULL;
+    delete tailNode;
+    return Head;
+}
+
+//  Deletion at POSITION
+Node *DeleteatPositionDLL(Node *Head, int k)
+{
+    if (Head == NULL)
+    {
+        return NULL;
+    }
+
+    if (k == 1)
+    {
+        Node *newHead = Head->next;
+        if (newHead != NULL)
+        {
+            newHead->prev = NULL;
+        }
+        delete Head;
+        return newHead;
+    }
+
+    Node *KNode = Head;
+    int count = 0;
+
+    while (KNode->next != NULL)
+    {
+        count++;
+        if (count == k)
+        {
+            break;
+        }
+        KNode = KNode->next;
+    }
+
+    Node *FrontNode = KNode->next;
+    Node *BackNode = KNode->prev;
+
+    if (FrontNode->next == NULL && BackNode->prev)
+    {
+        return NULL;
+    }
+    else if (FrontNode->next == NULL)
+    {
+        DeleteTailDLL(Head);
+    }
+    else if (BackNode->next == NULL)
+    {
+        DeleteHeadDLL(Head);
+    }
+
+    BackNode->next = FrontNode;
+    FrontNode->prev = BackNode;
+    KNode->next = NULL;
+    KNode->prev = NULL;
+
+    delete KNode;
+
+    return Head;
+}
+
+//  Deletion at VALUE
+Node *deleteatNodeDLL(Node *Head, int Value)
+{
+    if (Head == NULL)
+    {
+        return NULL;
+    }
+
+    Node *KNode = Head;
+    while (KNode != NULL && KNode->data != Value)
+    {
+        KNode = KNode->next;
+    }
+
+    if (KNode == NULL)
+    {
+        return Head;
+    }
+
+    if (KNode == Head)
+    {
+        return DeleteHeadDLL(Head);
+    }
+
+    Node *FrontNode = KNode->next;
+    Node *BackNode = KNode->prev;
+
+    if (FrontNode != NULL)
+    {
+        FrontNode->prev = BackNode;
+    }
+    if (BackNode != NULL)
+    {
+        BackNode->next = FrontNode;
+    }
+
+    delete KNode;
+    return Head;
 }
 
 int main()
@@ -484,7 +626,27 @@ int main()
 
     vector<int> dlvarr = {20, 30, 40, 50, 60};
     Node *Head = convertArrayintoDLL(dlvarr);
-    cout << "Doubly Linked List: ";
+    // cout << "Doubly Linked List: ";
+    // printDoublyLinkedList(Head);
+
+    // // Delete of the head
+    // cout << "Delete of the head node DLL: ";
+    // Head = DeleteHeadDLL(Head);
+    // printDoublyLinkedList(Head);
+
+    // // Delete of the Tail
+    // cout << "Delete of the tail node DLL: ";
+    // Head = DeleteTailDLL(Head);
+    // printDoublyLinkedList(Head);
+
+    // // Delete of the Position
+    // cout << "Delete of the position: ";
+    // Head = DeleteatPositionDLL(Head, 3);
+    // printDoublyLinkedList(Head);
+
+    // Delete of the Value
+    cout << "Delete of the Node: ";
+    Head = deleteatNodeDLL(Head, 50);
     printDoublyLinkedList(Head);
 
     return 0;
