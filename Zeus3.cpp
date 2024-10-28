@@ -540,6 +540,186 @@ Node *deleteatNodeDLL(Node *Head, int Value)
     return Head;
 }
 
+//  Insertion at HEAD
+Node *InsertBeforeHeadDLL(Node *Head, int insertValue)
+{
+    Node *newHeadNode = new Node(insertValue, Head, NULL);
+    Head->prev = newHeadNode;
+    return newHeadNode;
+}
+
+//  Insertion at BEFORE TAIL
+Node *InsertBeforeTailDLL(Node *Head, int insertValue)
+{
+    if (Head->next == NULL)
+    {
+        return InsertBeforeHeadDLL(Head, insertValue);
+    }
+
+    Node *tailNode = Head;
+    while (tailNode->next != NULL)
+    {
+        tailNode = tailNode->next;
+    }
+
+    Node *prevNodebeforeNewNode = tailNode->prev;
+    Node *newNodeBeforetail = new Node(insertValue, tailNode, prevNodebeforeNewNode);
+    prevNodebeforeNewNode->next = newNodeBeforetail;
+    tailNode->prev = newNodeBeforetail;
+
+    return Head;
+}
+
+//  Insertion at TAIL
+Node *insertAtTailDLL(Node *Head, int insertValue)
+{
+    if (Head->next == NULL)
+    {
+        return InsertBeforeHeadDLL(Head, insertValue);
+    }
+
+    Node *tailNode = Head;
+    while (tailNode->next != NULL)
+    {
+        tailNode = tailNode->next;
+    }
+
+    Node *newtailNode = new Node(insertValue, NULL, tailNode);
+    tailNode->next = newtailNode;
+
+    return Head;
+}
+
+//  Insertion at BEFORE K-NODE
+Node *InsertBeforeKNodeDLL(Node *Head, int k, int insertValue)
+{
+    if (k == 1)
+    {
+        return InsertBeforeHeadDLL(Head, insertValue);
+    }
+
+    Node *temp = Head;
+    int count = 1;
+    while (temp != NULL && count < k)
+    {
+        count++;
+        temp = temp->next;
+    }
+
+    if (temp == NULL)
+    {
+        return Head;
+    }
+
+    Node *prevNodebeforeKNode = temp->prev;
+    Node *newKNode = new Node(insertValue, temp, prevNodebeforeKNode);
+    prevNodebeforeKNode->next = newKNode;
+    temp->prev = newKNode;
+
+    return Head;
+}
+
+//  Insertion at AFTER K-NODE
+Node *InsertAfterKNodeDLL(Node *Head, int k, int insertValue)
+{
+    if (k == 1)
+    {
+        return InsertBeforeHeadDLL(Head, insertValue);
+    }
+
+    Node *temp = Head;
+    int count = 1;
+    while (temp != NULL && count < k)
+    {
+        count++;
+        temp = temp->next;
+    }
+
+    if (temp == NULL)
+    {
+        return Head;
+    }
+
+    if (temp->next == NULL)
+    {
+        return insertAtTailDLL(Head, insertValue);
+    }
+    // Insert between temp and temp->next
+    else
+    {
+        Node *newafterKNode = new Node(insertValue, temp->next, temp);
+        temp->next->prev = newafterKNode;
+        temp->next = newafterKNode;
+    }
+
+    return Head;
+}
+
+//  Insertion at BEFORE K-NODE VALUE
+Node *InsertBeforeKNodeValueDLL(Node *Head, int Value, int insertValue)
+{
+    if (Head->next == NULL)
+    {
+        return InsertBeforeHeadDLL(Head, insertValue);
+    }
+
+    Node *temp = Head;
+    while (temp->data != Value && temp != NULL)
+    {
+        temp = temp->next;
+    }
+
+    if (temp == NULL)
+    {
+        return Head;
+    }
+
+    if (temp == Head)
+    {
+        return InsertBeforeHeadDLL(Head, insertValue);
+    }
+
+    Node *prevNodebeforeKNode = temp->prev;
+    Node *newKNode = new Node(insertValue, temp, prevNodebeforeKNode);
+    prevNodebeforeKNode->next = newKNode;
+    temp->prev = newKNode;
+
+    return Head;
+}
+
+//  Insertion at AFTER K-NODE VALUE
+Node *InsertAfterKNodeValueDLL(Node *Head, int Value, int insertValue)
+{
+    if (Head->next == NULL)
+    {
+        return InsertBeforeHeadDLL(Head, insertValue);
+    }
+
+    Node *temp = Head;
+    while (temp->data != Value && temp != NULL)
+    {
+        temp = temp->next;
+    }
+
+    if (temp == NULL)
+    {
+        return Head;
+    }
+
+    if (temp->next == NULL)
+    {
+        return insertAtTailDLL(Head, insertValue);
+    }
+    else
+    {
+        Node *newafterKNode = new Node(insertValue, temp->next, temp);
+        temp->next->prev = newafterKNode;
+        temp->next = newafterKNode;
+    }
+
+    return Head;
+}
+
 int main()
 {
     // int x = 56;
@@ -644,9 +824,49 @@ int main()
     // Head = DeleteatPositionDLL(Head, 3);
     // printDoublyLinkedList(Head);
 
-    // Delete of the Value
-    cout << "Delete of the Node: ";
-    Head = deleteatNodeDLL(Head, 50);
+    // // Delete of the Value
+    // cout << "Delete of the Node: ";
+    // Head = deleteatNodeDLL(Head, 50);
+    // printDoublyLinkedList(Head);
+
+    // Insertion at HEAD
+    cout << "Insertion at Head: ";
+    Head = InsertBeforeHeadDLL(Head, 567);
+    printDoublyLinkedList(Head);
+
+    // Insertion at Before Tail
+    cout << "Insertion at Before Tail: ";
+    Head = InsertBeforeTailDLL(Head, 100);
+    printDoublyLinkedList(Head);
+
+    // Insertion at Tail Node
+    cout << "Insertion at Tail Node: ";
+    Head = insertAtTailDLL(Head, 200);
+    printDoublyLinkedList(Head);
+
+    // Insertion at Tail Node
+    cout << "Insertion at Tail Node: ";
+    Head = insertAtTailDLL(Head, 200);
+    printDoublyLinkedList(Head);
+
+    // Insertion at Before kth Node
+    cout << "Insertion at Before kth Node: ";
+    Head = InsertBeforeKNodeDLL(Head, 3, 900);
+    printDoublyLinkedList(Head);
+
+    // Insertion at Before kth Node
+    cout << "Insertion at After kth Node: ";
+    Head = InsertAfterKNodeDLL(Head, 4, 444);
+    printDoublyLinkedList(Head);
+
+    // Insertion at Before kth Node value
+    cout << "Insertion at Before kth Node value: ";
+    Head = InsertBeforeKNodeValueDLL(Head, 20, 222);
+    printDoublyLinkedList(Head);
+
+    // Insertion at Before kth Node value
+    cout << "Insertion at After kth Node value: ";
+    Head = InsertAfterKNodeValueDLL(Head, 50, 5555);
     printDoublyLinkedList(Head);
 
     return 0;
