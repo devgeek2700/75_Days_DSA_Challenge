@@ -295,7 +295,6 @@ Node *reverseDLL(Node *Head) // TC --> O(n)
         prevNode = currentNode->back;
         currentNode->back = currentNode->next;
         currentNode->next = prevNode;
-
         currentNode = currentNode->back;
     }
 

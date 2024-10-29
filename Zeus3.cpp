@@ -720,6 +720,29 @@ Node *InsertAfterKNodeValueDLL(Node *Head, int Value, int insertValue)
     return Head;
 }
 
+// Reverse a Doubly Linked List
+Node *reverseDLL(Node *Head)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return Head;
+    }
+
+    Node *curr = Head;
+    Node *prev = NULL;
+
+    while (curr != NULL)
+    {
+        Node *next = curr->next;
+        curr->next = prev;
+        curr->prev = next;
+        prev = curr;
+        curr = next;
+    }
+
+    return prev;
+}
+
 int main()
 {
     // int x = 56;
@@ -829,44 +852,49 @@ int main()
     // Head = deleteatNodeDLL(Head, 50);
     // printDoublyLinkedList(Head);
 
-    // Insertion at HEAD
-    cout << "Insertion at Head: ";
-    Head = InsertBeforeHeadDLL(Head, 567);
-    printDoublyLinkedList(Head);
+    // // Insertion at HEAD
+    // cout << "Insertion at Head: ";
+    // Head = InsertBeforeHeadDLL(Head, 567);
+    // printDoublyLinkedList(Head);
 
-    // Insertion at Before Tail
-    cout << "Insertion at Before Tail: ";
-    Head = InsertBeforeTailDLL(Head, 100);
-    printDoublyLinkedList(Head);
+    // // Insertion at Before Tail
+    // cout << "Insertion at Before Tail: ";
+    // Head = InsertBeforeTailDLL(Head, 100);
+    // printDoublyLinkedList(Head);
 
-    // Insertion at Tail Node
-    cout << "Insertion at Tail Node: ";
-    Head = insertAtTailDLL(Head, 200);
-    printDoublyLinkedList(Head);
+    // // Insertion at Tail Node
+    // cout << "Insertion at Tail Node: ";
+    // Head = insertAtTailDLL(Head, 200);
+    // printDoublyLinkedList(Head);
 
-    // Insertion at Tail Node
-    cout << "Insertion at Tail Node: ";
-    Head = insertAtTailDLL(Head, 200);
-    printDoublyLinkedList(Head);
+    // // Insertion at Tail Node
+    // cout << "Insertion at Tail Node: ";
+    // Head = insertAtTailDLL(Head, 200);
+    // printDoublyLinkedList(Head);
 
-    // Insertion at Before kth Node
-    cout << "Insertion at Before kth Node: ";
-    Head = InsertBeforeKNodeDLL(Head, 3, 900);
-    printDoublyLinkedList(Head);
+    // // Insertion at Before kth Node
+    // cout << "Insertion at Before kth Node: ";
+    // Head = InsertBeforeKNodeDLL(Head, 3, 900);
+    // printDoublyLinkedList(Head);
 
-    // Insertion at Before kth Node
-    cout << "Insertion at After kth Node: ";
-    Head = InsertAfterKNodeDLL(Head, 4, 444);
-    printDoublyLinkedList(Head);
+    // // Insertion at Before kth Node
+    // cout << "Insertion at After kth Node: ";
+    // Head = InsertAfterKNodeDLL(Head, 4, 444);
+    // printDoublyLinkedList(Head);
 
-    // Insertion at Before kth Node value
-    cout << "Insertion at Before kth Node value: ";
-    Head = InsertBeforeKNodeValueDLL(Head, 20, 222);
-    printDoublyLinkedList(Head);
+    // // Insertion at Before kth Node value
+    // cout << "Insertion at Before kth Node value: ";
+    // Head = InsertBeforeKNodeValueDLL(Head, 20, 222);
+    // printDoublyLinkedList(Head);
 
-    // Insertion at Before kth Node value
-    cout << "Insertion at After kth Node value: ";
-    Head = InsertAfterKNodeValueDLL(Head, 50, 5555);
+    // // Insertion at Before kth Node value
+    // cout << "Insertion at After kth Node value: ";
+    // Head = InsertAfterKNodeValueDLL(Head, 50, 5555);
+    // printDoublyLinkedList(Head);
+
+    // Reverse a Doubly Linked List
+    cout << "Reverse A Doubly Linked List: ";
+    Head = reverseDLL(Head);
     printDoublyLinkedList(Head);
 
     return 0;
