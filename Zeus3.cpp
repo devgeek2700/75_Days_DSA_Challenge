@@ -759,6 +759,38 @@ Node *findMiddleTortoiseHareMethod(Node *Head) // TC --> O(n/2)  SC --> O(1)
     return Slow;
 }
 
+// Reverse Linked List
+Node *reverseLinkedListIterative(Node *Head)
+{
+    Node *prevNode = NULL;
+    Node *curr = Head;
+
+    while (curr != NULL)
+    {
+        Node *frontNode = curr->next;
+        curr->next = prevNode;
+        prevNode = curr;
+        curr = frontNode;
+    }
+    return prevNode;
+}
+
+// 	Reverse a Linked List - Recursive
+Node *reverseLinkedListRecursive(Node *Head)
+{
+    if (Head != NULL || Head->next != NULL)
+    {
+        return Head;
+    }
+
+    Node *newHeadNode = reverseLinkedListRecursive(Head->next);
+    Node *frontNode = Head->next;
+    frontNode->next = Head;
+    Head->next = NULL;
+
+    return newHeadNode;
+}
+
 int main()
 {
     // int x = 56;
@@ -915,6 +947,14 @@ int main()
 
     //  Middle of the Linked List
     cout << "Middle of Linked List: " << findMiddleTortoiseHareMethod(Head)->data << endl;
+
+    Head = reverseLinkedListIterative(Head);
+    cout << "Reverse Linked List Iterative: ";
+    printLinkedList(Head);
+
+    Head = reverseLinkedListRecursive(Head);
+    cout << "Reverse Linked List Recursive: ";
+    printLinkedList(Head);
 
     return 0;
 }
