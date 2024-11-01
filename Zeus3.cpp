@@ -791,6 +791,83 @@ Node *reverseLinkedListRecursive(Node *Head)
     return newHeadNode;
 }
 
+// Linked List Cycle - Tortoise Hare Method
+bool hasCycleusing(Node *Head)
+{
+    Node *Slow = Head;
+    Node *Fast = Head;
+
+    while (Fast != NULL && Fast->next != NULL)
+    {
+        Slow = Slow->next;
+        Fast = Fast->next->next;
+
+        if (Slow == Fast)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+//  Linked List Cycle II -->detect starting of loop
+Node *detectCycle(Node *Head)
+{
+    Node *Slow = Head;
+    Node *Fast = Head;
+
+    while (Fast != NULL && Fast->next != NULL)
+    {
+        Slow = Slow->next;
+        Fast = Fast->next->next;
+
+        if (Slow == Fast)
+        {
+            Slow = Head;
+            while (Slow != Fast)
+            {
+                Slow = Slow->next;
+                Fast = Fast->next;
+            }
+            return Slow;
+        }
+    }
+    return NULL;
+}
+
+// Find length of Loop
+
+int findlengthcount(Node *Slow, Node *Fast)
+{
+    int count = 1;
+    Fast = Fast->next;
+
+    while (Slow != Fast)
+    {
+        count++;
+        Fast = Fast->next;
+    }
+    return count;
+}
+
+int countNodesinLoop(Node *Head)
+{
+    Node *Slow = Head;
+    Node *Fast = Head;
+
+    while (Fast != NULL && Fast->next != NULL)
+    {
+        Slow = Slow->next;
+        Fast = Fast->next->next;
+
+        if (Slow == Fast)
+        {
+            return findlengthcount(Slow, Fast);
+        }
+    }
+    return 0;
+}
+
 int main()
 {
     // int x = 56;
@@ -875,7 +952,7 @@ int main()
     // cout << "Insertion at before Value: ";
     // printLinkedList(Head);
 
-    vector<int> varr = {1, 2, 3, 4, 5, 6};
+    vector<int> varr = {3, 2, 0, -4};
     Node *Head = convertarraytoLinkedlist(varr);
     // cout << "Doubly Linked List: ";
     // printDoublyLinkedList(Head);
@@ -946,15 +1023,19 @@ int main()
     // printDoublyLinkedList(Head);
 
     //  Middle of the Linked List
-    cout << "Middle of Linked List: " << findMiddleTortoiseHareMethod(Head)->data << endl;
+    // cout << "Middle of Linked List: " << findMiddleTortoiseHareMethod(Head)->data << endl;
 
-    Head = reverseLinkedListIterative(Head);
-    cout << "Reverse Linked List Iterative: ";
-    printLinkedList(Head);
+    // Head = reverseLinkedListIterative(Head);
+    // cout << "Reverse Linked List Iterative: ";
+    // printLinkedList(Head);
 
-    Head = reverseLinkedListRecursive(Head);
-    cout << "Reverse Linked List Recursive: ";
-    printLinkedList(Head);
+    // Head = reverseLinkedListRecursive(Head);
+    // cout << "Reverse Linked List Recursive: ";
+    // printLinkedList(Head);
+
+    // cout << "Linked List Cycle: " << hasCycleusing(Head) << endl;
+    // cout << "start Linked List Cycle: " << detectCycle(Head) << endl;
+    cout << "Length Linked List Cycle: " << countNodesinLoop(Head) << endl;
 
     return 0;
 }
