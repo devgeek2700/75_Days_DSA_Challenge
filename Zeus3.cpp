@@ -868,6 +868,65 @@ int countNodesinLoop(Node *Head)
     return 0;
 }
 
+// Palindrome Linked List
+bool isPalindrome(Node *Head)
+{
+    Node *Slow = Head;
+    Node *Fast = Head;
+
+    while (Fast->next != NULL && Fast->next->next != NULL)
+    {
+        Slow = Slow->next;
+        Fast = Fast->next->next;
+    }
+
+    Node *newHeadafterRev = reverseLinkedListIterative(Slow->next);
+
+    Node *First = Head;
+    Node *Second = newHeadafterRev;
+
+    while (Second != NULL)
+    {
+        if (First->data != Second->data)
+        {
+            reverseLinkedListIterative(newHeadafterRev);
+            return false;
+        }
+        First = First->next;
+        Second = Second->next;
+    }
+
+    reverseLinkedListIterative(newHeadafterRev);
+    return true;
+}
+
+// Odd Even Linked List
+// odd - even - odd - even
+Node *oddEvenLList(Node *Head)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return Head;
+    }
+
+    Node *Oddstart = Head;
+    Node *Evenstart = Head->next;
+    Node *EvenHead = Evenstart;
+
+    while (Evenstart != NULL && Evenstart->next != NULL)
+    {
+        Oddstart->next = Evenstart->next;
+        Oddstart = Oddstart->next;
+
+        Evenstart->next = Oddstart->next;
+        Evenstart = Evenstart->next;
+    }
+
+    Oddstart->next = EvenHead;
+
+    return Head;
+}
+
 int main()
 {
     // int x = 56;
@@ -952,7 +1011,7 @@ int main()
     // cout << "Insertion at before Value: ";
     // printLinkedList(Head);
 
-    vector<int> varr = {3, 2, 0, -4};
+    vector<int> varr = {2, 1, 3, 5, 6, 4, 7};
     Node *Head = convertarraytoLinkedlist(varr);
     // cout << "Doubly Linked List: ";
     // printDoublyLinkedList(Head);
@@ -1035,7 +1094,12 @@ int main()
 
     // cout << "Linked List Cycle: " << hasCycleusing(Head) << endl;
     // cout << "start Linked List Cycle: " << detectCycle(Head) << endl;
-    cout << "Length Linked List Cycle: " << countNodesinLoop(Head) << endl;
+    // cout << "Length Linked List Cycle: " << countNodesinLoop(Head) << endl;
+    // cout << "LinkedList is Palindrome or Not: " << isPalindrome(Head) << endl;
+
+    cout << "Odd Even Linked List: ";
+    Head = oddEvenLList(Head);
+    printLinkedList(Head);
 
     return 0;
 }

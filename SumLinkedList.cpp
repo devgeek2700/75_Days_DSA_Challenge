@@ -941,7 +941,7 @@ Node *addOneRecursion(Node *Head) // TC -->O(3n)   SC --> O(1)
 
 //  Add Two Numbers
 
-Node *addTwoNumbers(Node *Headnum1, Node *Headnum2)  // TC --> O(max(n1,n2))   SC --> O(max(n1,n2))
+Node *addTwoNumbers(Node *Headnum1, Node *Headnum2) // TC --> O(max(n1,n2))   SC --> O(max(n1,n2))
 {
     Node *temp1 = Headnum1;
     Node *temp2 = Headnum2;
@@ -1082,7 +1082,7 @@ int main()
     // cout << "Add one to a number represented as Linked List: ";
     // printLinkedList(Head);
 
-     Head = addTwoNumbers(Headnum1, Headnum2);
+    Head = addTwoNumbers(Headnum1, Headnum2);
     cout << " Add Two Numbers: ";
     printLinkedList(Head);
 
