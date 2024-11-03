@@ -927,6 +927,56 @@ Node *oddEvenLList(Node *Head)
     return Head;
 }
 
+// Remove Nth Node From End of List
+Node *removeNthFromEndLL(Node *Head, int n)
+{
+    Node *Slow = Head;
+    Node *Fast = Head;
+
+    for (int i = 0; i < n; i++)
+    {
+        Fast = Fast->next;
+    }
+
+    if (Fast == NULL)
+    {
+        return Head->next;
+    }
+
+    while (Fast->next != NULL)
+    {
+        Slow = Slow->next;
+        Fast = Fast->next;
+    }
+
+    Node *deleteNode = Slow->next;
+    Slow->next = Slow->next->next;
+    delete (deleteNode);
+
+    return Head;
+}
+
+// Delete the Middle Node of a Linked List
+Node *deleteMiddleLL(Node *Head)
+{
+    Node *Slow = Head;
+    Node *Fast = Head;
+
+    Fast = Fast->next->next;
+
+    while (Fast != NULL && Fast->next != NULL)
+    {
+        Slow = Slow->next;
+        Fast = Fast->next->next;
+    }
+
+    Node *deleteNode = Slow->next;
+    Slow->next = Slow->next->next;
+    delete (deleteNode);
+
+    return Head;
+}
+
 int main()
 {
     // int x = 56;
@@ -1011,7 +1061,7 @@ int main()
     // cout << "Insertion at before Value: ";
     // printLinkedList(Head);
 
-    vector<int> varr = {2, 1, 3, 5, 6, 4, 7};
+    vector<int> varr = {1, 2, 3, 4};
     Node *Head = convertarraytoLinkedlist(varr);
     // cout << "Doubly Linked List: ";
     // printDoublyLinkedList(Head);
@@ -1097,8 +1147,16 @@ int main()
     // cout << "Length Linked List Cycle: " << countNodesinLoop(Head) << endl;
     // cout << "LinkedList is Palindrome or Not: " << isPalindrome(Head) << endl;
 
-    cout << "Odd Even Linked List: ";
-    Head = oddEvenLList(Head);
+    // cout << "Odd Even Linked List: ";
+    // Head = oddEvenLList(Head);
+    // printLinkedList(Head);
+
+    // cout << "Remove Nth Node From End of List: ";
+    // removeNthFromEndLL(Head, 2);
+    // printLinkedList(Head);
+
+    cout << "Delete the Middle Node of a Linked List: ";
+    deleteMiddleLL(Head);
     printLinkedList(Head);
 
     return 0;
