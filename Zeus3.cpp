@@ -977,6 +977,121 @@ Node *deleteMiddleLL(Node *Head)
     return Head;
 }
 
+// Sort List
+// LL --> Array --> any sortng alog like quick, merge sort --> output
+
+Node *mergesortLL(Node *Leftlist, Node *Rightlist)
+{
+    Node *dummyNode = new Node(-1);
+    Node *temp = dummyNode;
+
+    while (Leftlist != NULL && Rightlist != NULL)
+    {
+        if (Leftlist->data < Rightlist->data)
+        {
+            temp->next = Leftlist;
+            temp = Leftlist;
+            Leftlist = Leftlist->next;
+        }
+        else
+        {
+            temp->next = Rightlist;
+            temp = Rightlist;
+            Rightlist = Rightlist->next;
+        }
+    }
+
+    if (Leftlist)
+    {
+        temp->next = Leftlist;
+    }
+    else
+    {
+        temp->next = Rightlist;
+    }
+    return dummyNode->next;
+}
+
+Node *findMiddleMergeSort(Node *Head) // TC --> O(n/2)  SC --> O(1)
+{
+    Node *Slow = Head;
+    Node *Fast = Head->next;
+
+    while (Fast != NULL && Fast->next != NULL)
+    {
+        Slow = Slow->next;
+        Fast = Fast->next->next;
+    }
+
+    return Slow;
+}
+
+Node *sortListLL(Node *Head)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return Head;
+    }
+
+    Node *findMid = findMiddleMergeSort(Head);
+    Node *LeftSide = Head;
+    Node *RightSide = findMid->next;
+    findMid->next = NULL;
+
+    LeftSide = sortListLL(LeftSide);
+    RightSide = sortListLL(RightSide);
+
+    return mergesortLL(LeftSide, RightSide);
+}
+
+// Sort a linked list of 0s, 1s and 2s
+Node *sort012LL(Node *Head)
+{
+    if (Head == NULL && Head->next == NULL)
+    {
+        return Head;
+    }
+
+    Node *dummyNode0 = new Node(-1);
+    Node *dummyNode1 = new Node(-1);
+    Node *dummyNode2 = new Node(-1);
+    Node *zero = dummyNode0;
+    Node *one = dummyNode1;
+    Node *two = dummyNode2;
+    Node *temp = Head;
+
+    while (temp != NULL)
+    {
+        if (temp->data == 0)
+        {
+            zero->next = temp;
+            zero = temp;
+        }
+        else if (temp->data == 1)
+        {
+            one->next = temp;
+            one = temp;
+        }
+        else
+        {
+            two->next = temp;
+            two = temp;
+        }
+        temp = temp->next;
+    }
+
+    zero->next = (dummyNode1->next) ? dummyNode1->next : dummyNode2->next;
+    one->next = dummyNode2->next;
+    two->next = NULL;
+
+    Node *newHead = dummyNode0->next;
+    delete (dummyNode0);
+    delete (dummyNode1);
+    delete (dummyNode2);
+
+    return newHead;
+}
+
 int main()
 {
     // int x = 56;
@@ -1061,102 +1176,18 @@ int main()
     // cout << "Insertion at before Value: ";
     // printLinkedList(Head);
 
-    vector<int> varr = {1, 2, 3, 4};
+    vector<int> varr = {1, 2, 2, 1, 2, 0, 2, 2, 0};
     Node *Head = convertarraytoLinkedlist(varr);
-    // cout << "Doubly Linked List: ";
-    // printDoublyLinkedList(Head);
 
-    // // Delete of the head
-    // cout << "Delete of the head node DLL: ";
-    // Head = DeleteHeadDLL(Head);
-    // printDoublyLinkedList(Head);
+    cout << "Original List: ";
+    printLinkedList(Head);
 
-    // // Delete of the Tail
-    // cout << "Delete of the tail node DLL: ";
-    // Head = DeleteTailDLL(Head);
-    // printDoublyLinkedList(Head);
-
-    // // Delete of the Position
-    // cout << "Delete of the position: ";
-    // Head = DeleteatPositionDLL(Head, 3);
-    // printDoublyLinkedList(Head);
-
-    // // Delete of the Value
-    // cout << "Delete of the Node: ";
-    // Head = deleteatNodeDLL(Head, 50);
-    // printDoublyLinkedList(Head);
-
-    // // Insertion at HEAD
-    // cout << "Insertion at Head: ";
-    // Head = InsertBeforeHeadDLL(Head, 567);
-    // printDoublyLinkedList(Head);
-
-    // // Insertion at Before Tail
-    // cout << "Insertion at Before Tail: ";
-    // Head = InsertBeforeTailDLL(Head, 100);
-    // printDoublyLinkedList(Head);
-
-    // // Insertion at Tail Node
-    // cout << "Insertion at Tail Node: ";
-    // Head = insertAtTailDLL(Head, 200);
-    // printDoublyLinkedList(Head);
-
-    // // Insertion at Tail Node
-    // cout << "Insertion at Tail Node: ";
-    // Head = insertAtTailDLL(Head, 200);
-    // printDoublyLinkedList(Head);
-
-    // // Insertion at Before kth Node
-    // cout << "Insertion at Before kth Node: ";
-    // Head = InsertBeforeKNodeDLL(Head, 3, 900);
-    // printDoublyLinkedList(Head);
-
-    // // Insertion at Before kth Node
-    // cout << "Insertion at After kth Node: ";
-    // Head = InsertAfterKNodeDLL(Head, 4, 444);
-    // printDoublyLinkedList(Head);
-
-    // // Insertion at Before kth Node value
-    // cout << "Insertion at Before kth Node value: ";
-    // Head = InsertBeforeKNodeValueDLL(Head, 20, 222);
-    // printDoublyLinkedList(Head);
-
-    // // Insertion at Before kth Node value
-    // cout << "Insertion at After kth Node value: ";
-    // Head = InsertAfterKNodeValueDLL(Head, 50, 5555);
-    // printDoublyLinkedList(Head);
-
-    //  // Reverse a Doubly Linked List
-    // cout << "Reverse A Doubly Linked List: ";
-    // Head = reverseDLL(Head);
-    // printDoublyLinkedList(Head);
-
-    //  Middle of the Linked List
-    // cout << "Middle of Linked List: " << findMiddleTortoiseHareMethod(Head)->data << endl;
-
-    // Head = reverseLinkedListIterative(Head);
-    // cout << "Reverse Linked List Iterative: ";
+    // cout << "Sorted List: ";
+    // Head = sortListLL(Head);
     // printLinkedList(Head);
 
-    // Head = reverseLinkedListRecursive(Head);
-    // cout << "Reverse Linked List Recursive: ";
-    // printLinkedList(Head);
-
-    // cout << "Linked List Cycle: " << hasCycleusing(Head) << endl;
-    // cout << "start Linked List Cycle: " << detectCycle(Head) << endl;
-    // cout << "Length Linked List Cycle: " << countNodesinLoop(Head) << endl;
-    // cout << "LinkedList is Palindrome or Not: " << isPalindrome(Head) << endl;
-
-    // cout << "Odd Even Linked List: ";
-    // Head = oddEvenLList(Head);
-    // printLinkedList(Head);
-
-    // cout << "Remove Nth Node From End of List: ";
-    // removeNthFromEndLL(Head, 2);
-    // printLinkedList(Head);
-
-    cout << "Delete the Middle Node of a Linked List: ";
-    deleteMiddleLL(Head);
+    cout << "Sorted List 0,1,2: ";
+    Head = sort012LL(Head);
     printLinkedList(Head);
 
     return 0;
