@@ -1091,6 +1091,38 @@ Node *sort012LL(Node *Head)
 
     return newHead;
 }
+Node *findIntersectionExchange(Node *firstHead, Node *secondHead) // TC --> O(n1 + n2)  SC --> O(n1)
+{
+    Node *temp1 = firstHead;
+    Node *temp2 = secondHead;
+
+    if (firstHead == NULL || secondHead == NULL)
+    {
+        return NULL;
+    }
+
+    while (temp1 != temp2)
+    {
+        temp1 = temp1->next;
+        temp2 = temp2->next;
+
+        if (temp1 == temp2)
+        {
+            return temp1;
+        }
+
+        if (temp1 == NULL)
+        {
+            temp1 = secondHead;
+        }
+        if (temp2 == NULL)
+        {
+            temp2 = firstHead;
+        }
+    }
+
+    return NULL;
+}
 
 int main()
 {
