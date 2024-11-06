@@ -1091,6 +1091,8 @@ Node *sort012LL(Node *Head)
 
     return newHead;
 }
+
+//  Intersection of Two Linked Lists
 Node *findIntersectionExchange(Node *firstHead, Node *secondHead) // TC --> O(n1 + n2)  SC --> O(n1)
 {
     Node *temp1 = firstHead;
@@ -1122,6 +1124,78 @@ Node *findIntersectionExchange(Node *firstHead, Node *secondHead) // TC --> O(n1
     }
 
     return NULL;
+}
+
+// Add 1 to a Linked List Number
+
+Node *addOne(Node *Head)
+{
+    Node *newHead = reverseLinkedListIterative(Head);
+    Node *temp = newHead;
+    int carry = 1;
+
+    while (temp != NULL)
+    {
+        temp->data = temp->data + carry;
+        if (temp->data < 10)
+        {
+            carry = 0;
+            break;
+        }
+        else
+        {
+            carry = 1;
+            temp->data = 0;
+        }
+        temp = temp->next;
+    }
+
+    if (carry == 1)
+    {
+        Node *newcarryNode = new Node(1);
+        Head = reverseLinkedListIterative(newHead);
+        newcarryNode->next = Head;
+        return newcarryNode;
+    }
+
+    return reverseLinkedListIterative(newHead);
+}
+
+// Add Two Numbers
+Node *addTwoNumbers(Node *l1, Node *l2)
+{
+    Node *temp1 = l1;
+    Node *temp2 = l2;
+
+    Node *sublistFinal = new Node(-1);
+    Node *curr = sublistFinal;
+
+    int carry = 0;
+    while (temp1 != NULL || temp2 != NULL)
+    {
+        int sum = carry;
+        if (temp1)
+        {
+            sum = sum + temp1->data;
+            temp1 = temp1->next;
+        }
+        if (temp2)
+        {
+            sum = sum + temp2->data;
+            temp2 = temp2->next;
+        }
+
+        curr->next = new Node(sum % 10);
+        carry = sum / 10;
+        curr = curr->next;
+    }
+
+    if (carry)
+    {
+        curr->next = new Node(carry);
+    }
+
+    return sublistFinal->next;
 }
 
 int main()
@@ -1208,19 +1282,50 @@ int main()
     // cout << "Insertion at before Value: ";
     // printLinkedList(Head);
 
-    vector<int> varr = {1, 2, 2, 1, 2, 0, 2, 2, 0};
-    Node *Head = convertarraytoLinkedlist(varr);
+    vector<int> varrA = {3, 5};
+    vector<int> varrB = {4, 5, 9, 9};
+    // vector<int> varrB = {5, 6, 1, 8, 4, 5};
+    Node *HeadA = convertarraytoLinkedlist(varrA);
+    Node *HeadB = convertarraytoLinkedlist(varrB);
+    // Node *HeadB = convertarraytoLinkedlist(varrB);
 
-    cout << "Original List: ";
-    printLinkedList(Head);
+    // Node *temp = HeadA;
+    // while (temp->next != NULL)
+    // {
+    //     temp = temp->next;
+    // }
+    // temp->next = HeadB->next->next;
 
-    // cout << "Sorted List: ";
-    // Head = sortListLL(Head);
-    // printLinkedList(Head);
+    // cout << "Original List A: ";
+    // printLinkedList(HeadA);
 
-    cout << "Sorted List 0,1,2: ";
-    Head = sort012LL(Head);
-    printLinkedList(Head);
+    // cout << "Original List B: ";
+    // printLinkedList(HeadB);
+
+    // Node *intersectionHead = findIntersectionExchange(HeadA, HeadB);
+
+    // if (intersectionHead)
+    // {
+    //     cout << "Intersection Node: " << intersectionHead->data << endl;
+    // }
+    // else
+    // {
+    //     cout << "No intersection found." << endl;
+    // }
+
+    cout << "Original List A: ";
+    printLinkedList(HeadA);
+
+    cout << "Original List B: ";
+    printLinkedList(HeadB);
+
+    // cout << "Add 1 to a Linked List Number: ";
+    // HeadA = addOne(HeadA);
+    // printLinkedList(HeadA);
+
+    cout << "Add Two Numbers: ";
+    Node *result = addTwoNumbers(HeadA, HeadB);
+    printLinkedList(result);
 
     return 0;
 }
