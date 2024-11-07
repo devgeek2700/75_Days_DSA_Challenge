@@ -152,8 +152,6 @@ vector<pair<int, int>> findPairs(Node *Head, int k) // Tc --> O(2n)   // SC --< 
 }
 
 //  Remove duplicates from a sorted Doubly Linked List
-
-//  Remove duplicates from a sorted Doubly Linked List
 Node *removeDuplicates(Node *Head) // TC --> O(n)  SC --> O(1)
 {
     Node *temp = Head;
@@ -175,6 +173,8 @@ Node *removeDuplicates(Node *Head) // TC --> O(n)  SC --> O(1)
 
     return Head;
 }
+
+// 
 
 int main()
 {
