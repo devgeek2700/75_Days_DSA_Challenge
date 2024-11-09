@@ -1372,6 +1372,74 @@ Node *rotateRightLL(Node *Head, int k)
     return Head;
 }
 
+// Reverse Nodes in k-Group
+
+Node *reverseLinkedListIterative(Node *Head)
+{
+    Node *prevNode = NULL;
+    Node *curr = Head;
+
+    while (curr != NULL)
+    {
+        Node *frontNode = curr->next;
+        curr->next = prevNode;
+        prevNode = curr;
+        curr = frontNode;
+    }
+    return prevNode;
+}
+
+Node *findKthNode(Node *temp, int k)
+{
+    while (temp != NULL && k > 1)
+    {
+        k--;
+        temp = temp->next;
+    }
+    return temp;
+}
+
+Node *reverseKGroup(Node *Head, int k)
+{
+    if (Head == NULL || Head->next == NULL || k == 1)
+    {
+        return Head;
+    }
+
+    Node *temp = Head;
+    Node *prevNode = NULL;
+
+    while (temp != NULL)
+    {
+        Node *KthNode = findKthNode(temp, k);
+
+        if (KthNode == NULL)
+        {
+            if (prevNode)
+            {
+                prevNode->next = temp;
+            }
+            break;
+        }
+
+        Node *nextNode = KthNode->next;
+        KthNode->next = NULL;
+        Node *newKthHEad = reverseLinkedListIterative(temp);
+
+        if (Head == temp)
+        {
+            Head = newKthHEad;
+        }
+        else
+        {
+            prevNode->next = newKthHEad;
+        }
+        prevNode = temp; // the last node of the previous k-group
+        temp = nextNode;
+    }
+    return Head;
+}
+
 int main()
 {
     // int x = 56;
@@ -1501,7 +1569,7 @@ int main()
     // Node *result = addTwoNumbers(HeadA, HeadB);
     // printLinkedList(result);
 
-    vector<int> varr = {0, 1, 2};
+    vector<int> varr = {1, 2, 3, 4, 5, 6, 7};
     int target = 5;
     Node *Head = convertarraytoLinkedlist(varr);
 
@@ -1521,8 +1589,12 @@ int main()
     // Head = removeDuplicates(Head);
     // printDoublyLinkedList(Head);
 
-    cout << "Rotate List linked list: ";
-    Head = rotateRightLL(Head, 4);
+    // cout << "Rotate List linked list: ";
+    // Head = rotateRightLL(Head, 4);
+    // printLinkedList(Head);
+
+    cout << "Reverse Nodes in k-Group: ";
+    Head = reverseKGroup(Head, 3);
     printLinkedList(Head);
 
     return 0;
