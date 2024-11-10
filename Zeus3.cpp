@@ -7,16 +7,12 @@ class Node
 public:
     int data;
     Node *next;
-    Node *child;
-    Node *random;
 
 public:
-    Node(int data1, Node *next1, Node *child1, Node *random1)
+    Node(int data1, Node *next1)
     {
         data = data1;
         next = next1;
-        child = child1;
-        random = random1;
     }
 
 public:
@@ -24,8 +20,6 @@ public:
     {
         data = data1;
         next = nullptr;
-        child = nullptr;
-        random = nullptr;
     }
 };
 // Function to convert array (vector) to linked list
@@ -1505,13 +1499,44 @@ Node *copyRandomList(Node *Head)
         return Head;
     }
 
+    // Create new nodes and interleave them with original nodes
     Node *temp = Head;
     while (temp != NULL)
     {
         Node *newNode = new Node(temp->data);
         newNode->next = temp->next;
-        
+        temp->next = newNode;
+        temp = newNode->next;
     }
+
+    // Assign random pointers for the copied nodes
+    temp = Head;
+    while (temp != NULL)
+    {
+        if (temp->random != NULL)
+        {
+            // copied node's next pointing to the next of og next
+            temp->next->random = temp->random->next;
+        }
+        temp = temp->next->next;
+    }
+
+    // Separate the original and copied lists
+    temp = Head;
+    Node *newHead = Head->next;
+    Node *copyCurr = newHead;
+
+    while (temp != NULL && copyCurr != NULL)
+    {
+        temp->next = temp->next->next;
+        if (copyCurr->next != NULL)
+        {
+            copyCurr->next = copyCurr->next->next;
+        }
+        temp = temp->next;
+        copyCurr = copyCurr->next;
+    }
+    return newHead;
 }
 
 int main()
@@ -1673,9 +1698,9 @@ int main()
     // Head = rotateRightLL(Head, 4);
     // printLinkedList(Head);
 
-    cout << "Reverse Nodes in k-Group: ";
-    Head = reverseKGroup(Head, 3);
-    printLinkedList(Head);
+    // cout << "Reverse Nodes in k-Group: ";
+    // Head = reverseKGroup(Head, 3);
+    // printLinkedList(Head);
 
     return 0;
 }
