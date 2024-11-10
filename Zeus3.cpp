@@ -7,13 +7,16 @@ class Node
 public:
     int data;
     Node *next;
+    Node *child;
+    Node *random;
 
-    // creating the node structure
 public:
-    Node(int data1, Node *next1)
+    Node(int data1, Node *next1, Node *child1, Node *random1)
     {
         data = data1;
         next = next1;
+        child = child1;
+        random = random1;
     }
 
 public:
@@ -21,9 +24,10 @@ public:
     {
         data = data1;
         next = nullptr;
+        child = nullptr;
+        random = nullptr;
     }
 };
-
 // Function to convert array (vector) to linked list
 
 Node *convertarraytoLinkedlist(vector<int> &varr)
@@ -1440,6 +1444,76 @@ Node *reverseKGroup(Node *Head, int k)
     return Head;
 }
 
+// Flattening a Linked List
+Node *mergetwoLists(Node *fHeadlist1, Node *Headlist2)
+{
+    Node *dummyNode = new Node(-1);
+    Node *res = dummyNode;
+
+    while (fHeadlist1 != NULL && Headlist2 != NULL)
+    {
+        if (fHeadlist1->data < Headlist2->data)
+        {
+            res->child = fHeadlist1;
+            res = fHeadlist1;
+            fHeadlist1 = fHeadlist1->child;
+        }
+        else
+        {
+            res->child = Headlist2;
+            res = Headlist2;
+            Headlist2 = Headlist2->child;
+        }
+        res->next = NULL;
+    }
+
+    if (fHeadlist1)
+    {
+        res->child = fHeadlist1;
+    }
+    else
+    {
+        res->child = Headlist2;
+    }
+
+    if (dummyNode->child)
+    {
+        dummyNode->child->next = NULL;
+    }
+
+    return dummyNode->child;
+}
+
+Node *flatten(Node *Head)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return Head;
+    }
+
+    Node *FlattenHead = flatten(Head->next);
+    Head = mergetwoLists(FlattenHead, Head);
+    return Head;
+}
+
+// Copy List with Random Pointer
+
+Node *copyRandomList(Node *Head)
+{
+    if (Head == NULL || Head->next == NULL)
+    {
+        return Head;
+    }
+
+    Node *temp = Head;
+    while (temp != NULL)
+    {
+        Node *newNode = new Node(temp->data);
+        newNode->next = temp->next;
+        
+    }
+}
+
 int main()
 {
     // int x = 56;
@@ -1570,6 +1644,12 @@ int main()
     // printLinkedList(result);
 
     vector<int> varr = {1, 2, 3, 4, 5, 6, 7};
+    vector<vector<int>> bvarr = {
+        {5, 10, 19, 28},
+        {7},
+        {8, 22},
+        {30, 50}};
+
     int target = 5;
     Node *Head = convertarraytoLinkedlist(varr);
 
