@@ -2,345 +2,349 @@
 using namespace std;
 
 // ************************* LINKEDLIST EASY ***************************
-class Node
-{
-public:
-    int data;
-    Node *next;
+// class Node
+// {
+// public:
+//     int data;
+//     Node *next;
+//     // Node *random; // Added random pointer for copyRandomList function
+//     // Node *child;  // Added child pointer for flatten function
 
-public:
-    Node(int data1, Node *next1)
-    {
-        data = data1;
-        next = next1;
-    }
+//     Node(int data1, Node *next1 = nullptr)
+//     {
+//         data = data1;
+//         next = next1;
+//         // random = random1;
+//         // child = child1;
+//     }
 
-public:
-    Node(int data1)
-    {
-        data = data1;
-        next = nullptr;
-    }
-};
-// Function to convert array (vector) to linked list
+//     Node(int data1)
+//     {
+//         data = data1;
+//         next = nullptr;
+//         // random = nullptr;
+//         // child = nullptr;
+//     }
+// };
+// // Function to convert array (vector) to linked list
 
-Node *convertarraytoLinkedlist(vector<int> &varr)
-{
-    Node *head = new Node(varr[0]); // set the head at varr[0]
-    Node *mover = head;
-    for (int i = 1; i < varr.size(); i++)
-    {
-        Node *temp = new Node(varr[i]);
-        mover->next = temp;
-        mover = temp;
-    }
-    return head;
-}
+// Node *convertarraytoLinkedlist(vector<int> &varr)
+// {
+//     Node *head = new Node(varr[0]); // set the head at varr[0]
+//     Node *mover = head;
+//     for (int i = 1; i < varr.size(); i++)
+//     {
+//         Node *temp = new Node(varr[i]);
+//         mover->next = temp;
+//         mover = temp;
+//     }
+//     return head;
+// }
 
-// Function to print the linked list
-void printLinkedList(Node *Head)
-{
-    Node *curr = Head;
-    while (curr != nullptr)
-    {
-        cout << curr->data << " -> ";
-        curr = curr->next;
-    }
-    cout << "nullptr" << endl;
-}
+// // Function to print the linked list
+// void printLinkedList(Node *Head)
+// {
+//     Node *curr = Head;
+//     while (curr != nullptr)
+//     {
+//         cout << curr->data << " -> ";
+//         curr = curr->next;
+//     }
+//     cout << "nullptr" << endl;
+// }
 
-// Length of Node
-int lengthOfLL(Node *Head)
-{
-    Node *temp = Head;
-    int count = 0;
-    while (temp != nullptr)
-    {
-        count++;
-        temp = temp->next;
-    }
-    return count;
-}
+// // Length of Node
+// int lengthOfLL(Node *Head)
+// {
+//     Node *temp = Head;
+//     int count = 0;
+//     while (temp != nullptr)
+//     {
+//         count++;
+//         temp = temp->next;
+//     }
+//     return count;
+// }
 
-// Search in Linked List
-bool searchKey(int n, struct Node *head, int key)
-{
-    Node *temp = head;
-    while (temp != nullptr)
-    {
-        if (temp->data == key)
-        {
-            return true;
-        }
-        temp = temp->next;
-    }
-    return false;
-}
+// // Search in Linked List
+// bool searchKey(int n, struct Node *head, int key)
+// {
+//     Node *temp = head;
+//     while (temp != nullptr)
+//     {
+//         if (temp->data == key)
+//         {
+//             return true;
+//         }
+//         temp = temp->next;
+//     }
+//     return false;
+// }
 
-// Deletion at HEAD
-Node *deletionHead(Node *Head)
-{
-    if (Head == NULL)
-    {
-        return Head;
-    }
+// // Deletion at HEAD
+// Node *deletionHead(Node *Head)
+// {
+//     if (Head == NULL)
+//     {
+//         return Head;
+//     }
 
-    Node *oldHead = Head;
-    Head = Head->next;
-    free(oldHead);
-    return Head;
-}
+//     Node *oldHead = Head;
+//     Head = Head->next;
+//     free(oldHead);
+//     return Head;
+// }
 
-// Deletion at LAST
-Node *deletionLast(Node *Head)
-{
-    if (Head == NULL || Head->next == NULL)
-    {
-        delete Head;
-        return NULL;
-    }
+// // Deletion at LAST
+// Node *deletionLast(Node *Head)
+// {
+//     if (Head == NULL || Head->next == NULL)
+//     {
+//         delete Head;
+//         return NULL;
+//     }
 
-    Node *temp = Head;
-    while (temp->next->next != NULL)
-    {
-        temp = temp->next;
-    }
-    delete temp->next;
-    temp->next = NULL;
-    return Head;
-}
+//     Node *temp = Head;
+//     while (temp->next->next != NULL)
+//     {
+//         temp = temp->next;
+//     }
+//     delete temp->next;
+//     temp->next = NULL;
+//     return Head;
+// }
 
-// Deletion at POSITION
-Node *deletionAtPosition(Node *Head, int k)
-{
-    // if it is head idx = 0
-    if (Head == NULL)
-    {
-        return NULL;
-    }
+// // Deletion at POSITION
+// Node *deletionAtPosition(Node *Head, int k)
+// {
+//     // if it is head idx = 0
+//     if (Head == NULL)
+//     {
+//         return NULL;
+//     }
 
-    // if idx = 1
-    if (k == 1)
-    {
-        Node *temp = Head;
-        Head = Head->next;
-        delete temp;
-        return Head;
-    }
+//     // if idx = 1
+//     if (k == 1)
+//     {
+//         Node *temp = Head;
+//         Head = Head->next;
+//         delete temp;
+//         return Head;
+//     }
 
-    // if idx <= 2
-    Node *temp = Head;
-    int count = 1;
-    Node *Prev = NULL;
-    while (temp != NULL && count < k)
-    {
-        Prev = temp;
-        temp = temp->next;
-        count++;
-    }
+//     // if idx <= 2
+//     Node *temp = Head;
+//     int count = 1;
+//     Node *Prev = NULL;
+//     while (temp != NULL && count < k)
+//     {
+//         Prev = temp;
+//         temp = temp->next;
+//         count++;
+//     }
 
-    if (temp == NULL)
-    {
-        return Head;
-    }
+//     if (temp == NULL)
+//     {
+//         return Head;
+//     }
 
-    if (Prev != NULL)
-    {
-        Prev->next = temp->next;
-    }
-    delete temp;
+//     if (Prev != NULL)
+//     {
+//         Prev->next = temp->next;
+//     }
+//     delete temp;
 
-    return Head;
-}
+//     return Head;
+// }
 
-// Deletion at VALUE
-Node *deletionAtValue(Node *Head, int Value)
-{
-    // if it is head
-    if (Head == NULL)
-    {
-        return Head;
-    }
+// // Deletion at VALUE
+// Node *deletionAtValue(Node *Head, int Value)
+// {
+//     // if it is head
+//     if (Head == NULL)
+//     {
+//         return Head;
+//     }
 
-    // if k = 1 that is head is next value
-    if (Head->data == Value)
-    {
-        Node *temp = Head;
-        Head = Head->next;
-        delete temp;
-        return Head;
-    }
+//     // if k = 1 that is head is next value
+//     if (Head->data == Value)
+//     {
+//         Node *temp = Head;
+//         Head = Head->next;
+//         delete temp;
+//         return Head;
+//     }
 
-    // if k = 3 or between head & tail that is head is next value
-    Node *temp = Head;
-    Node *prev = NULL;
-    while (temp != NULL)
-    {
-        if (temp->data == Value)
-        {
-            prev->next = prev->next->next;
-            delete temp;
-            break;
-        }
-        prev = temp;
-        temp = temp->next;
-    }
-    return Head;
-}
+//     // if k = 3 or between head & tail that is head is next value
+//     Node *temp = Head;
+//     Node *prev = NULL;
+//     while (temp != NULL)
+//     {
+//         if (temp->data == Value)
+//         {
+//             prev->next = prev->next->next;
+//             delete temp;
+//             break;
+//         }
+//         prev = temp;
+//         temp = temp->next;
+//     }
+//     return Head;
+// }
 
-// Insertion at HEAD
+// // Insertion at HEAD
 
-Node *InsertionHead(Node *Head, int insValue)
-{
-    Node *newNode = new Node(insValue, Head);
-    return newNode;
-}
+// Node *InsertionHead(Node *Head, int insValue)
+// {
+//     Node *newNode = new Node(insValue, Head);
+//     return newNode;
+// }
 
-// Insertion at LAST
-Node *InsertionLast(Node *Head, int insValue)
-{
-    if (Head == NULL || Head->next == NULL)
-    {
-        return new Node(insValue);
-    }
+// // Insertion at LAST
+// Node *InsertionLast(Node *Head, int insValue)
+// {
+//     if (Head == NULL || Head->next == NULL)
+//     {
+//         return new Node(insValue);
+//     }
 
-    Node *temp = Head;
-    while (temp->next != NULL)
-    {
-        temp = temp->next;
-    }
+//     Node *temp = Head;
+//     while (temp->next != NULL)
+//     {
+//         temp = temp->next;
+//     }
 
-    Node *newLastNode = new Node(insValue);
-    temp->next = newLastNode;
-    return Head;
-}
+//     Node *newLastNode = new Node(insValue);
+//     temp->next = newLastNode;
+//     return Head;
+// }
 
-// Insertion at AFTER POSITION
-Node *InsertionAtafterPosition(Node *Head, int k, int insValue)
-{
+// // Insertion at AFTER POSITION
+// Node *InsertionAtafterPosition(Node *Head, int k, int insValue)
+// {
 
-    if (Head == NULL || Head->next == NULL)
-    {
-        return new Node(insValue);
-    }
+//     if (Head == NULL || Head->next == NULL)
+//     {
+//         return new Node(insValue);
+//     }
 
-    if (k == 1)
-    {
-        Node *newHeadNode = new Node(insValue, Head);
-        return newHeadNode;
-    }
+//     if (k == 1)
+//     {
+//         Node *newHeadNode = new Node(insValue, Head);
+//         return newHeadNode;
+//     }
 
-    Node *temp = Head;
-    int count = 0;
+//     Node *temp = Head;
+//     int count = 0;
 
-    while (temp->next != NULL)
-    {
-        count++;
-        if (count == k)
-        {
-            Node *newafterPosNode = new Node(insValue, Head);
-            newafterPosNode->next = temp->next;
-            temp->next = newafterPosNode;
-            break;
-        }
-        temp = temp->next;
-    }
-    return Head;
-}
+//     while (temp->next != NULL)
+//     {
+//         count++;
+//         if (count == k)
+//         {
+//             Node *newafterPosNode = new Node(insValue, Head);
+//             newafterPosNode->next = temp->next;
+//             temp->next = newafterPosNode;
+//             break;
+//         }
+//         temp = temp->next;
+//     }
+//     return Head;
+// }
 
-// Insertion at BEFORE POSITION
+// // Insertion at BEFORE POSITION
 
-Node *InsertionAtbeforePosition(Node *Head, int k, int insValue)
-{
+// Node *InsertionAtbeforePosition(Node *Head, int k, int insValue)
+// {
 
-    if (Head == NULL || Head->next == NULL)
-    {
-        return new Node(insValue);
-    }
+//     if (Head == NULL || Head->next == NULL)
+//     {
+//         return new Node(insValue);
+//     }
 
-    if (k == 1)
-    {
-        Node *newHeadNode = new Node(insValue, Head);
-        return newHeadNode;
-    }
+//     if (k == 1)
+//     {
+//         Node *newHeadNode = new Node(insValue, Head);
+//         return newHeadNode;
+//     }
 
-    Node *temp = Head;
-    int count = 0;
+//     Node *temp = Head;
+//     int count = 0;
 
-    while (temp->next != NULL)
-    {
-        count++;
-        if (count == k - 1)
-        {
-            Node *newbeforePosNode = new Node(insValue, Head);
-            newbeforePosNode->next = temp->next;
-            temp->next = newbeforePosNode;
-            break;
-        }
-        temp = temp->next;
-    }
-    return Head;
-}
+//     while (temp->next != NULL)
+//     {
+//         count++;
+//         if (count == k - 1)
+//         {
+//             Node *newbeforePosNode = new Node(insValue, Head);
+//             newbeforePosNode->next = temp->next;
+//             temp->next = newbeforePosNode;
+//             break;
+//         }
+//         temp = temp->next;
+//     }
+//     return Head;
+// }
 
-// Insertion at AFTER VALUE
-Node *InsertionAtAfterValue(Node *Head, int Value, int insValue)
-{
-    if (Head == NULL || Head->next == NULL)
-    {
-        return new Node(insValue);
-    }
+// // Insertion at AFTER VALUE
+// Node *InsertionAtAfterValue(Node *Head, int Value, int insValue)
+// {
+//     if (Head == NULL || Head->next == NULL)
+//     {
+//         return new Node(insValue);
+//     }
 
-    if (Head->data == Value)
-    {
-        Node *newHeadNode = new Node(insValue, Head);
-        return newHeadNode;
-    }
+//     if (Head->data == Value)
+//     {
+//         Node *newHeadNode = new Node(insValue, Head);
+//         return newHeadNode;
+//     }
 
-    Node *temp = Head;
+//     Node *temp = Head;
 
-    while (temp->next != NULL)
-    {
-        if (temp->data == Value)
-        {
-            Node *newbeforeValNode = new Node(insValue, Head);
-            newbeforeValNode->next = temp->next;
-            temp->next = newbeforeValNode;
-            break;
-        }
-        temp = temp->next;
-    }
-    return Head;
-}
+//     while (temp->next != NULL)
+//     {
+//         if (temp->data == Value)
+//         {
+//             Node *newbeforeValNode = new Node(insValue, Head);
+//             newbeforeValNode->next = temp->next;
+//             temp->next = newbeforeValNode;
+//             break;
+//         }
+//         temp = temp->next;
+//     }
+//     return Head;
+// }
 
-// Insertion at BEFORE VALUE
-Node *InsertionAtBeforeValue(Node *Head, int Value, int insValue)
-{
-    if (Head == NULL || Head->next == NULL)
-    {
-        return new Node(insValue);
-    }
+// // Insertion at BEFORE VALUE
+// Node *InsertionAtBeforeValue(Node *Head, int Value, int insValue)
+// {
+//     if (Head == NULL || Head->next == NULL)
+//     {
+//         return new Node(insValue);
+//     }
 
-    if (Head->data == Value)
-    {
-        Node *newHeadNode = new Node(insValue, Head);
-        return newHeadNode;
-    }
+//     if (Head->data == Value)
+//     {
+//         Node *newHeadNode = new Node(insValue, Head);
+//         return newHeadNode;
+//     }
 
-    Node *temp = Head;
+//     Node *temp = Head;
 
-    while (temp->next != NULL)
-    {
-        if (temp->next->data == Value)
-        {
-            Node *newbeforeValNode = new Node(insValue, Head);
-            newbeforeValNode->next = temp->next;
-            temp->next = newbeforeValNode;
-            break;
-        }
-        temp = temp->next;
-    }
-    return Head;
-}
+//     while (temp->next != NULL)
+//     {
+//         if (temp->next->data == Value)
+//         {
+//             Node *newbeforeValNode = new Node(insValue, Head);
+//             newbeforeValNode->next = temp->next;
+//             temp->next = newbeforeValNode;
+//             break;
+//         }
+//         temp = temp->next;
+//     }
+//     return Head;
+// }
 
 // // ************************* DOUBLY LINKEDLIST EASY ***************************
 // class Node
@@ -1324,220 +1328,220 @@ Node *InsertionAtBeforeValue(Node *Head, int Value, int insValue)
 //  ************************* HARD LINEDLIST EASY ***************************
 // Rotate List in LL
 
-Node *findNewLastNode(Node *temp, int k)
-{
-    int count = 1;
-    while (temp != NULL)
-    {
-        if (count == k)
-        {
-            return temp;
-        }
+// Node *findNewLastNode(Node *temp, int k)
+// {
+//     int count = 1;
+//     while (temp != NULL)
+//     {
+//         if (count == k)
+//         {
+//             return temp;
+//         }
 
-        count++;
-        temp = temp->next;
-    }
-    return temp;
-}
+//         count++;
+//         temp = temp->next;
+//     }
+//     return temp;
+// }
 
-Node *rotateRightLL(Node *Head, int k)
-{
-    if (Head == NULL || Head->next == NULL || k == 0)
-    {
-        return Head;
-    }
+// Node *rotateRightLL(Node *Head, int k)
+// {
+//     if (Head == NULL || Head->next == NULL || k == 0)
+//     {
+//         return Head;
+//     }
 
-    Node *tail = Head;
-    int len = 1;
+//     Node *tail = Head;
+//     int len = 1;
 
-    while (tail->next != NULL)
-    {
-        len++;
-        tail = tail->next;
-    }
+//     while (tail->next != NULL)
+//     {
+//         len++;
+//         tail = tail->next;
+//     }
 
-    k = k % len;
-    if (k == 0)
-    {
-        return Head;
-    }
-    tail->next = Head;
+//     k = k % len;
+//     if (k == 0)
+//     {
+//         return Head;
+//     }
+//     tail->next = Head;
 
-    Node *newtailNode = findNewLastNode(Head, len - k);
-    Head = newtailNode->next;
-    newtailNode->next = NULL;
+//     Node *newtailNode = findNewLastNode(Head, len - k);
+//     Head = newtailNode->next;
+//     newtailNode->next = NULL;
 
-    return Head;
-}
+//     return Head;
+// }
 
-// Reverse Nodes in k-Group
+// // Reverse Nodes in k-Group
 
-Node *reverseLinkedListIterative(Node *Head)
-{
-    Node *prevNode = NULL;
-    Node *curr = Head;
+// Node *reverseLinkedListIterative(Node *Head)
+// {
+//     Node *prevNode = NULL;
+//     Node *curr = Head;
 
-    while (curr != NULL)
-    {
-        Node *frontNode = curr->next;
-        curr->next = prevNode;
-        prevNode = curr;
-        curr = frontNode;
-    }
-    return prevNode;
-}
+//     while (curr != NULL)
+//     {
+//         Node *frontNode = curr->next;
+//         curr->next = prevNode;
+//         prevNode = curr;
+//         curr = frontNode;
+//     }
+//     return prevNode;
+// }
 
-Node *findKthNode(Node *temp, int k)
-{
-    while (temp != NULL && k > 1)
-    {
-        k--;
-        temp = temp->next;
-    }
-    return temp;
-}
+// Node *findKthNode(Node *temp, int k)
+// {
+//     while (temp != NULL && k > 1)
+//     {
+//         k--;
+//         temp = temp->next;
+//     }
+//     return temp;
+// }
 
-Node *reverseKGroup(Node *Head, int k)
-{
-    if (Head == NULL || Head->next == NULL || k == 1)
-    {
-        return Head;
-    }
+// Node *reverseKGroup(Node *Head, int k)
+// {
+//     if (Head == NULL || Head->next == NULL || k == 1)
+//     {
+//         return Head;
+//     }
 
-    Node *temp = Head;
-    Node *prevNode = NULL;
+//     Node *temp = Head;
+//     Node *prevNode = NULL;
 
-    while (temp != NULL)
-    {
-        Node *KthNode = findKthNode(temp, k);
+//     while (temp != NULL)
+//     {
+//         Node *KthNode = findKthNode(temp, k);
 
-        if (KthNode == NULL)
-        {
-            if (prevNode)
-            {
-                prevNode->next = temp;
-            }
-            break;
-        }
+//         if (KthNode == NULL)
+//         {
+//             if (prevNode)
+//             {
+//                 prevNode->next = temp;
+//             }
+//             break;
+//         }
 
-        Node *nextNode = KthNode->next;
-        KthNode->next = NULL;
-        Node *newKthHEad = reverseLinkedListIterative(temp);
+//         Node *nextNode = KthNode->next;
+//         KthNode->next = NULL;
+//         Node *newKthHEad = reverseLinkedListIterative(temp);
 
-        if (Head == temp)
-        {
-            Head = newKthHEad;
-        }
-        else
-        {
-            prevNode->next = newKthHEad;
-        }
-        prevNode = temp; // the last node of the previous k-group
-        temp = nextNode;
-    }
-    return Head;
-}
+//         if (Head == temp)
+//         {
+//             Head = newKthHEad;
+//         }
+//         else
+//         {
+//             prevNode->next = newKthHEad;
+//         }
+//         prevNode = temp; // the last node of the previous k-group
+//         temp = nextNode;
+//     }
+//     return Head;
+// }
 
-// Flattening a Linked List
-Node *mergetwoLists(Node *fHeadlist1, Node *Headlist2)
-{
-    Node *dummyNode = new Node(-1);
-    Node *res = dummyNode;
+// // Flattening a Linked List
+// Node *mergetwoLists(Node *fHeadlist1, Node *Headlist2)
+// {
+//     Node *dummyNode = new Node(-1);
+//     Node *res = dummyNode;
 
-    while (fHeadlist1 != NULL && Headlist2 != NULL)
-    {
-        if (fHeadlist1->data < Headlist2->data)
-        {
-            res->child = fHeadlist1;
-            res = fHeadlist1;
-            fHeadlist1 = fHeadlist1->child;
-        }
-        else
-        {
-            res->child = Headlist2;
-            res = Headlist2;
-            Headlist2 = Headlist2->child;
-        }
-        res->next = NULL;
-    }
+//     while (fHeadlist1 != NULL && Headlist2 != NULL)
+//     {
+//         if (fHeadlist1->data < Headlist2->data)
+//         {
+//             res->child = fHeadlist1;
+//             res = fHeadlist1;
+//             fHeadlist1 = fHeadlist1->child;
+//         }
+//         else
+//         {
+//             res->child = Headlist2;
+//             res = Headlist2;
+//             Headlist2 = Headlist2->child;
+//         }
+//         res->next = NULL;
+//     }
 
-    if (fHeadlist1)
-    {
-        res->child = fHeadlist1;
-    }
-    else
-    {
-        res->child = Headlist2;
-    }
+//     if (fHeadlist1)
+//     {
+//         res->child = fHeadlist1;
+//     }
+//     else
+//     {
+//         res->child = Headlist2;
+//     }
 
-    if (dummyNode->child)
-    {
-        dummyNode->child->next = NULL;
-    }
+//     if (dummyNode->child)
+//     {
+//         dummyNode->child->next = NULL;
+//     }
 
-    return dummyNode->child;
-}
+//     return dummyNode->child;
+// }
 
-Node *flatten(Node *Head)
-{
-    if (Head == NULL || Head->next == NULL)
-    {
-        return Head;
-    }
+// Node *flatten(Node *Head)
+// {
+//     if (Head == NULL || Head->next == NULL)
+//     {
+//         return Head;
+//     }
 
-    Node *FlattenHead = flatten(Head->next);
-    Head = mergetwoLists(FlattenHead, Head);
-    return Head;
-}
+//     Node *FlattenHead = flatten(Head->next);
+//     Head = mergetwoLists(FlattenHead, Head);
+//     return Head;
+// }
 
-// Copy List with Random Pointer
+// // Copy List with Random Pointer
 
-Node *copyRandomList(Node *Head)
-{
-    if (Head == NULL || Head->next == NULL)
-    {
-        return Head;
-    }
+// Node *copyRandomList(Node *Head)
+// {
+//     if (Head == NULL || Head->next == NULL)
+//     {
+//         return Head;
+//     }
 
-    // Create new nodes and interleave them with original nodes
-    Node *temp = Head;
-    while (temp != NULL)
-    {
-        Node *newNode = new Node(temp->data);
-        newNode->next = temp->next;
-        temp->next = newNode;
-        temp = newNode->next;
-    }
+//     // Create new nodes and interleave them with original nodes
+//     Node *temp = Head;
+//     while (temp != NULL)
+//     {
+//         Node *newNode = new Node(temp->data);
+//         newNode->next = temp->next;
+//         temp->next = newNode;
+//         temp = newNode->next;
+//     }
 
-    // Assign random pointers for the copied nodes
-    temp = Head;
-    while (temp != NULL)
-    {
-        if (temp->random != NULL)
-        {
-            // copied node's next pointing to the next of og next
-            temp->next->random = temp->random->next;
-        }
-        temp = temp->next->next;
-    }
+//     // Assign random pointers for the copied nodes
+//     temp = Head;
+//     while (temp != NULL)
+//     {
+//         if (temp->random != NULL)
+//         {
+//             // copied node's next pointing to the next of og next
+//             temp->next->random = temp->random->next;
+//         }
+//         temp = temp->next->next;
+//     }
 
-    // Separate the original and copied lists
-    temp = Head;
-    Node *newHead = Head->next;
-    Node *copyCurr = newHead;
+//     // Separate the original and copied lists
+//     temp = Head;
+//     Node *newHead = Head->next;
+//     Node *copyCurr = newHead;
 
-    while (temp != NULL && copyCurr != NULL)
-    {
-        temp->next = temp->next->next;
-        if (copyCurr->next != NULL)
-        {
-            copyCurr->next = copyCurr->next->next;
-        }
-        temp = temp->next;
-        copyCurr = copyCurr->next;
-    }
-    return newHead;
-}
+//     while (temp != NULL && copyCurr != NULL)
+//     {
+//         temp->next = temp->next->next;
+//         if (copyCurr->next != NULL)
+//         {
+//             copyCurr->next = copyCurr->next->next;
+//         }
+//         temp = temp->next;
+//         copyCurr = copyCurr->next;
+//     }
+//     return newHead;
+// }
 
 int main()
 {
@@ -1676,7 +1680,7 @@ int main()
         {30, 50}};
 
     int target = 5;
-    Node *Head = convertarraytoLinkedlist(varr);
+    // Node *Head = convertarraytoLinkedlist(varr);
 
     // Node *Head = convertArrayintoDLL(varr);
 
