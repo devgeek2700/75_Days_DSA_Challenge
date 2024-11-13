@@ -158,8 +158,116 @@ void isFull(int rear, int n)
     }
 }
 
+// Stack Implementation using a stack STL Library
+// PUSH OPERATION
+void pushstack(stack<int> &st, int val)
+{
+    st.push(val);
+    cout << val << " pushed to stack" << endl;
+}
+
+// POP OPERATION
+void popstack(stack<int> &st)
+{
+    if (st.empty())
+    {
+        cout << "Stack Underflow" << endl;
+    }
+    else
+    {
+        cout << "The popped element is " << st.top() << endl;
+        st.pop();
+    }
+}
+
+// DISPLAY OPERATION
+void Displaystack(stack<int> &st)
+{
+    if (st.empty())
+    {
+        cout << "Stack Underflow" << endl;
+    }
+
+    stack<int> temp;
+    temp = st;
+    while (!temp.empty())
+    {
+        cout << temp.top() << " ";
+        temp.pop();
+    }
+    cout << endl;
+}
+
+// EMPTY OPERATION
+void Emptyornotstack(stack<int> &st)
+{
+    if (st.empty())
+    {
+        cout << "Stack is EMPTY!" << endl;
+    }
+    else
+    {
+        cout << "Stack is NOT EMPTY!" << endl;
+    }
+}
+
+// Queue Implementation using a queue STL Library
+
+// PUSH OPERATION
+void enqueuequeue(queue<int> &q, int val)
+{
+    q.push(val);
+    cout << "Value " << val << " enqueued to queue" << endl;
+}
+
+// POP OPERATION
+void dequeuequeue(queue<int> &q)
+{
+    if (q.empty())
+    {
+        cout << "Queue underflow" << endl;
+        return;
+    }
+    cout << "Dequeued element: " << q.front() << endl;
+    q.pop();
+}
+
+// DISPLAY OPERATION
+void displayqueue(queue<int> &q)
+{
+    if (q.empty())
+    {
+        cout << "Queue underflow" << endl;
+        return;
+    }
+
+    cout << "Queue elements: ";
+    queue<int> temp = q;
+    while (!temp.empty())
+    {
+        cout << temp.front() << " ";
+        temp.pop();
+    }
+    cout << endl;
+}
+
+// EMPTY OPERATION
+void isEmptyqueue(queue<int> &q)
+{
+    if (q.empty())
+    {
+        cout << "Queue is EMPTY!" << endl;
+    }
+    else
+    {
+        cout << "Queue is NOT EMPTY!" << endl;
+    }
+}
+
 int main()
 {
+    // Stack Implementation using a Array
+
     // int stack[100];
     // int n = 100;
     // int top = -1;
@@ -205,18 +313,99 @@ int main()
 
     // Queue Implementation using a Array
 
-    int queue[100];
-    int n = 100;
-    int front = -1;
-    int rear = -1;
+    // int queue[100];
+    // int n = 100;
+    // int front = -1;
+    // int rear = -1;
 
+    // int ch, val;
+    // cout << "1) Enqueue in queue" << endl;
+    // cout << "2) Dequeue from queue" << endl;
+    // cout << "3) Display queue" << endl;
+    // cout << "4) Check if Queue is Empty" << endl;
+    // cout << "5) Check if Queue is Full" << endl;
+    // cout << "6) Exit" << endl;
+
+    // do
+    // {
+    //     cout << "Enter choice: ";
+    //     cin >> ch;
+    //     switch (ch)
+    //     {
+    //     case 1:
+    //         cout << "Enter value to be enqueued: ";
+    //         cin >> val;
+    //         enqueue(queue, n, front, rear, val);
+    //         break;
+    //     case 2:
+    //         dequeue(queue, front, rear);
+    //         break;
+    //     case 3:
+    //         display(queue, front, rear);
+    //         break;
+    //     case 4:
+    //         isEmpty(front);
+    //         break;
+    //     case 5:
+    //         isFull(rear, n);
+    //         break;
+    //     case 6:
+    //         cout << "Exit" << endl;
+    //         break;
+    //     default:
+    //         cout << "Invalid Choice" << endl;
+    //     }
+    // } while (ch != 6);
+
+    // Stack Implementation using a stack STL Library
+
+    // stack<int> st;
+
+    // int ch, val;
+    // cout << "1) Push in stack" << endl;
+    // cout << "2) Pop from stack" << endl;
+    // cout << "3) Display stack" << endl;
+    // cout << "4) Check if Stack Empty" << endl;
+    // cout << "5) Check if Stack Full" << endl;
+    // cout << "6) Exit" << endl;
+
+    // do
+    // {
+    //     cout << "Enter choice: ";
+    //     cin >> ch;
+    //     switch (ch)
+    //     {
+    //     case 1:
+    //         cout << "Enter value to be pushed: ";
+    //         cin >> val;
+    //         pushstack(st, val);
+    //         break;
+    //     case 2:
+    //         popstack(st);
+    //         break;
+    //     case 3:
+    //         Displaystack(st);
+    //         break;
+    //     case 4:
+    //         Emptyornotstack(st);
+    //         break;
+    //     case 5:
+    //         cout << "Exit" << endl;
+    //         break;
+    //     default:
+    //         cout << "Invalid Choice" << endl;
+    //     }
+    // } while (ch != 5);
+
+    // Queue Implementation using a queue STL Library
+
+    queue<int> q;
     int ch, val;
     cout << "1) Enqueue in queue" << endl;
     cout << "2) Dequeue from queue" << endl;
     cout << "3) Display queue" << endl;
     cout << "4) Check if Queue is Empty" << endl;
-    cout << "5) Check if Queue is Full" << endl;
-    cout << "6) Exit" << endl;
+    cout << "5) Exit" << endl;
 
     do
     {
@@ -227,26 +416,24 @@ int main()
         case 1:
             cout << "Enter value to be enqueued: ";
             cin >> val;
-            enqueue(queue, n, front, rear, val);
+            enqueuequeue(q, val);
             break;
         case 2:
-            dequeue(queue, front, rear);
+            dequeuequeue(q);
             break;
         case 3:
-            display(queue, front, rear);
+            displayqueue(q);
             break;
         case 4:
-            isEmpty(front);
+            isEmptyqueue(q);
             break;
         case 5:
-            isFull(rear, n);
-            break;
-        case 6:
             cout << "Exit" << endl;
             break;
         default:
             cout << "Invalid Choice" << endl;
         }
-    } while (ch != 6);
+    } while (ch != 5);
+
     return 0;
 }
