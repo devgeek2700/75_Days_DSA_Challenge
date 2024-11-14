@@ -183,7 +183,7 @@ using namespace std;
 // {
 //     qu1.push(val);
 
-//     for (int i = 0; i < qu1.size() - 1; i++)
+//     for (int  i = 0; i < qu1.size() - 1; i++)
 //     {
 //         qu1.push(qu1.front());
 //         qu1.pop();
