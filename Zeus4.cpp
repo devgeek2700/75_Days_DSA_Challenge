@@ -322,6 +322,72 @@ void isEmptyStackusing1Queue(queue<int> &q1)
     }
 }
 
+// Implement Queue using Stacks
+// PUSH OPERATION
+
+void pushQueueusing1stack(stack<int> &st1, stack<int> &st2, int val)
+{
+    while (!st1.empty())
+    {
+        st2.push(st1.top());
+        st1.pop();
+    }
+
+    st1.push(val);
+
+    while (!st2.empty())
+    {
+        st1.push(st2.top());
+        st2.pop();
+    }
+    cout << val << " pushed to queue" << endl;
+}
+
+// POP OPERATION
+void popQueueusing1stack(stack<int> &st1, stack<int> &st2)
+{
+    if (st1.empty())
+    {
+        cout << "Queue Underflow!" << endl;
+        return;
+    }
+
+    cout << "Queue elmenent pop using Stack: " << st1.top() << endl;
+    st1.pop();
+}
+
+// DISPLAY OPERATION
+void displayQueueusing1stack(stack<int> &st1, stack<int> &st2)
+{
+    if (st1.empty())
+    {
+        cout << "Queue Underflow!" << endl;
+        return;
+    }
+
+    cout << "Queue elements: ";
+    stack<int> temp = st1;
+    while (!temp.empty())
+    {
+        cout << temp.top() << " ";
+        temp.pop();
+    }
+    cout << endl;
+}
+
+// EMPTY OPERATION
+void isEmptyQueueusing1stack(stack<int> &st1, stack<int> &st2)
+{
+    if (st1.empty())
+    {
+        cout << "Queue EMPTY!" << endl;
+    }
+    else
+    {
+        cout << "Queue NOT EMPTY!" << endl;
+    }
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -494,7 +560,47 @@ int main()
     // } while (ch != 5);
 
     // Implement Stack using Queues
-    queue<int> q1;
+    // queue<int> q1;
+
+    // int ch, val;
+    // cout << "1) Enqueue in queue" << endl;
+    // cout << "2) Dequeue from queue" << endl;
+    // cout << "3) Display queue" << endl;
+    // cout << "4) Check if Queue is Empty" << endl;
+    // cout << "5) Exit" << endl;
+
+    // do
+    // {
+    //     cout << "Enter choice: ";
+    //     cin >> ch;
+    //     switch (ch)
+    //     {
+    //     case 1:
+    //         cout << "Enter value to be enqueued: ";
+    //         cin >> val;
+    //         pushStackusing1Queue(q1, val);
+    //         break;
+    //     case 2:
+    //         popStackusing1Queue(q1);
+    //         break;
+    //     case 3:
+    //         displayStackusing1Queue(q1);
+    //         break;
+    //     case 4:
+    //         isEmptyStackusing1Queue(q1);
+    //         break;
+    //     case 5:
+    //         cout << "Exit" << endl;
+    //         break;
+    //     default:
+    //         cout << "Invalid Choice" << endl;
+    //     }
+    // } while (ch != 5);
+
+    // Implement Queue using Stacks
+
+    stack<int> st1;
+    stack<int> st2;
 
     int ch, val;
     cout << "1) Enqueue in queue" << endl;
@@ -512,16 +618,16 @@ int main()
         case 1:
             cout << "Enter value to be enqueued: ";
             cin >> val;
-            pushStackusing1Queue(q1, val);
+            pushQueueusing1stack(st1, st2, val);
             break;
         case 2:
-            popStackusing1Queue(q1);
+            popQueueusing1stack(st1, st2);
             break;
         case 3:
-            displayStackusing1Queue(q1);
+            displayQueueusing1stack(st1, st2);
             break;
         case 4:
-            isEmptyStackusing1Queue(q1);
+            isEmptyQueueusing1stack(st1, st2);
             break;
         case 5:
             cout << "Exit" << endl;
