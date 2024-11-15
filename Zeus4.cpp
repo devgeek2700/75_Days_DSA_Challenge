@@ -388,6 +388,105 @@ void isEmptyQueueusing1stack(stack<int> &st1, stack<int> &st2)
     }
 }
 
+// Stack using Linked List
+class Node
+{
+public:
+    int data;
+    Node *next;
+
+public:
+    Node(int data1)
+    {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+class Stack
+{
+    Node *top;
+
+public:
+    Stack()
+    {
+        top = NULL;
+    }
+
+    void pushStackusingLL(int val)
+    {
+        Node *temp = new Node(val);
+
+        if (!temp)
+        {
+            cout << "Stack LL Underflow!" << endl;
+            exit(1);
+        }
+        temp->data = val;
+        temp->next = top;
+        top = temp;
+    }
+
+    void popStackusingLL()
+    {
+        if (top == NULL)
+        {
+            cout << "Stack LL Underflow!" << endl;
+            exit(1);
+        }
+
+        cout << "Popped value: " << top->data << endl;
+        Node *temp = top;
+        top = top->next;
+        delete (temp);
+    }
+
+    void displayStackusingLL()
+    {
+        if (top == NULL)
+        {
+            cout << "\nStack LL Underflow" << endl;
+            exit(1);
+        }
+        else
+        {
+            Node *temp = top;
+            while (temp != NULL)
+            {
+                cout << temp->data;
+                if (temp->next != NULL)
+                {
+                    cout << " -> ";
+                }
+                temp = temp->next;
+            }
+        }
+        cout << endl;
+    }
+
+    bool isEmptyStackusingLL()
+    {
+        if (top == NULL)
+        {
+            cout << "\nStack LL EMPTY!" << endl;
+        }
+        else
+        {
+            cout << "\nStack LL NOT EMPTY!" << endl;
+        }
+    }
+
+    int peekusingLL()
+    {
+        if (top == NULL)
+        {
+            cout << "Stack is empty!" << endl;
+            return -1; // or throw an exception
+        }
+        return top->data;
+    }
+};
+
 int main()
 {
     // Stack Implementation using a Array
@@ -599,43 +698,56 @@ int main()
 
     // Implement Queue using Stacks
 
-    stack<int> st1;
-    stack<int> st2;
+    // stack<int> st1;
+    // stack<int> st2;
 
-    int ch, val;
-    cout << "1) Enqueue in queue" << endl;
-    cout << "2) Dequeue from queue" << endl;
-    cout << "3) Display queue" << endl;
-    cout << "4) Check if Queue is Empty" << endl;
-    cout << "5) Exit" << endl;
+    // int ch, val;
+    // cout << "1) Enqueue in queue" << endl;
+    // cout << "2) Dequeue from queue" << endl;
+    // cout << "3) Display queue" << endl;
+    // cout << "4) Check if Queue is Empty" << endl;
+    // cout << "5) Exit" << endl;
 
-    do
-    {
-        cout << "Enter choice: ";
-        cin >> ch;
-        switch (ch)
-        {
-        case 1:
-            cout << "Enter value to be enqueued: ";
-            cin >> val;
-            pushQueueusing1stack(st1, st2, val);
-            break;
-        case 2:
-            popQueueusing1stack(st1, st2);
-            break;
-        case 3:
-            displayQueueusing1stack(st1, st2);
-            break;
-        case 4:
-            isEmptyQueueusing1stack(st1, st2);
-            break;
-        case 5:
-            cout << "Exit" << endl;
-            break;
-        default:
-            cout << "Invalid Choice" << endl;
-        }
-    } while (ch != 5);
+    // do
+    // {
+    //     cout << "Enter choice: ";
+    //     cin >> ch;
+    //     switch (ch)
+    //     {
+    //     case 1:
+    //         cout << "Enter value to be enqueued: ";
+    //         cin >> val;
+    //         pushQueueusing1stack(st1, st2, val);
+    //         break;
+    //     case 2:
+    //         popQueueusing1stack(st1, st2);
+    //         break;
+    //     case 3:
+    //         displayQueueusing1stack(st1, st2);
+    //         break;
+    //     case 4:
+    //         isEmptyQueueusing1stack(st1, st2);
+    //         break;
+    //     case 5:
+    //         cout << "Exit" << endl;
+    //         break;
+    //     default:
+    //         cout << "Invalid Choice" << endl;
+    //     }
+    // } while (ch != 5);
+
+    // Stack using Linked List
+    Stack stackLL;
+    cout << "Stack Operations Using Linked List:" << endl;
+    stackLL.pushStackusingLL(10);
+    stackLL.pushStackusingLL(20);
+    stackLL.pushStackusingLL(30);
+    stackLL.pushStackusingLL(40);
+    stackLL.displayStackusingLL();
+    stackLL.popStackusingLL();
+    stackLL.displayStackusingLL();
+    stackLL.isEmptyStackusingLL();
+    cout << "Peek element: " << stackLL.peekusingLL() << endl;
 
     return 0;
 }
