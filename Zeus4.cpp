@@ -853,6 +853,8 @@ int main()
     QueueLL.displayQueueusingLL();
     QueueLL.popQueueusingLL();
     QueueLL.displayQueueusingLL();
+    QueueLL.popQueueusingLL();
+    QueueLL.displayQueueusingLL();
     QueueLL.isEmptyQueueusingLL();
     cout << "Peek element: " << QueueLL.peekQueueusingLL() << endl;
 
