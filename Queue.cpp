@@ -297,7 +297,7 @@ public:
         }
     }
 
-        void popQueueusingLL()
+    void popQueueusingLL()
     {
         if (!isEmptyQueueusingLL())
         {
@@ -447,7 +447,7 @@ int main()
     //     }
     // } while (ch != 4);
 
-    //  
+    //
 
     Queue q;
 

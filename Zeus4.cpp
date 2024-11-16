@@ -389,6 +389,105 @@ void isEmptyQueueusing1stack(stack<int> &st1, stack<int> &st2)
 }
 
 // Stack using Linked List
+// class Node
+// {
+// public:
+//     int data;
+//     Node *next;
+
+// public:
+//     Node(int data1)
+//     {
+//         data = data1;
+//         next = nullptr;
+//     }
+// };
+
+// class Stack
+// {
+//     Node *top;
+
+// public:
+//     Stack()
+//     {
+//         top = NULL;
+//     }
+
+//     void pushStackusingLL(int val)
+//     {
+//         Node *temp = new Node(val);
+
+//         if (!temp)
+//         {
+//             cout << "Stack LL Underflow!" << endl;
+//             exit(1);
+//         }
+//         temp->data = val;
+//         temp->next = top;
+//         top = temp;
+//     }
+
+//     void popStackusingLL()
+//     {
+//         if (top == NULL)
+//         {
+//             cout << "Stack LL Underflow!" << endl;
+//             exit(1);
+//         }
+
+//         cout << "Popped value: " << top->data << endl;
+//         Node *temp = top;
+//         top = top->next;
+//         delete (temp);
+//     }
+
+//     void displayStackusingLL()
+//     {
+//         if (top == NULL)
+//         {
+//             cout << "\nStack LL Underflow" << endl;
+//             exit(1);
+//         }
+//         else
+//         {
+//             Node *temp = top;
+//             while (temp != NULL)
+//             {
+//                 cout << temp->data;
+//                 if (temp->next != NULL)
+//                 {
+//                     cout << " -> ";
+//                 }
+//                 temp = temp->next;
+//             }
+//         }
+//         cout << endl;
+//     }
+
+//     bool isEmptyStackusingLL()
+//     {
+//         if (top == NULL)
+//         {
+//             cout << "\nStack LL EMPTY!" << endl;
+//         }
+//         else
+//         {
+//             cout << "\nStack LL NOT EMPTY!" << endl;
+//         }
+//     }
+
+//     int peekusingLL()
+//     {
+//         if (top == NULL)
+//         {
+//             cout << "Stack is empty!" << endl;
+//             return -1; // or throw an exception
+//         }
+//         return top->data;
+//     }
+// };
+
+// Queue using Linked List
 class Node
 {
 public:
@@ -403,87 +502,82 @@ public:
     }
 };
 
-class Stack
+class Queue
 {
-    Node *top;
+    Node *front, *rear;
 
 public:
-    Stack()
+    Queue()
     {
-        top = NULL;
+        front = NULL;
+        rear = NULL;
     }
 
-    void pushStackusingLL(int val)
+    void pushQueueusingLL(int val)
     {
         Node *temp = new Node(val);
 
-        if (!temp)
+        // if queue is empty
+        if (rear == NULL)
         {
-            cout << "Stack LL Underflow!" << endl;
-            exit(1);
+            front = rear = temp;
+            return;
         }
-        temp->data = val;
-        temp->next = top;
-        top = temp;
+        rear->next = temp;
+        rear = temp;
     }
 
-    void popStackusingLL()
+    void popQueueusingLL()
     {
-        if (top == NULL)
+        if (front == NULL)
         {
-            cout << "Stack LL Underflow!" << endl;
-            exit(1);
+            cout << "Queue Underflow" << endl;
+            return;
         }
 
-        cout << "Popped value: " << top->data << endl;
-        Node *temp = top;
-        top = top->next;
-        delete (temp);
+        Node *deletenode = front;
+        cout << "Dequeued element: " << front->data << endl;
+        front = front->next;
+        delete (deletenode);
     }
 
-    void displayStackusingLL()
+    void displayQueueusingLL()
     {
-        if (top == NULL)
+        if (front == NULL)
         {
-            cout << "\nStack LL Underflow" << endl;
-            exit(1);
+            cout << "Queue Underflow" << endl;
+            return;
         }
-        else
+        Node *temp = front;
+        while (temp != NULL)
         {
-            Node *temp = top;
-            while (temp != NULL)
-            {
-                cout << temp->data;
-                if (temp->next != NULL)
-                {
-                    cout << " -> ";
-                }
-                temp = temp->next;
-            }
+            cout << temp->data << " ";
+            temp = temp->next;
         }
         cout << endl;
     }
 
-    bool isEmptyStackusingLL()
+    void isEmptyQueueusingLL()
     {
-        if (top == NULL)
+        if (front == NULL)
         {
-            cout << "\nStack LL EMPTY!" << endl;
+            cout << "Queue EMPTY!" << endl;
+            return;
         }
         else
         {
-            cout << "\nStack LL NOT EMPTY!" << endl;
+            cout << "Queue NOT EMPTY!" << endl;
         }
     }
 
-    int peekusingLL()
+    int peekQueueusingLL()
     {
-        if (top == NULL)
+        if (front == NULL)
         {
-            cout << "Stack is empty!" << endl;
-            return -1; // or throw an exception
+            cout << "Queue Underflow" << endl;
+            return -1;
         }
-        return top->data;
+        return front->data;
     }
 };
 
@@ -737,17 +831,30 @@ int main()
     // } while (ch != 5);
 
     // Stack using Linked List
-    Stack stackLL;
+    // Stack stackLL;
+    // cout << "Stack Operations Using Linked List:" << endl;
+    // stackLL.pushStackusingLL(10);
+    // stackLL.pushStackusingLL(20);
+    // stackLL.pushStackusingLL(30);
+    // stackLL.pushStackusingLL(40);
+    // stackLL.displayStackusingLL();
+    // stackLL.popStackusingLL();
+    // stackLL.displayStackusingLL();
+    // stackLL.isEmptyStackusingLL();
+    // cout << "Peek element: " << stackLL.peekusingLL() << endl;
+
+    // Queue using Linked List
+    Queue QueueLL;
     cout << "Stack Operations Using Linked List:" << endl;
-    stackLL.pushStackusingLL(10);
-    stackLL.pushStackusingLL(20);
-    stackLL.pushStackusingLL(30);
-    stackLL.pushStackusingLL(40);
-    stackLL.displayStackusingLL();
-    stackLL.popStackusingLL();
-    stackLL.displayStackusingLL();
-    stackLL.isEmptyStackusingLL();
-    cout << "Peek element: " << stackLL.peekusingLL() << endl;
+    QueueLL.pushQueueusingLL(10);
+    QueueLL.pushQueueusingLL(20);
+    QueueLL.pushQueueusingLL(30);
+    QueueLL.pushQueueusingLL(40);
+    QueueLL.displayQueueusingLL();
+    QueueLL.popQueueusingLL();
+    QueueLL.displayQueueusingLL();
+    QueueLL.isEmptyQueueusingLL();
+    cout << "Peek element: " << QueueLL.peekQueueusingLL() << endl;
 
     return 0;
 }
