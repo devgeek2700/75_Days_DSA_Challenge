@@ -582,9 +582,14 @@ public:
 };
 
 // Valid Parentheses
+
 bool isValid(string s)
 {
     stack<char> st;
+    if (s.length() < 2)
+    {
+        return false;
+    }
 
     for (int i = 0; i < s.length(); i++)
     {
@@ -601,14 +606,67 @@ bool isValid(string s)
 
             char lastChar = st.top();
             st.pop();
-            if (s[i] == ')' && lastChar != '(' || s[i] == ']' && lastChar != '[' || s[i] == '}' && lastChar != '{')
+            if (s[i] == ')' && lastChar != '(' ||
+                s[i] == ']' && lastChar != '[' ||
+                s[i] == '}' && lastChar != '{')
             {
                 return false;
             }
         }
     }
-    return true;
+    return st.empty();
 }
+
+// Min Stack
+class MinStack
+{
+    stack<pair<int, int>> st;
+
+public:
+    MinStack() {}
+
+    void push(int val)
+    {
+        if (st.empty())
+        {
+            st.push({val, val});
+        }
+        else
+        {
+            st.push({val, min(val, st.top().second)});
+        }
+    }
+
+    void pop()
+    {
+        if (st.empty())
+        {
+            cout << "Stack Underflow" << endl;
+            return;
+        }
+        st.pop();
+    }
+
+    int top()
+    {
+        if (st.empty())
+        {
+            cout << "Stack Underflow" << endl;
+            return -1;
+        }
+        return st.top().first;
+    }
+
+    int getMin()
+    {
+        if (st.empty())
+        {
+            cout << "Stack Underflow" << endl;
+            return -1;
+        }
+        return st.top().second;
+    }
+};
 
 int main()
 {
@@ -887,7 +945,16 @@ int main()
     // QueueLL.isEmptyQueueusingLL();
     // cout << "Peek element: " << QueueLL.peekQueueusingLL() << endl;
 
-    cout << isValid("(]") << endl;
+    // cout << isValid("(]") << endl;
+
+   MinStack minStack;
+    minStack.push(-2);
+    minStack.push(0);
+    minStack.push(-3);
+    cout << minStack.getMin() << endl; // return -3
+    minStack.pop();
+    cout << minStack.top() << endl;    // return 0
+    cout << minStack.getMin() << endl; // return -2
 
     return 0;
 }
