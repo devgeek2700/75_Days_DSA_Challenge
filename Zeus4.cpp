@@ -581,6 +581,35 @@ public:
     }
 };
 
+// Valid Parentheses
+bool isValid(string s)
+{
+    stack<char> st;
+
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (s[i] == '(' || s[i] == '[' || s[i] == '{')
+        {
+            st.push(s[i]);
+        }
+        else
+        {
+            if (st.empty())
+            {
+                return false;
+            }
+
+            char lastChar = st.top();
+            st.pop();
+            if (s[i] == ')' && lastChar != '(' || s[i] == ']' && lastChar != '[' || s[i] == '}' && lastChar != '{')
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -844,19 +873,21 @@ int main()
     // cout << "Peek element: " << stackLL.peekusingLL() << endl;
 
     // Queue using Linked List
-    Queue QueueLL;
-    cout << "Stack Operations Using Linked List:" << endl;
-    QueueLL.pushQueueusingLL(10);
-    QueueLL.pushQueueusingLL(20);
-    QueueLL.pushQueueusingLL(30);
-    QueueLL.pushQueueusingLL(40);
-    QueueLL.displayQueueusingLL();
-    QueueLL.popQueueusingLL();
-    QueueLL.displayQueueusingLL();
-    QueueLL.popQueueusingLL();
-    QueueLL.displayQueueusingLL();
-    QueueLL.isEmptyQueueusingLL();
-    cout << "Peek element: " << QueueLL.peekQueueusingLL() << endl;
+    // Queue QueueLL;
+    // cout << "Stack Operations Using Linked List:" << endl;
+    // QueueLL.pushQueueusingLL(10);
+    // QueueLL.pushQueueusingLL(20);
+    // QueueLL.pushQueueusingLL(30);
+    // QueueLL.pushQueueusingLL(40);
+    // QueueLL.displayQueueusingLL();
+    // QueueLL.popQueueusingLL();
+    // QueueLL.displayQueueusingLL();
+    // QueueLL.popQueueusingLL();
+    // QueueLL.displayQueueusingLL();
+    // QueueLL.isEmptyQueueusingLL();
+    // cout << "Peek element: " << QueueLL.peekQueueusingLL() << endl;
+
+    cout << isValid("(]") << endl;
 
     return 0;
 }
