@@ -661,22 +661,187 @@ int subarraySum(vector<int> &nums, int k)
     return count;
 }
 
-int main()
+// ************************* STRING EASY ***************************
+// sort the string --> lexicographically
+string sortlexicographically(string str)
 {
-    vector<int> arr;
-    int n, m, mum, num;
+    sort(str.begin(), str.end());
+    return str;
+}
 
-    cout << "Enter the number of elements1: ";
-    cin >> n;
-    // cout << "Enter the number of elements2: ";
-    // cin >> m;
+// Valid Anagram -->  rearranging letters of a word to get another word
+bool isAnagram(string s, string t)
+{
+    if (s.length() != t.length())
+    {
+        return false;
+    }
 
-    cout << "Enter the elements1: ";
+    sort(s.begin(), s.end());
+    sort(t.begin(), t.end());
+
+    return s == t;
+}
+
+// Check Isomorphic --> 1 to 1 mapping
+bool isIsomorphic(string s, string t)
+{
+    if (s.length() != t.length())
+    {
+        return false;
+    }
+
+    vector<int> s1(128, -1);
+    vector<int> s2(128, -1);
+
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (s1[s[i]] != s2[t[i]])
+        {
+            return false;
+        }
+        s1[s[i]] = i;
+        s2[t[i]] = i;
+    }
+    return true;
+}
+
+// Longest Common Prefix
+string longestCommonPrefix(vector<string> &strs)
+{
+    if (strs.empty())
+    {
+        return "";
+    }
+
+    string startStr = strs[0];
+    int longestcount = startStr.size();
+
+    for (int i = 1; i < strs.size(); i++)
+    {
+        int j = 0; // Pointer to compare characters in the current string and the main string
+        while (j < startStr.size() && j < strs[i].size() && startStr[j] == strs[i][j])
+        {
+            j++;
+        }
+        longestcount = min(longestcount, j);
+    }
+    string ans = startStr.substr(0, longestcount); // excliduing the longestcount number index
+    return ans;
+}
+
+// Maximum consecutive 1's fliped k times
+int maxConsecutive1sKtimes(string str, int k) // TC --> O(N^2) SC --> O(1)
+{
+    int n = str.length();
+    int maxLen = INT_MIN;
+
     for (int i = 0; i < n; i++)
     {
-        cin >> num;
-        arr.push_back(num);
+        int currZero = 0;
+        for (int j = i; j < n; j++)
+        {
+            if (str[j] == '0')
+            {
+                currZero++;
+            }
+
+            if (currZero <= k)
+            {
+                maxLen = max(maxLen, j - i + 1);
+            }
+        }
     }
+    return maxLen;
+}
+
+// Remove Outermost Parentheses
+string removeOuterParentheses(string s)
+{
+    int n = s.size();
+    int balance = 0;
+    string ans = "";
+
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '(')
+        {
+            if (balance > 0)
+            {
+                ans.push_back(s[i]);
+            }
+            balance++;
+        }
+
+        else if (s[i] == ')')
+        {
+            balance--;
+            if (balance > 0)
+            {
+                ans.push_back(s[i]);
+            }
+        }
+    }
+    return ans;
+}
+
+// Reverse Words in a String
+string reverseWords(string s)
+{
+    int n = s.length();
+    string ans = "";
+    string finalAns = "";
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if (s[i] != ' ')
+        {
+            ans.push_back(s[i]);
+        }
+        else
+        {
+            if (!ans.empty())
+            {
+                reverse(ans.begin(), ans.end());
+                if (!finalAns.empty())
+                {
+                    finalAns.push_back(' ');
+                }
+                finalAns += ans;
+                ans = "";
+            }
+        }
+    }
+
+    if (!ans.empty())
+    {
+        reverse(ans.begin(), ans.end());
+        if (!finalAns.empty())
+        {
+            finalAns.push_back(' ');
+        }
+        finalAns += ans;
+    }
+
+    return finalAns;
+}
+
+int main()
+{
+    // vector<int> arr;
+    // int n, m, mum, num;
+
+    // cout << "Enter the number of elements1: ";
+    // cin >> n;
+    // // cout << "Enter the number of elements2: ";
+    // // cin >> m;
+
+    // cout << "Enter the elements1: ";
+    // for (int i = 0; i < n; i++)
+    // {
+    //     cin >> num;
+    //     arr.push_back(num);
+    // }
 
     // cout << "Enter the elements2: ";
     // for (int i = 0; i < n; i++)
@@ -757,7 +922,7 @@ int main()
 
     // cout << "The longest consecutive sequence in the array is: " << longestConsecutive(arr) << endl;
 
-    vector<vector<int>> matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    // vector<vector<int>> matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
 
     // setZeroes(matrix);
     // cout << "The matrix after setting zeroes is: ";
@@ -787,7 +952,18 @@ int main()
     //     cout << ans[i] << " ";
     // }
 
-    cout << "The number of subarrays with sum K is: " << subarraySum(arr, 3) << endl;
+    // cout << "The number of subarrays with sum K is: " << subarraySum(arr, 3) << endl;
+
+    // vector<string> str = {"dog", "racecar", "car"};
+    string str = "a good   example";
+    // string t = "bar";
+    // cout << "The lexicographically sorted string is: " << sortlexicographically("hello") << endl;
+    // cout << "The strings are anagrams: " << isAnagram(str, t) << endl;
+    // cout << "The strings are isomorphic: " << isIsomorphic(str, t) << endl;
+    // cout << "The longest common prefix is: " << longestCommonPrefix(str) << endl;
+    // cout << "The maximum consecutive 1's fliped k times is: " << maxConsecutive1sKtimes(str, 2) << endl;
+    // cout << "The string after removing outermost parentheses is: " << removeOuterParentheses(str) << endl;
+    cout << "The string after reversing words is: " << reverseWords(str) << endl;
 
     return 0;
 }

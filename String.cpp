@@ -25,7 +25,6 @@ string sortlexicographically(string str) // TC --> O(2*N)  SC --> O(256)
     return str;
 }
 
-// Anagram --> rearranging letters of a word to get another word
 
 bool checkAnagram(string str, string t) // TC --> O(2*N)  SC --> O(1)
 {
