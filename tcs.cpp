@@ -826,6 +826,39 @@ string reverseWords(string s)
     return finalAns;
 }
 
+// Largest Odd Number in String
+string largestOddNumber(string num)
+{
+    int n = num.length();
+    string longestOdd = "";
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if ((num[i] - '0') % 2 != 0)
+        {
+            longestOdd = num.substr(0, i + 1);
+            break;
+        }
+    }
+    return longestOdd;
+}
+
+// Rotate String
+bool rotateString(string str, string goal)
+{
+    int n = str.size();
+    int m = goal.size();
+
+    if (n != m)
+    {
+        return false;
+    }
+
+    string doubleStr = str + str;
+
+    return (doubleStr.find(goal) != string::npos);
+}
+
 int main()
 {
     // vector<int> arr;
@@ -955,7 +988,8 @@ int main()
     // cout << "The number of subarrays with sum K is: " << subarraySum(arr, 3) << endl;
 
     // vector<string> str = {"dog", "racecar", "car"};
-    string str = "a good   example";
+    string str = "abcde";
+    string t = "abced";
     // string t = "bar";
     // cout << "The lexicographically sorted string is: " << sortlexicographically("hello") << endl;
     // cout << "The strings are anagrams: " << isAnagram(str, t) << endl;
@@ -963,7 +997,9 @@ int main()
     // cout << "The longest common prefix is: " << longestCommonPrefix(str) << endl;
     // cout << "The maximum consecutive 1's fliped k times is: " << maxConsecutive1sKtimes(str, 2) << endl;
     // cout << "The string after removing outermost parentheses is: " << removeOuterParentheses(str) << endl;
-    cout << "The string after reversing words is: " << reverseWords(str) << endl;
+    // cout << "The string after reversing words is: " << reverseWords(str) << endl;
+    // cout << "The largest odd number in the string is: " << largestOddNumber(str) << endl;
+    cout << "The strings are rotated: " << rotateString(str, t) << endl;
 
     return 0;
 }
