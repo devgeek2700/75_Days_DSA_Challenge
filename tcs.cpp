@@ -859,6 +859,249 @@ bool rotateString(string str, string goal)
     return (doubleStr.find(goal) != string::npos);
 }
 
+// Armstrong number
+bool isArmstrong(int n)
+{
+    int orgnum = n;
+    int sum = 0;
+    int digits = 0;
+
+    while (n > 0)
+    {
+        n /= 10;
+        digits++;
+    }
+    n = orgnum;
+
+    while (n > 0)
+    {
+        int num = n % 10;
+        sum += pow(num, digits);
+        n /= 10;
+    }
+    return sum == orgnum;
+}
+
+// reverse a digit
+int reverseDigit(int n)
+{
+    int rev = 0;
+    while (n > 0)
+    {
+        rev = rev * 10 + n % 10;
+        n /= 10;
+    }
+    return rev;
+}
+
+// sum of digits is palindrome is not
+bool isPalindrome(int n)
+{
+    int sum = 0;
+
+    while (n > 0)
+    {
+        sum += n % 10;
+        n /= 10;
+    }
+
+    int rev = reverseDigit(sum);
+
+    return sum == rev;
+}
+
+// swap the kth element with the kth last element
+void swapKthElement(vector<int> &arr, int k)
+{
+    int n = arr.size();
+    swap(arr[k - 1], arr[n - k]);
+}
+
+// remove spaces
+string removeSpaces(string str)
+{
+    // str.erase(new_end, str.end()) removes all elements starting from new_end to the end.
+    str.erase(remove(str.begin(), str.end(), ' '), str.end());
+    return str;
+}
+
+// Sum of Mutliplication table
+int sumOfMultiplicationTable(int n, int m)
+{
+    int sum = 0;
+    for (int i = 1; i <= m; i++)
+    {
+        sum += (n * i);
+    }
+    return sum;
+}
+
+// find subarray with given sum
+vector<vector<int>> findSubarrayWithGivenSum(vector<int> &arr, int k)
+{
+    int n = arr.size();
+    int count = 0;
+    vector<vector<int>> ans;
+
+    for (int i = 0; i < n; i++)
+    {
+        int sum = 0;
+        for (int j = i; j < n; j++)
+        {
+            sum += arr[j];
+            if (sum == k)
+            {
+                vector<int> temp;
+                for (int k = i; k < j + 1; k++)
+                {
+                    temp.push_back(arr[k]);
+                }
+                ans.push_back(temp);
+            }
+        }
+    }
+    return ans;
+}
+
+// unique path
+int uniquePaths(int m, int n)
+{
+    vector<vector<int>> dp(m, vector<int>(n, 1));
+
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 1; j < n; j++)
+        {
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+        }
+    }
+    return dp[m - 1][n - 1];
+}
+
+// Cubes of all numbers in range
+int cubesInRange(int n, int m)
+{
+    int sum = 0;
+    for (int i = n; i <= m; i++)
+    {
+        int digitCube = i * i * i;
+        sum += digitCube;
+    }
+    return sum;
+}
+
+// sum of unique elements
+int sumOfUniqueElements(vector<int> &arr)
+{
+    int n = arr.size();
+    int sum = 0;
+    unordered_map<int, int> mpp;
+
+    for (int i = 0; i < n; i++)
+    {
+        mpp[arr[i]]++;
+    }
+
+    for (auto it : mpp)
+    {
+        sum += it.first;
+    }
+    return sum;
+}
+
+// maximum sum of subarray
+int maxSubArraySum(vector<int> &arr)
+{
+    int n = arr.size();
+    int maxSum = INT_MIN;
+    int currsum = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        currsum = max(arr[i], currsum + arr[i]);
+        maxSum = max(maxSum, currsum);
+    }
+    return maxSum;
+}
+
+// maximum number in each contigous window
+vector<int> maxInEachContigousWindow(vector<int> &arr, int k)
+{
+    int n = arr.size();
+    vector<int> ans;
+
+    for (int i = 0; i <= n - k; i++)
+    {
+        int maxNum = arr[i];
+
+        for (int j = i; j < i + k; j++)
+        {
+            maxNum = max(maxNum, arr[j]);
+        }
+        ans.push_back(maxNum);
+    }
+    return ans;
+}
+
+// find avg and sum of elements in array
+vector<double> findAvgAndSum(vector<double> &arr)
+{
+    int n = arr.size();
+    double sum = 0;
+    double avg = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        sum += arr[i];
+    }
+
+    avg = sum / n;
+
+    // round off uptp 4 decmial
+    sum = round(sum * 10000.0) / 10000.0;
+    avg = round(avg * 10000.0) / 10000.0;
+
+    return {sum, avg};
+}
+
+// find palindrome in given range
+bool isPalindrome(string &str, int n, int m)
+{
+
+    while (n < m)
+    {
+        if (str[n] != str[m])
+        {
+            return false;
+        }
+        n++;
+        m--;
+    }
+    return true;
+}
+
+/********************************** STRING MEDIUM **********************************/
+// Sort Characters By Frequency
+string frequencySort(string s)
+{
+    unordered_map<char, int> mpp;
+    for (int i = 0; i < s.length(); i++)
+    {
+        mpp[s[i]]++;
+    }
+
+    vector<pair<char, int>> freqList(mpp.begin(), mpp.end());
+    sort(freqList.begin(), freqList.end(), [](const pair<char, int> &a, const pair<char, int> &b)
+         { return a.second < b.second; });
+
+    string res = "";
+    for (auto &lst : freqList)
+    {
+        res.append(lst.second, lst.first);
+    }
+    return res;
+}
+
 int main()
 {
     // vector<int> arr;
@@ -988,8 +1231,8 @@ int main()
     // cout << "The number of subarrays with sum K is: " << subarraySum(arr, 3) << endl;
 
     // vector<string> str = {"dog", "racecar", "car"};
-    string str = "abcde";
-    string t = "abced";
+    // string str = "abcde";
+    // string t = "abced";
     // string t = "bar";
     // cout << "The lexicographically sorted string is: " << sortlexicographically("hello") << endl;
     // cout << "The strings are anagrams: " << isAnagram(str, t) << endl;
@@ -999,7 +1242,60 @@ int main()
     // cout << "The string after removing outermost parentheses is: " << removeOuterParentheses(str) << endl;
     // cout << "The string after reversing words is: " << reverseWords(str) << endl;
     // cout << "The largest odd number in the string is: " << largestOddNumber(str) << endl;
-    cout << "The strings are rotated: " << rotateString(str, t) << endl;
+    // cout << "The strings are rotated: " << rotateString(str, t) << endl;
+    // cout << "The number is armstrong: " << isArmstrong(120) << endl;
+    // cout << "The reverse of the digit is: " << reverseDigit(200) << endl;
+    // cout << "The sum of digits is palindrome: " << isPalindrome(51241) << endl;
+
+    // vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8};
+    // swapKthElement(arr, 3);
+    // cout << "The array after swapping the kth element with the kth last element is: ";
+    // for (int i = 0; i < arr.size(); i++)
+    // {
+    //     cout << arr[i] << " ";
+    // }
+
+    // string str = "Hello World";
+    // cout << "The string after removing spaces is: " << removeSpaces(str) << endl;
+    // cout << "The sum of the multiplication table is: " << sumOfMultiplicationTable(10, 10) << endl;
+
+    // vector<int> arr = {3, 4, -7, 1, 3, 3, 1, -4};
+    // vector<vector<int>> ans = findSubarrayWithGivenSum(arr, 7);
+    // cout << "The subarrays with the given sum are: " << endl;
+    // for (int i = 0; i < ans.size(); i++)
+    // {
+    //     for (int j = 0; j < ans[i].size(); j++)
+    //     {
+    //         cout << ans[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    // cout << "The sum of the cubes of all numbers in the range is: " << cubesInRange(4, 9) << endl;
+
+    // vector<int> arr = {1, 3, 2, 3, 2, 4};
+    // cout << "The sum of the unique elements in the array is: " << sumOfUniqueElements(arr) << endl;
+
+    // vector<int> arr = {1, 2, 3, 4, 5};
+    // cout << "The maximum sum of the subarray is: " << maxSubArraySum(arr) << endl;
+
+    // vector<int> arr = {1, 3, -1, -3, 5, 3, 6, 7};
+    // vector<int> ans = maxInEachContigousWindow(arr, 3);
+    // cout << "The maximum number in each contigous window is: ";
+    // for (int i = 0; i < ans.size(); i++)
+    // {
+    //     cout << ans[i] << " ";
+    // }
+
+    // vector<double> arr = {1.55, 2, 3.555, 4, 5.5};
+    // vector<double> ans = findAvgAndSum(arr);
+    // cout << "The sum and average of the elements in the array is: " << ans[0] << " " << ans[1] << endl;
+
+    // string str = "abccba";
+    // cout << "The string is palindrome: " << isPalindrome(str, 0, 5) << endl;
+
+    string str = "tree";
+    cout << "The sorted characters by frequency is: " << frequencySort(str) << endl;
 
     return 0;
 }
