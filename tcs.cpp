@@ -222,7 +222,7 @@ int lenOfLongestSubarrpos(vector<int> &arr, int k)
     return maxLen;
 }
 
-// // Longest subarray with sum K (Positives + Negatives)
+// Longest subarray with sum K (Positives + Negatives)
 
 int lenOfLongestSubarr(vector<int> &arr, int k)
 {
@@ -367,7 +367,7 @@ int majorityElement(vector<int> &nums)
     return -1;
 }
 
-// Maximum Subarray
+// Maximum Subarray - Kadane's Algorithm
 int maxSubArray(vector<int> &nums)
 {
     int n = nums.size();
@@ -726,7 +726,7 @@ string longestCommonPrefix(vector<string> &strs)
         }
         longestcount = min(longestcount, j);
     }
-    string ans = startStr.substr(0, longestcount); // excliduing the longestcount number index
+    string ans = startStr.substr(0, longestcount); // excluding the longestcount number index
     return ans;
 }
 
@@ -1090,16 +1090,111 @@ string frequencySort(string s)
         mpp[s[i]]++;
     }
 
-    vector<pair<char, int>> freqList(mpp.begin(), mpp.end());
-    sort(freqList.begin(), freqList.end(), [](const pair<char, int> &a, const pair<char, int> &b)
-         { return a.second < b.second; });
+    vector<pair<char, int>> freqlist(mpp.begin(), mpp.end());
 
-    string res = "";
-    for (auto &lst : freqList)
+    sort(freqlist.begin(), freqlist.end(), [](const pair<char, int> &a, const pair<char, int> &b)
+         { return a.second > b.second; });
+
+    string result;
+    for (auto &pair : freqlist)
     {
-        res.append(lst.second, lst.first);
+        //            (3, n) --> "nnn"
+        result.append(pair.second, pair.first);
     }
-    return res;
+
+    return result;
+}
+
+// Maximum Nesting Depth of the Parentheses
+int maxDepth(string s)
+{
+    int n = s.length();
+    int maxDepth = 0;
+    int currDepth = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '(')
+        {
+            currDepth++;
+            maxDepth = max(currDepth, maxDepth);
+        }
+        else if (s[i] == ')')
+        {
+            currDepth--;
+        }
+    }
+    return maxDepth;
+}
+
+// Roman to Integer
+int romanToInt(string s)
+{
+    unordered_map<char, int> mpp;
+    mpp['I'] = 1;
+    mpp['V'] = 5;
+    mpp['X'] = 10;
+    mpp['L'] = 50;
+    mpp['C'] = 100;
+    mpp['D'] = 500;
+    mpp['M'] = 1000;
+
+    int n = s.length();
+    int total = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (i + 1 < n && mpp[s[i]] < mpp[s[i + 1]])
+        {
+            total -= mpp[s[i]];
+        }
+        else
+        {
+            total += mpp[s[i]];
+        }
+    }
+    return total;
+}
+
+// Reverse Words in a String
+string reverseWords(string s)
+{
+    int n = s.length();
+    string ans = "";
+    string finalAns = "";
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if (s[i] != ' ')
+        {
+            ans.push_back(s[i]);
+        }
+        else
+        {
+            if (!ans.empty())
+            {
+                reverse(ans.begin(), ans.end());
+                if (!finalAns.empty())
+                {
+                    finalAns.push_back(' ');
+                }
+                finalAns += ans;
+                ans = "";
+            }
+        }
+    }
+
+    if (!ans.empty())
+    {
+        reverse(ans.begin(), ans.end());
+        if (!finalAns.empty())
+        {
+            finalAns.push_back(' ');
+        }
+        finalAns += ans;
+    }
+
+    return finalAns;
 }
 
 int main()
@@ -1294,8 +1389,14 @@ int main()
     // string str = "abccba";
     // cout << "The string is palindrome: " << isPalindrome(str, 0, 5) << endl;
 
-    string str = "tree";
-    cout << "The sorted characters by frequency is: " << frequencySort(str) << endl;
+    // string str = "tree";
+    // cout << "The sorted characters by frequency is: " << frequencySort(str) << endl;
+
+    // string s = "(1+(2*3)+((8)/4))+1";
+    // cout << "The maximum nesting depth of the parentheses is: " << maxDepth(s) << endl;
+
+    string str = "MCMXCIV";
+    cout << "The integer value of the roman number is: " << romanToInt(str) << endl;
 
     return 0;
 }

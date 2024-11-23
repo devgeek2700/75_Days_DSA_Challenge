@@ -668,6 +668,161 @@ public:
     }
 };
 
+// Infix to Postfix Conversion
+
+int precedence(char sign)
+{
+    if (sign == '^')
+    {
+        return 3;
+    }
+    else if (sign == '/' || sign == '*')
+    {
+        return 2;
+    }
+    else if (sign == '+' || sign == '-')
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+bool isOperand(char oprd)
+{
+    if ((oprd >= 'a' && oprd <= 'z') || (oprd >= 'A' && oprd <= 'Z') || (oprd >= '0' && oprd <= '9'))
+    {
+        return true;
+    }
+    return false;
+}
+
+string infixToPostfix(string exp)
+{
+    stack<char> st;
+    string postfixVal;
+
+    for (int i = 0; i < exp.size(); i++)
+    {
+        if (isOperand(exp[i]))
+        {
+            postfixVal += exp[i];
+        }
+        else if (exp[i] == '(')
+        {
+            st.push(exp[i]);
+        }
+        else if (exp[i] == ')')
+        {
+            while (!st.empty() && st.top() != '(')
+            {
+                postfixVal += st.top();
+                st.pop();
+            }
+            if (!st.empty())
+            {
+                st.pop();
+            }
+        }
+        else
+        {
+            while (!st.empty() && precedence(exp[i]) <= precedence(st.top()))
+            {
+                postfixVal += st.top();
+                st.pop();
+            }
+            st.push(exp[i]);
+        }
+    }
+
+    while (!st.empty())
+    {
+        postfixVal += st.top();
+        st.pop();
+    }
+
+    return postfixVal;
+}
+
+// Prefix to Infix Conversion
+
+bool ispre2infixOperand(char oprd)
+{
+    if ((oprd == '*') || (oprd == '/') || (oprd == '+') || (oprd == '-'))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+string preToInfix(string pre_exp)
+{
+    stack<string> st;
+    int n = pre_exp.length();
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if (ispre2infixOperand(pre_exp[i]))
+        {
+            string a = st.top();
+            st.pop();
+            string b = st.top();
+            st.pop();
+
+            string temp = '(' + a + pre_exp[i] + b + ')';
+            st.push(temp);
+        }
+        else
+        {
+            st.push(string(1, pre_exp[i]));
+        }
+    }
+    return st.top();
+}
+
+// Prefix to Postfix Conversion
+bool ispre2postfixOperand(char oprd)
+{
+    if ((oprd == '*') || (oprd == '/') || (oprd == '+') || (oprd == '-'))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+string preToPost(string pre_exp)
+{
+    int n = pre_exp.length();
+    stack<string> st;
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if (ispre2postfixOperand(pre_exp[i]))
+        {
+            string op1 = st.top();
+            st.pop();
+            string op2 = st.top();
+            st.pop();
+
+            string temp = op1 + op2 + pre_exp[i];
+            st.push(temp);
+        }
+        else
+        {
+            st.push(string(1, pre_exp[i]));
+        }
+    }
+    return st.top();
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -947,14 +1102,19 @@ int main()
 
     // cout << isValid("(]") << endl;
 
-   MinStack minStack;
-    minStack.push(-2);
-    minStack.push(0);
-    minStack.push(-3);
-    cout << minStack.getMin() << endl; // return -3
-    minStack.pop();
-    cout << minStack.top() << endl;    // return 0
-    cout << minStack.getMin() << endl; // return -2
+    // MinStack minStack;
+    // minStack.push(-2);
+    // minStack.push(0);
+    // minStack.push(-3);
+    // cout << minStack.getMin() << endl; // return -3
+    // minStack.pop();
+    // cout << minStack.top() << endl;    // return 0
+    // cout << minStack.getMin() << endl; // return -2
+
+    string str = "*-A/BC-/AKL";
+    // cout << infixToPostfix(str) << endl;
+    // cout << preToInfix(str) << endl;
+    cout << preToPost(str) << endl;
 
     return 0;
 }
