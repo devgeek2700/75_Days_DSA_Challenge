@@ -823,6 +823,45 @@ string preToPost(string pre_exp)
     return st.top();
 }
 
+// Postfix to Prefix Conversion
+
+bool ispost2prefixOperand(char oprd)
+{
+    if ((oprd == '*') || (oprd == '/') || (oprd == '+') || (oprd == '-'))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+string postToPre(string post_exp)
+{
+    int n = post_exp.length();
+    stack<string> st;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (ispost2prefixOperand(post_exp[i]))
+        {
+            string op1 = st.top();
+            st.pop();
+            string op2 = st.top();
+            st.pop();
+
+            string temp = post_exp[i] + op2 + op1;
+            st.push(temp);
+        }
+        else
+        {
+            st.push(string(1, post_exp[i]));
+        }
+    }
+    return st.top();
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -1111,10 +1150,11 @@ int main()
     // cout << minStack.top() << endl;    // return 0
     // cout << minStack.getMin() << endl; // return -2
 
-    string str = "*-A/BC-/AKL";
+    string str = "ABC/-AK/L-*";
     // cout << infixToPostfix(str) << endl;
     // cout << preToInfix(str) << endl;
-    cout << preToPost(str) << endl;
+    // cout << preToPost(str) << endl;
+    cout << postToPre(str) << endl;
 
     return 0;
 }
