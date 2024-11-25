@@ -862,6 +862,141 @@ string postToPre(string post_exp)
     return st.top();
 }
 
+// Postfix to Infix Conversion
+bool ispost2infixOperand(char oprd)
+{
+    if ((oprd == '*') || (oprd == '/') || (oprd == '+') || (oprd == '-'))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+string postToInfix(string exp)
+{
+    int n = exp.length();
+    stack<string> st;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (ispost2infixOperand(exp[i]))
+        {
+            string op1 = st.top();
+            st.pop();
+
+            string op2 = st.top();
+            st.pop();
+
+            string temp = '(' + op2 + exp[i] + op1 + ')';
+            st.push(temp);
+        }
+        else
+        {
+            st.push(string(1, exp[i]));
+        }
+    }
+    return st.top();
+}
+
+// Infix to Pretfix Conversion
+
+int precedenceinfixToPrefix(char sign)
+{
+    if (sign == '^')
+    {
+        return 3;
+    }
+    else if (sign == '/' || sign == '*')
+    {
+        return 2;
+    }
+    else if (sign == '+' || sign == '-')
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+bool isOperandinfixToPrefix(char c)
+{
+    return isalnum(c);
+}
+
+string infixToPrefixConversion(string s)
+{
+    int n = s.length();
+    stack<char> st;
+    string prefixVal;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (isOperandinfixToPrefix(s[i]))
+        {
+            prefixVal += s[i];
+        }
+        else if (s[i] == '(')
+        {
+            st.push(s[i]);
+        }
+        else if (s[i] == ')')
+        {
+            while (!st.empty() && st.top() != '(')
+            {
+                prefixVal += st.top();
+                st.pop();
+            }
+            if (!st.empty())
+            {
+                st.pop();
+            }
+        }
+        else
+        {
+            while (!st.empty() && precedenceinfixToPrefix(st.top()) >= precedenceinfixToPrefix(s[i]))
+            {
+                prefixVal += st.top();
+                st.pop();
+            }
+            st.push(s[i]);
+        }
+    }
+
+    while (!st.empty())
+    {
+        prefixVal += st.top();
+        st.pop();
+    }
+
+    return prefixVal;
+}
+
+string infixtoprefix(string s)
+{
+    int n = s.length();
+
+    reverse(s.begin(), s.end());
+
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '(')
+            s[i] = ')';
+        else if (s[i] == ')')
+            s[i] = '(';
+    }
+
+    string prefix = infixToPrefixConversion(s);
+
+    reverse(prefix.begin(), prefix.end());
+
+    return prefix;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -1150,11 +1285,13 @@ int main()
     // cout << minStack.top() << endl;    // return 0
     // cout << minStack.getMin() << endl; // return -2
 
-    string str = "ABC/-AK/L-*";
+    string str = "(A-B/C)*(A/K-L)";
     // cout << infixToPostfix(str) << endl;
     // cout << preToInfix(str) << endl;
     // cout << preToPost(str) << endl;
-    cout << postToPre(str) << endl;
+    // cout << postToPre(str) << endl;
+    // cout << postToInfix(str) << endl;
+    cout << infixtoprefix(str) << endl;
 
     return 0;
 }
