@@ -997,6 +997,92 @@ string infixtoprefix(string s)
     return prefix;
 }
 
+// Next Greater Element I
+vector<int> nextGreaterElement(vector<int> &nums1, vector<int> &nums2)
+{
+    stack<int> st;
+    unordered_map<int, int> mpp;
+    vector<int> ans;
+
+    for (int i = 0; i < nums2.size(); i++)
+    {
+        while (!st.empty() && st.top() < nums2[i])
+        {
+            mpp[st.top()] = nums2[i];
+            st.pop();
+        }
+        st.push(nums2[i]);
+    }
+
+    while (!st.empty())
+    {
+        mpp[st.top()] = -1;
+        st.pop();
+    }
+
+    for (int i = 0; i < nums1.size(); i++)
+    {
+        ans.push_back(mpp[nums1[i]]);
+    }
+
+    return ans;
+}
+
+// Next Greater Element II
+vector<int> nextGreaterElements2(vector<int> &nums)
+{
+    int n = nums.size();
+    stack<int> st;
+    vector<int> ans(n, -1);
+
+    for (int i = 2 * n - 1; i >= 0; i--)
+    {
+        int idx = i % n;
+
+        // Pop elements from the stack that are less than or equal to the current element
+        while (!st.empty() && nums[st.top()] <= nums[idx])
+        {
+            st.pop();
+        }
+
+        // If stack is not empty, the top of the stack is the next greater element
+        if (!st.empty())
+        {
+            ans[idx] = nums[st.top()];
+        }
+
+        // Push current index onto the stack
+
+        st.push(idx);
+    }
+    return ans;
+}
+
+// Next Smaller Element
+vector<int> nextSmallerElements2(vector<int> &nums)
+{
+    int n = nums.size();
+    stack<int> st;
+    vector<int> ans(n, -1);
+
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && nums[st.top()] >= nums[i])
+        {
+            st.pop();
+        }
+
+        if (!st.empty())
+        {
+            ans[i] = nums[st.top()];
+        }
+
+        st.push(i);
+    }
+
+    return ans;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -1285,13 +1371,26 @@ int main()
     // cout << minStack.top() << endl;    // return 0
     // cout << minStack.getMin() << endl; // return -2
 
-    string str = "(A-B/C)*(A/K-L)";
+    // string str = "(A-B/C)*(A/K-L)";
     // cout << infixToPostfix(str) << endl;
     // cout << preToInfix(str) << endl;
     // cout << preToPost(str) << endl;
     // cout << postToPre(str) << endl;
     // cout << postToInfix(str) << endl;
-    cout << infixtoprefix(str) << endl;
+    // cout << infixtoprefix(str) << endl;
+
+    vector<int> nums1 = {4, 5, 2, 10, 8};
+    // vector<int> nums2 = {1, 2, 3, 4};
+    // vector<int> result = nextGreaterElement(nums1, nums2);
+    // vector<int> result = nextGreaterElements2(nums1);
+    vector<int> result = nextSmallerElements2(nums1);
+
+    cout << "Next Smaller Elements: ";
+    for (int num : result)
+    {
+        cout << num << " ";
+    }
+    cout << endl;
 
     return 0;
 }
