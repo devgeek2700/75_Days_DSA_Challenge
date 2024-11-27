@@ -1083,6 +1083,138 @@ vector<int> nextSmallerElements2(vector<int> &nums)
     return ans;
 }
 
+// Number of NGEs to the right
+vector<int> count_NGE(int n, vector<int> &arr, int queries, vector<int> &indices)
+{
+    vector<int> NGEs(queries, 0);
+
+    for (int i = 0; i < queries; i++)
+    {
+        int idx = indices[i];
+        int count = 0;
+
+        for (int j = idx + 1; j < n; j++)
+        {
+            if (arr[j] > arr[idx])
+            {
+                count++;
+            }
+        }
+
+        NGEs[i] = count;
+    }
+    return NGEs;
+}
+
+// Sum of Subarray Minimums
+vector<int> findprevSmallerElement(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> pse(n, -1);
+    stack<int> st;
+
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && arr[st.top()] > arr[i])
+        {
+            st.pop();
+        }
+
+        if (!st.empty())
+        {
+            pse[i] = st.top();
+        }
+        st.push(i);
+    }
+    return pse;
+}
+
+vector<int> findnextSmallerElement(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> nse(n, n);
+    stack<int> st;
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        while (!st.empty() && arr[st.top()] >= arr[i])
+        {
+            st.pop();
+        }
+
+        if (!st.empty())
+        {
+            nse[i] = st.top();
+        }
+        st.push(i);
+    }
+    return nse;
+}
+
+int sumSubarrayMins(vector<int> &arr)
+{
+    int n = arr.size();
+    int totalSum = 0;
+    int MOD = 1e9 + 7;
+
+    vector<int> pse = findprevSmallerElement(arr);
+    vector<int> nse = findnextSmallerElement(arr);
+
+    for (int i = 0; i < n; i++)
+    {
+        int left = i - pse[i];
+        int right = nse[i] - i;
+        totalSum = (totalSum + (long long)arr[i] * left * right) % MOD;
+    }
+    return totalSum;
+}
+
+// Asteroid Collision
+vector<int> asteroidCollision(vector<int> &asteroids)
+{
+    int n = asteroids.size();
+    stack<int> st;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (asteroids[i] > 0)
+        {
+            st.push(asteroids[i]);
+        }
+        // for Collision
+        else
+        {
+            while (!st.empty() && st.top() > 0 && st.top() < abs(asteroids[i]))
+            {
+                st.pop();
+            }
+
+            if (!st.empty() && st.top() > 0 && st.top() == abs(asteroids[i]))
+            {
+                st.pop();
+            }
+            else if (!st.empty() && st.top() > 0)
+            {
+                continue;
+            }
+            else
+            {
+                st.push(asteroids[i]);
+            }
+        }
+    }
+
+    vector<int> ans;
+    while (!st.empty())
+    {
+        ans.push_back(st.top());
+        st.pop();
+    }
+
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -1379,18 +1511,32 @@ int main()
     // cout << postToInfix(str) << endl;
     // cout << infixtoprefix(str) << endl;
 
-    vector<int> nums1 = {4, 5, 2, 10, 8};
     // vector<int> nums2 = {1, 2, 3, 4};
     // vector<int> result = nextGreaterElement(nums1, nums2);
     // vector<int> result = nextGreaterElements2(nums1);
-    vector<int> result = nextSmallerElements2(nums1);
+    // vector<int> result = nextSmallerElements2(nums1);
 
-    cout << "Next Smaller Elements: ";
-    for (int num : result)
+    vector<int> arr = {10,2,-5};
+    // vector<int> indices = {0, 3};
+
+    // int n = arr.size();
+    // int queries = indices.size();
+
+    // vector<int> result = count_NGE(n, arr, queries, indices);
+
+    // for (int x : result)
+    // {
+    //     cout << x << " ";
+    // }
+
+    // cout << "Sum of Subarray Minimums: " << sumSubarrayMins(arr) << endl;
+
+    vector<int> result = asteroidCollision(arr);
+
+    for (int x : result)
     {
-        cout << num << " ";
+        cout << x << " ";
     }
-    cout << endl;
 
     return 0;
 }
