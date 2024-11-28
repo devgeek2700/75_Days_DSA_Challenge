@@ -1215,6 +1215,139 @@ vector<int> asteroidCollision(vector<int> &asteroids)
     return ans;
 }
 
+// Sum of Subarray Ranges
+// Sum of Subarray Minimums
+vector<int> subArrayRangesfindprevSmallerElement(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> pse(n, -1);
+    stack<int> st;
+
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && arr[st.top()] > arr[i])
+        {
+            st.pop();
+        }
+
+        if (!st.empty())
+        {
+            pse[i] = st.top();
+        }
+        st.push(i);
+    }
+    return pse;
+}
+
+vector<int> subArrayRangesfindnextSmallerElement(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> nse(n, n);
+    stack<int> st;
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        while (!st.empty() && arr[st.top()] >= arr[i])
+        {
+            st.pop();
+        }
+
+        if (!st.empty())
+        {
+            nse[i] = st.top();
+        }
+        st.push(i);
+    }
+    return nse;
+}
+
+int subArrayRangessumSubarrayMins(vector<int> &arr)
+{
+    int n = arr.size();
+    int totalSum = 0;
+    int MOD = 1e9 + 7;
+
+    vector<int> pse = subArrayRangesfindprevSmallerElement(arr);
+    vector<int> nse = subArrayRangesfindnextSmallerElement(arr);
+
+    for (int i = 0; i < n; i++)
+    {
+        int left = i - pse[i];
+        int right = nse[i] - i;
+        totalSum = (totalSum + (long long)arr[i] * left * right) % MOD;
+    }
+    return totalSum;
+}
+
+// Sum of Subarray Maximums
+vector<int> findPrevGreaterElement(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> pge(n, -1);
+    stack<int> st;
+
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && arr[st.top()] < arr[i])
+        {
+            st.pop();
+        }
+
+        if (!st.empty())
+        {
+            pge[i] = st.top();
+        }
+        st.push(i);
+    }
+    return pge;
+}
+
+vector<int> findNextGreaterElement(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> nge(n, n);
+    stack<int> st;
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        while (!st.empty() && arr[st.top()] <= arr[i])
+        {
+            st.pop();
+        }
+
+        if (!st.empty())
+        {
+            nge[i] = st.top();
+        }
+        st.push(i);
+    }
+    return nge;
+}
+
+int sumSubarrayMaxs(vector<int> &arr)
+{
+    int n = arr.size();
+    int totalSum = 0;
+    int MOD = 1e9 + 7;
+
+    vector<int> pge = findPrevGreaterElement(arr);
+    vector<int> nge = findNextGreaterElement(arr);
+
+    for (int i = 0; i < n; i++)
+    {
+        int left = i - pge[i];
+        int right = nge[i] - i;
+        totalSum = (totalSum + (long long)arr[i] * left * right) % MOD;
+    }
+    return totalSum;
+}
+
+// 	Sum of subarray ranges
+long long subArrayRanges(vector<int> &nums)
+{
+    return (long long)sumSubarrayMaxs(nums) - sumSubarrayMins(nums);
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -1516,7 +1649,7 @@ int main()
     // vector<int> result = nextGreaterElements2(nums1);
     // vector<int> result = nextSmallerElements2(nums1);
 
-    vector<int> arr = {10,2,-5};
+    vector<int> arr = {1, 3, 3};
     // vector<int> indices = {0, 3};
 
     // int n = arr.size();
@@ -1531,12 +1664,14 @@ int main()
 
     // cout << "Sum of Subarray Minimums: " << sumSubarrayMins(arr) << endl;
 
-    vector<int> result = asteroidCollision(arr);
+    // vector<int> result = asteroidCollision(arr);
 
-    for (int x : result)
-    {
-        cout << x << " ";
-    }
+    // for (int x : result)
+    // {
+    //     cout << x << " ";
+    // }
+
+    cout << "Sum of Subarray Ranges: " << subArrayRanges(arr) << endl;
 
     return 0;
 }
