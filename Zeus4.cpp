@@ -1348,6 +1348,57 @@ long long subArrayRanges(vector<int> &nums)
     return (long long)sumSubarrayMaxs(nums) - sumSubarrayMins(nums);
 }
 
+// Remove K Digits
+string removeKdigits(string num, int k)
+{
+    int n = num.size();
+    if (k == n)
+    {
+        return "0";
+    }
+
+    stack<char> st;
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && k > 0 && (st.top() - '0' > num[i] - '0'))
+        {
+            st.pop();
+            k--;
+        }
+        st.push(num[i]);
+    }
+
+    while (k > 0)
+    {
+        st.pop();
+        k--;
+    }
+
+    string ans = "";
+    while (!st.empty())
+    {
+        ans += st.top();
+        st.pop();
+    }
+
+    reverse(ans.begin(), ans.end());
+
+    // Check if the resulting string is empty
+    if (ans.empty())
+    {
+        return "0";
+    }
+
+    // Remove leading zeros
+    int start = 0;
+    while (start < ans.size() && ans[start] == '0')
+    {
+        start++;
+    }
+
+    return start == ans.size() ? "0" : ans.substr(start);
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -1671,7 +1722,9 @@ int main()
     //     cout << x << " ";
     // }
 
-    cout << "Sum of Subarray Ranges: " << subArrayRanges(arr) << endl;
+    // cout << "Sum of Subarray Ranges: " << subArrayRanges(arr) << endl;
+
+    cout << removeKdigits("10", 2) << endl;
 
     return 0;
 }
