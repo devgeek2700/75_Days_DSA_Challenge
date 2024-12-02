@@ -1399,6 +1399,66 @@ string removeKdigits(string num, int k)
     return start == ans.size() ? "0" : ans.substr(start);
 }
 
+// Largest Rectangle in Histogram
+
+vector<int> findprevSmallerElementHistogram(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> pse(n, -1);
+    stack<int> st;
+
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && arr[st.top()] > arr[i])
+        {
+            st.pop();
+        }
+
+        if (!st.empty())
+        {
+            pse[i] = st.top();
+        }
+        st.push(i);
+    }
+    return pse;
+}
+
+vector<int> findnextSmallerElementHistogram(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> nse(n, n);
+    stack<int> st;
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        while (!st.empty() && arr[st.top()] >= arr[i])
+        {
+            st.pop();
+        }
+
+        if (!st.empty())
+        {
+            nse[i] = st.top();
+        }
+        st.push(i);
+    }
+    return nse;
+}
+
+int largestRectangleArea(vector<int> &heights)
+{
+    int n = heights.size();
+    int maxArea = 0;
+    vector<int> pse = findprevSmallerElementHistogram(heights);
+    vector<int> nse = findnextSmallerElementHistogram(heights);
+
+    for (int i = 0; i < n; i++)
+    {
+        maxArea = max(maxArea, heights[i] * (nse[i] - pse[i] - 1));
+    }
+    return maxArea;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -1700,7 +1760,7 @@ int main()
     // vector<int> result = nextGreaterElements2(nums1);
     // vector<int> result = nextSmallerElements2(nums1);
 
-    vector<int> arr = {1, 3, 3};
+    vector<int> arr = {2, 1, 5, 6, 2, 3};
     // vector<int> indices = {0, 3};
 
     // int n = arr.size();
@@ -1724,7 +1784,8 @@ int main()
 
     // cout << "Sum of Subarray Ranges: " << subArrayRanges(arr) << endl;
 
-    cout << removeKdigits("10", 2) << endl;
+    // cout << removeKdigits("10", 2) << endl;
+    cout << largestRectangleArea(arr) << endl;
 
     return 0;
 }
