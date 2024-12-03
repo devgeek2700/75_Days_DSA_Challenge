@@ -926,7 +926,7 @@ long long getTrappedWater(vector<int> &arr)
                 int distance = i - st.top() - 1;
                 trappedWater += (min(arr[i], arr[st.top()]) - arr[top]) * distance;
             }
-        }
+        } 
         st.push(i);
     }
 

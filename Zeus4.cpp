@@ -1459,6 +1459,59 @@ int largestRectangleArea(vector<int> &heights)
     return maxArea;
 }
 
+// Maximal Rectangle
+int maximalRectangle(vector<vector<char>> &matrix)
+{
+    if (matrix.empty())
+        return 0;
+
+    int n = matrix.size();
+    int m = matrix[0].size();
+    int maxRect = 0;
+    vector<int> heights(m, 0);
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (matrix[i][j] == '1')
+            {
+                heights[j] += 1;
+            }
+            else
+            {
+                heights[j] = 0;
+            }
+        }
+        maxRect = max(maxRect, largestRectangleArea(heights));
+    }
+    return maxRect;
+}
+
+// Trapping Rain Water
+int trap(vector<int> &height)
+{
+    int n = height.size();
+    stack<int> st;
+    int trappedWater = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && height[i] > height[st.top()])
+        {
+            int top = st.top();
+            st.pop();
+            if (!st.empty())
+            {
+                int distance = i - st.top() - 1;
+                trappedWater += (min(height[i], height[st.top()]) - height[top]) * distance;
+            }
+        }
+        st.push(i);
+    }
+    return trappedWater;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -1760,7 +1813,7 @@ int main()
     // vector<int> result = nextGreaterElements2(nums1);
     // vector<int> result = nextSmallerElements2(nums1);
 
-    vector<int> arr = {2, 1, 5, 6, 2, 3};
+    // vector<int> arr = {2, 1, 5, 6, 2, 3};
     // vector<int> indices = {0, 3};
 
     // int n = arr.size();
@@ -1785,7 +1838,13 @@ int main()
     // cout << "Sum of Subarray Ranges: " << subArrayRanges(arr) << endl;
 
     // cout << removeKdigits("10", 2) << endl;
-    cout << largestRectangleArea(arr) << endl;
+    // cout << largestRectangleArea(arr) << endl;
+
+    // vector<vector<char>> matrix = {{'1', '0', '1', '0', '0'}, {'1', '0', '1', '1', '1'}, {'1', '1', '1', '1', '1'}, {'1', '0', '0', '1', '0'}};
+    // cout << maximalRectangle(matrix) << endl;
+
+    vector<int> height = {4, 2, 0, 3, 2, 5};
+    cout << trap(height) << endl;
 
     return 0;
 }
