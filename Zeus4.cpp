@@ -1512,6 +1512,33 @@ int trap(vector<int> &height)
     return trappedWater;
 }
 
+/********************************* STACK HARD *********************************/
+// Online Stock Span
+class StockSpanner
+{
+    stack<pair<int, int>> st;
+    int idx = -1;
+
+public:
+    StockSpanner()
+    {
+    }
+
+    int next(int price)
+    {
+        int span = 1;
+
+        while (!st.empty() && st.top().first <= price)
+        {
+            span += st.top().second;
+            st.pop();
+        }
+
+        st.push({price, span});
+        return span;
+    }
+};
+
 int main()
 {
     // Stack Implementation using a Array
@@ -1843,8 +1870,17 @@ int main()
     // vector<vector<char>> matrix = {{'1', '0', '1', '0', '0'}, {'1', '0', '1', '1', '1'}, {'1', '1', '1', '1', '1'}, {'1', '0', '0', '1', '0'}};
     // cout << maximalRectangle(matrix) << endl;
 
-    vector<int> height = {4, 2, 0, 3, 2, 5};
-    cout << trap(height) << endl;
+    // vector<int> height = {4, 2, 0, 3, 2, 5};
+    // cout << trap(height) << endl;
+
+    StockSpanner stockSpanner;
+    cout << stockSpanner.next(100) << endl;
+    cout << stockSpanner.next(80) << endl;
+    cout << stockSpanner.next(60) << endl;
+    cout << stockSpanner.next(70) << endl;
+    cout << stockSpanner.next(60) << endl;
+    cout << stockSpanner.next(75) << endl;
+    cout << stockSpanner.next(85) << endl;
 
     return 0;
 }
