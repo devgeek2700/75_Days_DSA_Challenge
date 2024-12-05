@@ -1539,6 +1539,79 @@ public:
     }
 };
 
+// The Celebrity Problem
+int findCelebrity(vector<vector<int>> &matrix)
+{
+    int n = matrix.size();
+    int top = 0;
+    int down = n - 1;
+
+    while (top < down)
+    {
+        if (matrix[top][down] == 1)
+        {
+            top++;
+        }
+        else if (matrix[down][top] == 1)
+        {
+            down--;
+        }
+        else
+        {
+            top++;
+            down--;
+        }
+    }
+
+    if (top > down)
+    {
+        return -1;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (i != top)
+        {
+            // Celebrity should not know anyone (matrix[top][i] should be 0)
+            // Everyone should know celebrity (matrix[i][top] should be 1)
+            if (matrix[top][i] == 1 || matrix[i][top] == 0)
+            {
+                return -1;
+            }
+        }
+    }
+    return top;
+}
+
+// Sliding Window Maximum
+vector<int> maxSlidingWindow(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    vector<int> result;
+    deque<int> dq;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (!dq.empty() && dq.front() <= i - k)
+        {
+            dq.pop_front();
+        }
+
+        while (!dq.empty() && nums[dq.back()] <= nums[i])
+        {
+            dq.pop_back();
+        }
+
+        dq.push_back(i);
+
+        if (i >= k - 1)
+        {
+            result.push_back(nums[dq.front()]);
+        }
+    }
+    return result;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -1873,14 +1946,25 @@ int main()
     // vector<int> height = {4, 2, 0, 3, 2, 5};
     // cout << trap(height) << endl;
 
-    StockSpanner stockSpanner;
-    cout << stockSpanner.next(100) << endl;
-    cout << stockSpanner.next(80) << endl;
-    cout << stockSpanner.next(60) << endl;
-    cout << stockSpanner.next(70) << endl;
-    cout << stockSpanner.next(60) << endl;
-    cout << stockSpanner.next(75) << endl;
-    cout << stockSpanner.next(85) << endl;
+    // StockSpanner stockSpanner;
+    // cout << stockSpanner.next(100) << endl;
+    // cout << stockSpanner.next(80) << endl;
+    // cout << stockSpanner.next(60) << endl;
+    // cout << stockSpanner.next(70) << endl;
+    // cout << stockSpanner.next(60) << endl;
+    // cout << stockSpanner.next(75) << endl;
+    // cout << stockSpanner.next(85) << endl;
+
+    // vector<vector<int>> matrix = {{0, 1, 1, 0}, {0, 0, 0, 0}, {0, 1, 0, 0}, {1, 1, 0, 0}};
+    // cout << findCelebrity(matrix) << endl;
+
+    vector<int> nums = {1};
+    int k = 1;
+    vector<int> result = maxSlidingWindow(nums, k);
+    for (int x : result)
+    {
+        cout << x << " ";
+    }
 
     return 0;
 }
