@@ -1612,6 +1612,69 @@ vector<int> maxSlidingWindow(vector<int> &nums, int k)
     return result;
 }
 
+// LRU Cache
+class LRUCache
+{
+    int capacity;
+    list<pair<int, int>> dll;
+    unordered_map<int, list<pair<int, int>>::iterator> cache;
+
+public:
+    LRUCache(int capacity) : capacity(capacity)
+    {
+    }
+
+    int get(int key)
+    {
+        if (cache.find(key) == cache.end())
+        {
+            return -1;
+        }
+
+        // Move the accessed item to the front of the list
+        dll.splice(dll.begin(), dll, cache[key]);
+        return cache[key]->second;
+    }
+
+    void put(int key, int value)
+    {
+        if (cache.find(key) != cache.end())
+        {
+            dll.splice(dll.begin(), dll, cache[key]);
+            cache[key]->second = value;
+        }
+        else
+        {
+            // Key does not exist, insert it
+            if (cache.size() == capacity)
+            {
+                int lruKey = dll.back().first;
+                dll.pop_back();
+                cache.erase(lruKey);
+            }
+            dll.emplace_front(key, value);
+            cache[key] = dll.begin();
+        }
+    }
+};
+
+// LFU Cache
+class LFUCache
+{
+public:
+    LFUCache(int capacity)
+    {
+    }
+
+    int get(int key)
+    {
+    }
+
+    void put(int key, int value)
+    {
+    }
+};
+
 int main()
 {
     // Stack Implementation using a Array
@@ -1958,13 +2021,25 @@ int main()
     // vector<vector<int>> matrix = {{0, 1, 1, 0}, {0, 0, 0, 0}, {0, 1, 0, 0}, {1, 1, 0, 0}};
     // cout << findCelebrity(matrix) << endl;
 
-    vector<int> nums = {1};
-    int k = 1;
-    vector<int> result = maxSlidingWindow(nums, k);
-    for (int x : result)
-    {
-        cout << x << " ";
-    }
+    // vector<int> nums = {1};
+    // int k = 1;
+    // vector<int> result = maxSlidingWindow(nums, k);
+    // for (int x : result)
+    // {
+    //     cout << x << " ";
+    // }
+
+    LRUCache lruCache(2);
+
+    lruCache.put(1, 1);
+    lruCache.put(2, 2);
+    cout << lruCache.get(1) << endl;
+    lruCache.put(3, 3);
+    cout << lruCache.get(2) << endl;
+    lruCache.put(4, 4);
+    cout << lruCache.get(1) << endl;
+    cout << lruCache.get(3) << endl;
+    cout << lruCache.get(4) << endl;
 
     return 0;
 }
