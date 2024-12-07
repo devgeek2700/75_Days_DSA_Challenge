@@ -1661,17 +1661,62 @@ public:
 // LFU Cache
 class LFUCache
 {
+    int capacity, minFreq;
+    unordered_map<int, pair<int, int>> keyValueFreq;
+    unordered_map<int, list<int>> freqlist;
+    unordered_map<int, list<int>::iterator> cache;
+
 public:
-    LFUCache(int capacity)
+    LFUCache(int capacity) : capacity(capacity), minFreq(0)
     {
     }
 
     int get(int key)
     {
+        if (keyValueFreq.find(key) == keyValueFreq.end())
+        {
+            return -1;
+        }
+        int Freq = keyValueFreq[key].second;
+        freqlist[Freq].erase(cache[key]);
+        keyValueFreq[key].second++;
+
+        freqlist[Freq + 1].push_front(key);
+        cache[key] = freqlist[Freq + 1].begin();
+
+        // If the current frequency list is empty and it was the minimum frequency, update minFreq
+        if (freqlist[minFreq].empty())
+            minFreq++;
+
+        return keyValueFreq[key].first;
     }
 
     void put(int key, int value)
     {
+
+        if (capacity <= 0)
+        {
+            return;
+        }
+
+        if (get(key) != -1)
+        {
+            keyValueFreq[key].first = value;
+            return;
+        }
+
+        if (keyValueFreq.size() >= capacity)
+        {
+            int evictKey = freqlist[minFreq].back();
+            freqlist[minFreq].pop_back();
+            keyValueFreq.erase(evictKey);
+            cache.erase(evictKey);
+        }
+
+        keyValueFreq[key] = {value, 1};
+        freqlist[1].push_front(key);
+        cache[key] = freqlist[1].begin();
+        minFreq = 1;
     }
 };
 
@@ -2029,17 +2074,29 @@ int main()
     //     cout << x << " ";
     // }
 
-    LRUCache lruCache(2);
+    // LRUCache lruCache(2);
 
-    lruCache.put(1, 1);
-    lruCache.put(2, 2);
-    cout << lruCache.get(1) << endl;
-    lruCache.put(3, 3);
-    cout << lruCache.get(2) << endl;
-    lruCache.put(4, 4);
-    cout << lruCache.get(1) << endl;
-    cout << lruCache.get(3) << endl;
-    cout << lruCache.get(4) << endl;
+    // lruCache.put(1, 1);
+    // lruCache.put(2, 2);
+    // cout << lruCache.get(1) << endl;
+    // lruCache.put(3, 3);
+    // cout << lruCache.get(2) << endl;
+    // lruCache.put(4, 4);
+    // cout << lruCache.get(1) << endl;
+    // cout << lruCache.get(3) << endl;
+    // cout << lruCache.get(4) << endl;
+
+    LFUCache lfuCache(2);
+    lfuCache.put(1, 1);
+    lfuCache.put(2, 2);
+    cout << lfuCache.get(1) << endl;
+    lfuCache.put(3, 3);
+    cout << lfuCache.get(2) << endl;
+    cout << lfuCache.get(3) << endl;
+    lfuCache.put(4, 4);
+    cout << lfuCache.get(1) << endl;
+    cout << lfuCache.get(3) << endl;
+    cout << lfuCache.get(4) << endl;
 
     return 0;
 }
