@@ -1720,6 +1720,66 @@ public:
     }
 };
 
+/****************************** Sliding Window & Two Pointer Combined Problems ******************************/
+
+// 	Longest Substring Without Repeating Characters
+int lengthOfLongestSubstring(string s)
+{
+    int maxLen = 0;
+    int n = s.length();
+    unordered_map<char, int> mpp;
+    int left = 0;
+    int right = 0;
+
+    while (right < n)
+    {
+        if (mpp.count(s[right]))
+        {
+            left = max(left, mpp[s[right]] + 1);
+        }
+
+        mpp[s[right]] = right;
+        maxLen = max(maxLen, right - left + 1);
+        right++;
+    }
+    return maxLen;
+}
+
+// Max Consecutive Ones III
+int longestOnes(vector<int> &nums, int k)
+{
+    int maxLen = 0;
+    int n = nums.size();
+    int left = 0;
+    int right = 0;
+    int countZeroes = 0;
+
+    while (right < n)
+    {
+        if (nums[right] == 0)
+        {
+            countZeroes++;
+        }
+
+        if (countZeroes > k)
+        {
+            if (nums[left] == 0)
+            {
+                countZeroes--;
+            }
+            left++;
+        }
+
+        if (countZeroes <= k)
+        {
+            int currLen = right - left + 1;
+            maxLen = max(maxLen, currLen);
+        }
+        right++;
+    }
+    return maxLen;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -2086,17 +2146,30 @@ int main()
     // cout << lruCache.get(3) << endl;
     // cout << lruCache.get(4) << endl;
 
-    LFUCache lfuCache(2);
-    lfuCache.put(1, 1);
-    lfuCache.put(2, 2);
-    cout << lfuCache.get(1) << endl;
-    lfuCache.put(3, 3);
-    cout << lfuCache.get(2) << endl;
-    cout << lfuCache.get(3) << endl;
-    lfuCache.put(4, 4);
-    cout << lfuCache.get(1) << endl;
-    cout << lfuCache.get(3) << endl;
-    cout << lfuCache.get(4) << endl;
+    // LFUCache lfuCache(2);
+    // lfuCache.put(1, 1);
+    // lfuCache.put(2, 2);
+    // cout << lfuCache.get(1) << endl;
+    // lfuCache.put(3, 3);
+    // cout << lfuCache.get(2) << endl;
+    // cout << lfuCache.get(3) << endl;
+    // lfuCache.put(4, 4);
+    // cout << lfuCache.get(1) << endl;
+    // cout << lfuCache.get(3) << endl;
+    // cout << lfuCache.get(4) << endl;
+
+    // string s = "pwwkew";
+    // int res = lengthOfLongestSubstring(s);
+    // cout << res << endl;
+
+    // vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    // int k = 3;
+    // cout << longestOnes(nums, k) << endl;
+
+    vector<int> nums = {1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0};
+    int k = 2;
+    int result = longestOnes(nums, k);
+    cout << result << endl;
 
     return 0;
 }
