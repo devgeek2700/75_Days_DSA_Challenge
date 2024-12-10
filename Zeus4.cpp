@@ -1780,6 +1780,33 @@ int longestOnes(vector<int> &nums, int k)
     return maxLen;
 }
 
+// Fruit Into Baskets
+int totalFruits(vector<int> &arr)
+{
+    int n = arr.size();
+    int maxLen = 0;
+    int left = 0;
+    int right = 0;
+    unordered_map<int, int> mpp;
+
+    while (right < n)
+    {
+        mpp[arr[right]]++;
+        if (mpp.size() > 2)
+        {
+            mpp[arr[left]]--;
+            if (mpp[arr[left]] == 0)
+            {
+                mpp.erase(arr[left]);
+            }
+            left++;
+        }
+        maxLen = max(maxLen, right - left + 1);
+        right++;
+    }
+    return maxLen;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -2166,9 +2193,12 @@ int main()
     // int k = 3;
     // cout << longestOnes(nums, k) << endl;
 
-    vector<int> nums = {1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0};
+    vector<int> nums = {3, 1, 2, 2, 2, 2};
     int k = 2;
-    int result = longestOnes(nums, k);
+    // int result = longestOnes(nums, k);
+    // cout << result << endl;
+
+    int result = totalFruits(nums);
     cout << result << endl;
 
     return 0;
