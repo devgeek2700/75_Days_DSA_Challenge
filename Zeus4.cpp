@@ -1807,6 +1807,67 @@ int totalFruits(vector<int> &arr)
     return maxLen;
 }
 
+// Binary Subarrays With Sum
+int numSubarraysWithSumHelper(vector<int> &nums, int goal)
+{
+    int n = nums.size();
+    int left = 0;
+    int right = 0;
+    int count = 0;
+    int sum = 0;
+
+    if (goal < 0)
+    {
+        return 0;
+    }
+
+    while (right < n)
+    {
+        sum += nums[right];
+        while (sum > goal)
+        {
+            sum -= nums[left];
+            left++;
+        }
+
+        count += right - left + 1;
+        right++;
+    }
+    return count;
+}
+
+int numSubarraysWithSum(vector<int> &nums, int goal)
+{
+    int ans = numSubarraysWithSumHelper(nums, goal) - numSubarraysWithSumHelper(nums, goal - 1);
+    return ans;
+}
+
+// Longest Repeating Character Replacement
+int characterReplacement(string s, int k)
+{
+    int n = s.length();
+    int maxFreq = INT_MIN;
+    int maxLen = INT_MIN;
+    int left = 0;
+    int right = 0;
+    unordered_map<char, int> mpp;
+
+    while (right < n)
+    {
+        mpp[s[right]]++;
+        maxFreq = max(maxFreq, mpp[s[right]]);
+
+        while ((right - left + 1) - maxFreq > k)
+        {
+            mpp[s[left]]--;
+            left++;
+        }
+        maxLen = max(maxLen, right - left + 1);
+        right++;
+    }
+    return maxLen;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -2193,12 +2254,20 @@ int main()
     // int k = 3;
     // cout << longestOnes(nums, k) << endl;
 
-    vector<int> nums = {3, 1, 2, 2, 2, 2};
-    int k = 2;
+    vector<int> nums = {0, 0, 0, 0, 0};
+    int goal = 0;
+    string s = "AABABBA";
+    int k = 1;
     // int result = longestOnes(nums, k);
     // cout << result << endl;
 
-    int result = totalFruits(nums);
+    // int result = totalFruits(nums);
+    // cout << result << endl;
+
+    // int result = numSubarraysWithSum(nums, goal);
+    // cout << result << endl;
+
+    int result = characterReplacement(s, k);
     cout << result << endl;
 
     return 0;
