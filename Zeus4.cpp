@@ -1868,6 +1868,42 @@ int characterReplacement(string s, int k)
     return maxLen;
 }
 
+// Count Number of Nice Subarrays
+int numberOfniceSubarraysHelper(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    int left = 0;
+    int right = 0;
+    int count = 0;
+    int sum = 0;
+
+    if (k < 0)
+    {
+        return 0;
+    }
+
+    while (right < n)
+    {
+        sum += (nums[right] % 2);
+
+        while (sum > k)
+        {
+            sum -= (nums[left] % 2);
+            left++;
+        }
+
+        count += right - left + 1;
+        right++;
+    }
+    return count;
+}
+
+int numberOfniceSubarrays(vector<int> &nums, int k)
+{
+    int ans = numberOfniceSubarraysHelper(nums, k) - numberOfniceSubarraysHelper(nums, k - 1);
+    return ans;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -2254,10 +2290,10 @@ int main()
     // int k = 3;
     // cout << longestOnes(nums, k) << endl;
 
-    vector<int> nums = {0, 0, 0, 0, 0};
+    vector<int> nums = {1, 1, 2, 1, 1};
     int goal = 0;
     string s = "AABABBA";
-    int k = 1;
+    int k = 3;
     // int result = longestOnes(nums, k);
     // cout << result << endl;
 
@@ -2267,7 +2303,10 @@ int main()
     // int result = numSubarraysWithSum(nums, goal);
     // cout << result << endl;
 
-    int result = characterReplacement(s, k);
+    // int result = characterReplacement(s, k);
+    // cout << result << endl;
+
+    int result = numberOfniceSubarrays(nums, k);
     cout << result << endl;
 
     return 0;

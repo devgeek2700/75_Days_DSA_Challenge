@@ -1,1 +1,1 @@
-A*B+C/D
+Count Number of Nice Subarrays
