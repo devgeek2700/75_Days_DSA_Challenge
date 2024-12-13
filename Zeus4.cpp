@@ -1904,6 +1904,26 @@ int numberOfniceSubarrays(vector<int> &nums, int k)
     return ans;
 }
 
+// Number of Substrings Containing All Three Characters
+int numberOfallthreeSubstrings(string s)
+{
+    int n = s.size();
+    vector<int> last_seen(3, -1);
+    int count = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        last_seen[s[i] - 'a'] = i;
+        if (last_seen[0] != -1 && last_seen[1] != -1 && last_seen[2] != -1)
+        {
+            {
+                count += 1 + min({last_seen[0], last_seen[1], last_seen[2]});
+            }
+        }
+    }
+    return count;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -2292,7 +2312,7 @@ int main()
 
     vector<int> nums = {1, 1, 2, 1, 1};
     int goal = 0;
-    string s = "AABABBA";
+    string s = "aaacb";
     int k = 3;
     // int result = longestOnes(nums, k);
     // cout << result << endl;
@@ -2306,7 +2326,10 @@ int main()
     // int result = characterReplacement(s, k);
     // cout << result << endl;
 
-    int result = numberOfniceSubarrays(nums, k);
+    // int result = numberOfniceSubarrays(nums, k);
+    // cout << result << endl;
+
+    int result = numberOfallthreeSubstrings(s);
     cout << result << endl;
 
     return 0;
