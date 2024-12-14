@@ -1924,6 +1924,31 @@ int numberOfallthreeSubstrings(string s)
     return count;
 }
 
+// Maximum Points You Can Obtain from Cards
+int maxScore(vector<int> &cardPoints, int k)
+{
+    int n = cardPoints.size();
+    int leftSum = 0;
+    int rightSum = 0;
+    int maxVal = 0;
+
+    for (int i = 0; i < k; i++)
+    {
+        leftSum += cardPoints[i];
+    }
+
+    maxVal = leftSum;
+
+    for (int i = k - 1, rightIdx = n - 1; i >= 0; i--)
+    {
+        leftSum -= cardPoints[i];
+        rightSum += cardPoints[rightIdx];
+        rightIdx--;
+        maxVal = max(maxVal, leftSum + rightSum);
+    }
+    return maxVal;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -2313,7 +2338,7 @@ int main()
     vector<int> nums = {1, 1, 2, 1, 1};
     int goal = 0;
     string s = "aaacb";
-    int k = 3;
+    int ki = 3;
     // int result = longestOnes(nums, k);
     // cout << result << endl;
 
@@ -2329,8 +2354,12 @@ int main()
     // int result = numberOfniceSubarrays(nums, k);
     // cout << result << endl;
 
-    int result = numberOfallthreeSubstrings(s);
-    cout << result << endl;
+    // int result = numberOfallthreeSubstrings(s);
+    // cout << result << endl;
+
+    vector<int> cardPoints = {9,7,7,9,7,7,9};
+    int k = 7;
+    cout << maxScore(cardPoints, k) << endl;
 
     return 0;
 }
