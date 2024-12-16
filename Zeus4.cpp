@@ -1949,6 +1949,37 @@ int maxScore(vector<int> &cardPoints, int k)
     return maxVal;
 }
 
+// Longest Substring with At Most K Distinct Characters
+int getLengthofLongestSubstring(int k, string s)
+{
+    int n = s.size();
+    int MaxVal = 0;
+    int left = 0;
+    int right = 0;
+    map<char, int> mpp;
+
+    while (right < n)
+    {
+        mpp[s[right]]++;
+        if (mpp.size() > k)
+        {
+            mpp[s[left]]--;
+            if (mpp[s[left]] == 0)
+            {
+                mpp.erase(s[left]);
+            }
+            left++;
+        }
+
+        if (mpp.size() <= k)
+        {
+            MaxVal = max(MaxVal, right - left + 1);
+        }
+        right++;
+    }
+    return MaxVal;
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -2335,10 +2366,10 @@ int main()
     // int k = 3;
     // cout << longestOnes(nums, k) << endl;
 
-    vector<int> nums = {1, 1, 2, 1, 1};
-    int goal = 0;
-    string s = "aaacb";
-    int ki = 3;
+    // vector<int> nums = {1, 1, 2, 1, 1};
+    // int goal = 0;
+    // string s = "aaacb";
+    // int ki = 3;
     // int result = longestOnes(nums, k);
     // cout << result << endl;
 
@@ -2357,9 +2388,14 @@ int main()
     // int result = numberOfallthreeSubstrings(s);
     // cout << result << endl;
 
-    vector<int> cardPoints = {9,7,7,9,7,7,9};
-    int k = 7;
-    cout << maxScore(cardPoints, k) << endl;
+    // vector<int> cardPoints = {9, 7, 7, 9, 7, 7, 9};
+    // int k = 7;
+    // cout << maxScore(cardPoints, k) << endl;
+
+    string str = "eceba";
+    int k = 2;
+    int result = getLengthofLongestSubstring(k, str);
+    cout << result << endl;
 
     return 0;
 }
