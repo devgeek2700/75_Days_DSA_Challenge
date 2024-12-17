@@ -731,7 +731,7 @@ string minWindow1(string S, string T)
 }
 
 
-// otpymal
+// optimal
 string minWindow(string S, string T) {
     int m = S.size();
     int n = T.size();

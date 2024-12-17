@@ -1980,6 +1980,80 @@ int getLengthofLongestSubstring(int k, string s)
     return MaxVal;
 }
 
+// Subarrays with K Different Integers
+int subarraysWithKDistinctHelper(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    int left = 0;
+    int right = 0;
+    int count = 0;
+    unordered_map<int, int> mpp;
+
+    while (right < n)
+    {
+        mpp[nums[right]]++;
+        while (mpp.size() > k)
+        {
+            mpp[nums[left]]--;
+            if (mpp[nums[left]] == 0)
+            {
+                mpp.erase(nums[left]);
+            }
+            left++;
+        }
+        count += right - left + 1;
+        right++;
+    }
+    return count;
+}
+
+int subarraysWithKDistinct(vector<int> &nums, int k)
+{
+    return subarraysWithKDistinctHelper(nums, k) - subarraysWithKDistinctHelper(nums, k - 1);
+}
+
+// Minimum Window Substring
+string minWindow(string S, string T)
+{
+    unordered_map<char, int> charCount; // Frequency map for characters in T
+    for (char c : T)
+    {
+        charCount[c]++;
+    }
+
+    int required = T.size(); // Total characters to match
+    int start = 0, minStart = 0, minLength = INT_MAX;
+
+    for (int end = 0; end < S.size(); ++end)
+    {
+        if (charCount[S[end]] > 0)
+        {
+            required--; // Decrease required count only for needed characters
+        }
+        charCount[S[end]]--;
+
+        // When all characters are matched, try to shrink the window
+        while (required == 0)
+        {
+            if (end - start + 1 < minLength)
+            {
+                minStart = start;
+                minLength = end - start + 1;
+            }
+
+            // Remove the character at start and shrink the window
+            charCount[S[start]]++;
+            if (charCount[S[start]] > 0)
+            {
+                required++; // Increase required count if a needed character is removed
+            }
+            start++;
+        }
+    }
+
+    return minLength == INT_MAX ? "" : S.substr(minStart, minLength);
+}
+
 int main()
 {
     // Stack Implementation using a Array
@@ -2392,10 +2466,18 @@ int main()
     // int k = 7;
     // cout << maxScore(cardPoints, k) << endl;
 
-    string str = "eceba";
-    int k = 2;
-    int result = getLengthofLongestSubstring(k, str);
-    cout << result << endl;
+    // string str = "eceba";
+    // int k = 2;
+    // int result = getLengthofLongestSubstring(k, str);
+    // cout << result << endl;
+
+    // vector<int> nums = {1, 2, 1, 2, 3};
+    // int k = 2;
+    // cout << subarraysWithKDistinct(nums, k) << endl;
+
+    string s = "ADOBECODEBANC";
+    string t = "ABC";
+    cout << minWindow(s, t) << endl;
 
     return 0;
 }
