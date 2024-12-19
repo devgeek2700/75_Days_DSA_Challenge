@@ -2012,7 +2012,7 @@ int subarraysWithKDistinct(vector<int> &nums, int k)
     return subarraysWithKDistinctHelper(nums, k) - subarraysWithKDistinctHelper(nums, k - 1);
 }
 
-// Minimum Window Substring
+// Minimum Window Subsequence
 string minWindow(string S, string T)
 {
     unordered_map<char, int> charCount; // Frequency map for characters in T
@@ -2053,6 +2053,58 @@ string minWindow(string S, string T)
 
     return minLength == INT_MAX ? "" : S.substr(minStart, minLength);
 }
+
+// Minimum Window Substring
+string minSubstring(string &str, string &t) // TC --> O(2*N)+O(m)  SC --> O(N, 256)
+{
+    int n = str.length();
+    int m = t.length();
+    int minVal = INT_MAX;
+    int left = 0;
+    int right = 0;
+    int count = 0;
+    int startIdx = -1;
+    map<char, int> mpp;
+
+    for (char c : t)
+    {
+        mpp[c]++;
+    }
+
+    while (right < n)
+    {
+        mpp[str[right]]--;
+        if (mpp[str[right]] >= 0)
+        {
+            count++;
+        }
+
+        while (count == m)
+        {
+            if (right - left + 1 < minVal)
+            {
+                minVal = right - left + 1;
+                startIdx = left;
+            }
+
+            mpp[str[left]]++;
+            if (mpp[str[left]] > 0)
+            {
+                count--;
+            }
+            left++;
+        }
+        right++;
+    }
+
+    if (startIdx == -1)
+    {
+        return "";
+    }
+
+    return str.substr(startIdx, minVal);
+}
+
 
 int main()
 {
