@@ -67,7 +67,7 @@ class Teacher{
 - Copy  --> specail default constrcutor to copy properties of one object into another
 
 ******* Types of Copy CONSTRUCTOR ***********
-- Shallow Copy  --> obj copies all of the member values from one obj to another // it gives issues when we have dynamic memory alloaction value so we need deep copy
+- Shallow Copy  --> obj copies all of the member values from one obj to another // it gives issues when we have dynamic memory alloaction(using n"new" keyword or pointer) value so we need deep copy
 - Deep Copy --> not only copies of memeber values but also make copies of any dynamically alloacted memeory that the member point to
 
 
@@ -77,8 +77,8 @@ class Teacher{
 - syntax --> ~classNAme(){}
 - Only deallocate statically alloacted memory
 - in C++ if alloacted memory using "new" keyword --> "delete" keyword id use to deallocate
-
-
+- Destructor is called automatically when the object is destroyed
+- Destructor is called when the scope of the object ends only statically alloacted memory is deallocated
 
 ***************************** INHERITANCE ************************
 -- when properties & member functionsof base class are passed on to the derived class.

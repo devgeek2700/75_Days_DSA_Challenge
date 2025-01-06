@@ -1,0 +1,331 @@
+// Types of SQL Commands
+// DDL --> DATA DEFINITION LANGUAGE
+-- CREATE, ALTER, RENAME, TRUNCATE, DROP
+
+// DQL --> DATA QUERY LANGUAGE
+-- SELECT
+
+// DML --> DATA MANIPULATION LANGUAGE
+-- INSERT, UPDATE, DELETE
+
+// DCL--> DATA CONTROL LANGUAGE
+-- GRANT, REVOKE
+
+// TCL --> TRANSACTION CONTROL LANGUAGE
+-- COMMIT, ROLLBACK, SAVEPOINT
+
+
+
+// Creating our First Database
+
+CREATE DATABASE DB_PRACTICE;
+
+CREATE DATABASE IF NOT EXISTS DB_PRCTICE2;
+
+DROP DATABASE DB_PRACTICE;
+
+DROP DATABASE IF NOT EXISTS DB_PRACTICE2;
+
+SHOW DATABASES;
+
+USE DB_PRACTICE;
+
+// Creating our First Table
+
+SHOW TABLES;
+
+CREATE TABLE EMPLOYEE_DATA(
+    EMP_ID INT PRIMARY KEY,
+    NAME VARCHAR(300) NOT NULL,
+    AGE INT NOT NULL,
+    SALARY DOUBLE NOT NULL,
+    ADDRESS VARCHAR(500) NOT NULL,
+    JOINING_DATE DATE NOT NULL
+);
+
+// Select in Detail
+SELECT * FROM EMPLOYEE_DATA; --> ALL COLUMNS
+
+SELECT NAME FROM EMPLOYEE_DATA;
+
+SELECT NAME, AGE FROM EMPLOYEE_DATA;
+
+// Inserting Data into the Table
+
+INSERT INTO EMPLOYEE_DATA(EMP_ID,NAME,AGE,SALARY,ADDRESS,JOINING_DATE) values
+(1,"Priya Shah",20,100000,"Mumbai",2024-01-01),
+(2,"Neha Singh",21,100000,"Delhi",2024-01-01),
+(3,"Rajesh Kumar",22,100000,"Bangalore",2024-01-01),
+(4,"Sneha Verma",23,100000,"Chennai",2024-01-01),
+(5,"Amit Patel",24,100000,"Hyderabad",2024-01-01);
+
+-- There is only 1 PK & it should be NOT null.
+
+// Constraints
+-- NOT NULL
+EMP_ID INT PRIMARY KEY NOT NULL;
+
+-- UNIQUE
+EMAIL VARCHAR(100) UNIQUE;
+
+-- PRIMARY KEY
+STD_ID INT PRIMARY KEY;
+
+-- FOREIGN KEY
+CREAT TABLE TEMP_DATA(
+    CUST_ID INT,
+    FOREIGN KEY(CUST_ID) REFERENCES STUDENT_DATA(STD_ID),
+    NAME VARCHAR(300) NOT NULL,
+);
+
+-- DEFAULT
+SALARY DOUBLE DEFAULT 25000;
+
+-- CHECK
+
+CREATE TABLE STUDENT_DATA(
+    STD_ID INT PRIMARY KEY,
+    NAME VARCHAR(300) NOT NULL,
+    AGE INT CHECK (AGE >= 18),
+);
+
+// WHERE CLAUSE
+
+SELECT * FROM EMPLOYEE_DATA WHERE AGE>= 18;
+
+// Operators
+-- AND --> to check for both conditions to be true
+SELECT * FROM EMPLOYEE_DATA WHERE AGE>= AND AGE<25;
+
+-- OR --> to check for one of the conditions to be true
+SELECT * FROM EMPLOYEE_DATA WHERE SALARY > 1000 OR ADDRESS = "MUMBAI";
+
+-- BETWEEN --> selects for a given range
+SELECT * FROM EMPLOYEE_DATA WHERE SALARY 1000 BETWEEN 10000 AND 20000;
+
+-- IN --> matches any value in the list
+SELECT * FROM EMPLOYEE_DATA WHERE CITY IN ("MUMBAI:", "PUNE");
+
+-- NOT --> used to exclude a value
+SELECT * FROM EMPLOYEE_DATA WHERE CITY NOT IN ("MUMBAI:", "PUNE");
+
+-- LIMIT --> used to limit the number of rows returned
+SELECT * FROM EMPLOYEE_DATA LIMIT 3;
+
+-- LIKE --> used to search for a pattern
+SELECT * FROM EMPLOYEE_DATA WHERE NAME LIKE "A%";
+
+-- NOT LIKE --> used to exclude a pattern
+SELECT * FROM EMPLOYEE_DATA WHERE NAME NOT LIKE "A%";
+
+-- ORDER BY --> used to sort the result in ascending or descending order
+SELECT * FROM EMPLOYEE_DATA ORDER BY SALARY ASC;
+
+
+// Aggregate Functions
+-- COUNT() --> returns the number of rows
+SELECT COUNT(*) FROM EMPLOYEE_DATA;
+
+-- SUM() --> returns the sum of all values in a column
+SELECT SUM(SALARY) FROM EMPLOYEE_DATA;
+
+-- AVG() --> returns the average value of a column
+SELECT AVG(MARKS) FROM STUDENT_DATA;
+
+-- MAX() --> returns the maximum value in a column
+SELECT MAX(AMRKS) FROM STUDENT_DATA;
+
+-- MIN() --> returns the minimum value in a column
+SELECT MIN(SALARY) FROM EMPLOYEE_DATA;
+
+-- ROUND() --> rounds a number to a specified number of decimal places
+SELECT ROUND(MARKS, 3) FROM STUDENT_DATA;
+
+-- NOW() --> returns the current date and time
+SELECT NOW() FROM EMPLOYEE_DATA;
+
+-- DATE_FROMAT() --> formats a date to a specified format
+SELECT DATE_FORMAT(NOW(), "%D-%M-%Y") AS FORMATTED_DATE;
+
+-- GROUP BY --> Groups rows that have the same values into summary rows.
+SELECT CITY, COUNT(*) FROM EMPLOYEE_DATA GROUP BY CITY_COUNT;
+
+-- HAVING --> Similar to Where i.e. applies some condition on rows. Used when we want to apply any condition after grouping.
+
+SELECT CITY, COUNT(NAME) 
+FROM EMPLOYEE_DATA
+GROUP BY CITY
+HAVING MAX(SALARY) > 10000;
+
+// General Order
+SELECT NAME 
+FROM EMPLOYEE_DATA
+WHERE SALARY > 10000
+GROUP BY CITY
+HAVING COUNT(NAME)>1;
+ORDER BY NAME DESC;
+
+// TABLES RELATED QUERIES
+-- UPDATE --> used to modify the existing records in a table.
+UPDATE EMPLOYEE_DATA SET SALARY = 10000 WHERE EMP_ID % 2 = 0;
+
+-- DELETE --> used to delete the existing ROWS in a table.
+DELETE FROM EMPLOYEE_DATA WHERE CITY = "MUMBAI";
+
+-- TRUNCATE --> used to delete all the rows in a table.
+TRUNCATE TABLE EMPLOYEE_DATA;
+
+-- DROP --> used to delete the entire table.
+DROP TABLE EMPLOYEE_DATA;
+
+-- ALTER --> used to modify the structure of the table.
+ALTER TABLE EMPLOYEE_DATA ADD COLUMN POSITION VARCHAR(300);
+
+-- RENAME --> used to rename the table.
+RENAME TABLE EMPLOYEE_DATA TO EMPLOYEE_DATA_NEW;
+
+-- CHANGE --> used to change the name of the column.
+ALTER TABLE EMPLOYEE_DATA
+CHANGE COLUMN POSITION NEW_ROLE VARCHAR(300);
+
+-- MODIFY --> used to change the data type of the column.
+ALTER TABLE STUDENT_DATA
+MODIFY COLUMN MARKS DOUBLE NOT NULL;
+
+// String Data Operations in SQL
+
+-- Sorting Strings (Alphabetical Order)
+SELECT NAME FROM EMPLOYEE_DATA ORDER BY NAME ACS;
+
+--  Checking the Length of a String
+SELECT NAME, LENGTH(NAME) AS NAME_LENGTH
+FROM EMPLOYEE_DATA;
+
+-- Converting Strings to Uppercase/Lowercase
+SELECT UPPER(CITY) AS UPPER_CITY
+FROM EMPLOYEE_DATA;
+
+-- Reversing a String
+SELECT REVERSE(NAME) AS REVERSED_NAME
+FROM EMPLOYEE_DATA;
+
+-- Searching for a Substring (Using LIKE)
+SELECT NAME
+FROM EMPLOYEE_DATA
+WHERE NAME = %A;
+
+-- Extracting a Substring
+SELECT SUBSTRING(NAME, 1,4) AS SHORTNAME
+FROM EMPLOYEE_DATA;
+
+-- Replacing Part of a String
+SELECT REPLACE(NMAE, 'JOHN', 'NEHA') AS REPLACED_NAME
+FROM EMPLOYEE_DATA;
+
+-- Concatenating Strings
+SELECT CONCAT(NAME, ' ', CITY) AS FULL_ADDRESS
+FROM EMPLOYEE_DATA;
+
+// TYPES OF KEYS
+
+-- PRIMARY KEY --> A column that uniquely identifies each row in a table.
+-- FOREIGN KEY --> A column that references a column in another table.
+-- UNIQUE KEY --> A column that ensures all values in the column are unique.
+-- COMPOSITE KEY --> A combination of two or more columns that uniquely identifies each row in a table.
+-- CANDIDATE KEY --> A column that can be used as a primary key but is not currently set as one.
+-- ALTERNATE KEY --> Candidate keys that are not chosen as the primary key
+-- SUPER KEY --> A set of one or more columns that can uniquely identify a row in a table.
+
+// TYPES OF JOINS
+
+EmployeeID	Name	DepartmentID
+1	John	101
+2	Alice	102
+3	Bob	103
+4	Charlie	NULL
+
+
+Table: Departments
+DepartmentID	DepartmentName
+101	HR
+102	IT
+104	Sales
+
+-- INNER JOIN --> Returns all rows when there is at least one match in both tables.
+SELECT * 
+FROM EMPLOYEE_DATA
+INNER JOIN DEPARTMENT_DATA
+ON EMPLOYEE_DATA.DEPARTMENT_ID = DEPARTMENT_DATA.DEPARTMENT_ID;
+
+-- LEFT JOIN --> Returns all rows from the left table, and the matched rows from the right table.
+SELECT EMPLOYEE_DATA.NAME, DEPARTMENT_DATA.DEPARTMENT_NAME
+FROM EMPLOYEE_DATA
+LEFT JOIN DEPARTMENT_DATA
+ON EMPLOYEE_DATA.DEPARTMENT_ID = DEPARTMENT_DATA.DEPARTMENT_ID;
+
+-- RIGHT JOIN --> Returns all rows from the right table, and the matched rows from the left table.
+SELECT EMPLOYEE_DATA.NAME, DEPARTMENT_DATA.DEPARTMENT_NAME
+FROM EMPLOYEE_DATA
+RIGHT JOIN DEPARTMENT_DATA
+ON EMPLOYEE_DATA.DEPARTMENT_ID = DEPARTMENT_DATA.DEPARTMENT_ID;
+
+-- FULL JOIN --> Returns all rows from both tables.
+SELECT * 
+FROM EMPLOYEE_DATA
+FULL JOIN DEPARTMENT_DATA
+ON EMPLOYEE_DATA.DEPARTMENT_ID = DEPARTMENT_DATA.DEPARTMENT_ID;
+
+-- SELF JOIN --> Joins a table to itself.
+SELECT E1.NAME, E2.NAME
+FROM EMPLOYEE_DATA E1
+JOIN EMPLOYEE_DATA E2
+ON E1.EMPLOYEE_ID = E2.EMPLOYEE_ID;
+
+// SET OPERATIONS
+-- UNION --> Combines the result of two SELECT statements.
+SELECT NAME FROM EMPLOYEE_DATA
+UNION
+SELECT NAME FROM DEPARTMENT_DATA;
+
+-- UNION ALL --> Combines the result of two SELECT statements and includes duplicate rows.
+SELECT NAME FROM EMPLOYEE_DATA
+UNION ALL
+SELECT NAME FROM DEPARTMENT_DATA;
+
+-- INTERSECT --> Returns rows that are in both tables. (common rows)
+SELECT NAME FROM EMPLOYEE_DATA
+INTERSECT
+SELECT NAME FROM DEPARTMENT_DATA;
+
+-- EXCEPT --> Returns rows that are in the first table but not in the second table.
+SELECT NAME FROM EMPLOYEE_DATA
+EXCEPT
+SELECT NAME FROM DEPARTMENT_DATA;
+
+// NORMALIZATION --> Process of organizing data in a database to reduce data redundancy and improve data integrity.
+-- 1NF --> REMOVE DUPLICATE ROWS
+-- 2NF --> ENSURE THAT ALL NON-KEY COLUMN DEPENDS ON THE PRIMARY KEY
+-- 3NF --> ENSURE THAT ALL NON-KEY COLUMN IS NOT DEPENDENT ON OTHER NON-KEY COLUMN
+-- BCNF --> ENSURE THAT ALL NON-KEY COLUMN IS NOT DEPENDENT ON OTHER NON-KEY COLUMN(A stricter version of 3NF.)
+
+
+-- GRANT --> used to grant permissions to a user.
+GRANT SELECT, INSERT, UPDATE, DELETE ON EMPLOYEE_DATA TO USER_NAME;
+
+-- REVOKE --> used to revoke permissions from a user.
+REVOKE INSERT, UPDATE, DELETE ON EMPLOYEE_DATA FROM USER_NAME;
+
+-- COMMIT --> used to save the changes made to the database.
+COMMIT;
+
+-- ROLLBACK --> used to undo the changes made to the database.
+ROLLBACK;
+
+-- SAVEPOINT --> used to create a savepoint in the database.
+SAVEPOINT SAVEPOINT_NAME;
+
+-- RELEASE SAVEPOINT --> used to release a savepoint in the database.
+RELEASE SAVEPOINT SAVEPOINT_NAME;
+
+-- ROLLBACK TO SAVEPOINT --> used to rollback to a savepoint in the database.
+ROLLBACK TO SAVEPOINT SAVEPOINT_NAME;
