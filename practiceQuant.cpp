@@ -617,6 +617,441 @@ vector<int> spiralOrder(vector<vector<int>> &matrix)
     return ans;
 }
 
+// ************************* ARRAY HARD ***************************
+
+// Pascal's Triangle
+vector<vector<int>> generate(int numRows)
+{
+    vector<vector<int>> ans;
+
+    for (int i = 0; i < numRows; i++)
+    {
+        vector<int> row(i + 1, 1);
+
+        for (int j = 1; j < i; j++)
+        {
+            row[j] = ans[i - 1][j - 1] + ans[i - 1][j];
+        }
+        ans.push_back(row);
+    }
+    return ans;
+}
+
+//  Majority Element greater than floor(N / 3)
+
+vector<int> majorityElement(vector<int> v)
+{
+    int n = v.size();
+    vector<int> answer;
+    map<int, int> mpp;
+
+    for (auto it : v)
+    {
+        mpp[it]++;
+    }
+
+    for (auto it : mpp)
+    {
+        if (it.second > floor(n / 3))
+        {
+            answer.push_back(it.first);
+        }
+    }
+    return answer;
+}
+
+//  Three Sum
+vector<vector<int>> triplet(int n, vector<int> &arr)
+{
+    vector<vector<int>> tripletValues;
+    sort(arr.begin(), arr.end());
+
+    for (int i = 0; i < n; i++)
+    {
+        if (i > 0 && arr[i] == arr[i - 1])
+        {
+            continue;
+        }
+
+        int j = i + 1;
+        int k = n - 1;
+
+        while (j < k)
+        {
+            int sum = arr[i] + arr[j] + arr[k];
+            if (sum < 0)
+            {
+                j++;
+            }
+            else if (sum > 0)
+            {
+                k--;
+            }
+            else
+            {
+                tripletValues.push_back({arr[i], arr[j], arr[k]});
+                j++;
+                k--;
+
+                while (j < k && arr[j] == arr[j - 1])
+                {
+                    j++;
+                }
+                while (j < k && arr[k] == arr[k + 1])
+                {
+                    k--;
+                }
+            }
+        }
+    }
+    return tripletValues;
+}
+
+//  Four Sum
+vector<vector<int>> fourSum(vector<int> &arr, int target)
+{
+    int n = arr.size();
+    vector<vector<int>> quadruplets;
+    sort(arr.begin(), arr.end());
+
+    for (int i = 0; i < n; i++)
+    {
+        if (i > 0 && arr[i] == arr[i - 1])
+        {
+            continue;
+        }
+
+        for (int j = i + 1; j < n; j++)
+        {
+            if (j > i + 1 && arr[j] == arr[j - 1])
+            {
+                continue;
+            }
+
+            int k = j + 1;
+            int l = n - 1;
+
+            while (k < l)
+            {
+                int sum = arr[i] + arr[j] + arr[k] + arr[l];
+                if (sum < target)
+                {
+                    k++;
+                }
+                else if (sum > target)
+                {
+                    l--;
+                }
+                else
+                {
+                    quadruplets.push_back({arr[i] + arr[j] + arr[k] + arr[l]});
+                    k++;
+                    l--;
+
+                    while (k < l && arr[k] == arr[k - 1])
+                    {
+                        k++;
+                    }
+                    while (k < l && arr[l] == arr[l + 1])
+                    {
+                        l--;
+                    }
+                }
+            }
+        }
+    }
+    return quadruplets;
+}
+
+//  Longest Subarray With Zero Sum
+
+int getLongestZeroSumSubarrayLength(vector<int> &arr)
+{
+    int maxLen = 0;
+    int sum = 0;
+    int n = arr.size();
+    unordered_map<int, int> umap;
+
+    for (int i = 0; i < n; i++)
+    {
+        sum += arr[i];
+
+        if (sum == 0)
+        {
+            maxLen = i + 1;
+        }
+        else
+        {
+            if (umap.find(sum) != umap.end())
+            {
+                maxLen = max(maxLen, i - umap[sum]);
+            }
+            else
+            {
+                umap[sum] = i;
+            }
+        }
+    }
+    return maxLen;
+}
+
+//  Subarrays with XOR ‘K’
+int subarraysWithSumK(vector<int> arr, int b) // TC  --> O(n^2)
+{
+    int n = arr.size();
+    int count = 0;
+    int xr = 0;
+    map<int, int> mpp;
+    mpp[xr]++;
+
+    for (int i = 0; i < n; i++)
+    {
+        xr = xr ^ arr[i];
+        int X = xr ^ b;
+        count += mpp[X];
+        mpp[xr]++;
+    }
+    return count;
+}
+
+//  Merge All Overlapping Intervals
+vector<vector<int>> mergeOverlappingIntervals(vector<vector<int>> &arr)
+{
+    int n = arr.size();
+    sort(arr.begin(), arr.end());
+    vector<vector<int>> ans;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (ans.empty() || arr[i][0] > ans.back()[1])
+        {
+            ans.push_back(arr[i]);
+        }
+        else
+        {
+            ans.back()[1] = max(ans.back()[1], arr[i][1]);
+        }
+    }
+    return ans;
+}
+
+//  Merge Two Sorted Arrays Without Extra Space
+void mergeTwoSortedArraysWithoutExtraSpace(vector<long long> &a, vector<long long> &b)
+{
+    int n = a.size();
+    int m = b.size();
+    int left = n - 1;
+    int right = 0;
+
+    while (left >= 0 && right < m)
+    {
+        if (a[left] > b[right])
+        {
+            swap(a[left], b[right]);
+            left--;
+            right++;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+}
+
+//  Missing And Repeating Numbers
+vector<int> findMissingRepeatingNumbers(vector<int> a)
+{
+    int n = a.size();
+    long long SN = (n * (n + 1)) / 2;                // X
+    long long S2N = (n * (n + 1) * (2 * n + 1)) / 6; // Y
+    long long S = 0;
+    long long S2 = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        S += a[i];
+        S2 += (long long)a[i] * a[i];
+    }
+    long long val1 = S - SN;
+    long long val2 = S2 - S2N;
+
+    val2 /= val1;
+    long long X = (val1 + val2) / 2;
+    long long Y = X - val1;
+
+    return {(int)X, (int)Y};
+}
+
+//  Number of Inversions
+
+int merge(vector<int> &arr, int low, int mid, int high)
+{
+    vector<int> temp;
+    int left = low;
+    int right = mid + 1;
+    int count = 0;
+
+    while (left <= right && right <= high)
+    {
+        if (arr[left] <= arr[right])
+        {
+            temp.push_back(arr[left]);
+            left++;
+        }
+        else
+        {
+            temp.push_back(arr[right]);
+            count += (mid - left + 1);
+            right++;
+        }
+    }
+
+    while (left <= right)
+    {
+        temp.push_back(arr[left]);
+        left++;
+    }
+
+    while (right <= high)
+    {
+        temp.push_back(arr[right]);
+        right++;
+    }
+
+    for (int i = low; i <= high; i++)
+    {
+        arr[i] = temp[i - low];
+    }
+
+    return count;
+}
+
+int mergeSort(vector<int> &arr, int low, int high)
+{
+    int count = 0;
+    if (low >= high)
+    {
+        return count;
+    }
+
+    int mid = (low + high) / 2;
+    count += mergeSort(arr, low, mid);
+    count += mergeSort(arr, mid + 1, high);
+    count += merge(arr, low, mid, high);
+    return count;
+}
+
+int numberOfInversions(vector<int> &a, int n)
+{
+    return mergeSort(a, 0, n - 1);
+}
+
+//  Team Contest or Reverse Pairs
+
+void countPairs(vector<int> &arr, int low, int mid, int high, int &count)
+{
+    int right = mid + 1;
+    for (int i = low; i <= mid; i++)
+    {
+        while (right <= high && arr[i] > 2 * arr[right])
+        {
+            right++;
+        }
+        count += (right - (mid + 1));
+    }
+}
+
+int merge1(vector<int> &arr, int low, int mid, int high)
+{
+    vector<int> temp;
+    int left = low;
+    int right = mid + 1;
+    int count = 0;
+
+    while (left <= right && right <= high)
+    {
+        if (arr[left] <= arr[right])
+        {
+            temp.push_back(arr[left]);
+            left++;
+        }
+        else
+        {
+            temp.push_back(arr[right]);
+            count += (mid - left + 1);
+            right++;
+        }
+    }
+
+    while (left <= right)
+    {
+        temp.push_back(arr[left]);
+        left++;
+    }
+
+    while (right <= high)
+    {
+        temp.push_back(arr[right]);
+        right++;
+    }
+
+    for (int i = low; i <= high; i++)
+    {
+        arr[i] = temp[i - low];
+    }
+}
+
+void mergeSort1(vector<int> &arr, int low, int high, int &count)
+{
+    if (low >= high)
+    {
+        return;
+    }
+
+    int mid = (low + high) / 2;
+    mergeSort1(arr, low, mid, count);
+    mergeSort1(arr, mid + 1, high, count);
+    countPairs(arr, low, mid, high, count);
+    merge1(arr, low, mid, high);
+}
+
+int team(vector<int> &skill, int n)
+{
+    int count = 0;
+    mergeSort1(skill, 0, n - 1, count);
+    return count;
+}
+
+//  Subarray With Maximum Product
+int subarrayWithMaxProduct(vector<int> &arr)
+{
+    int n = arr.size();
+    int maxProduct = INT_MIN;
+    int prefixSum = 1;
+    int suffixSum = 1;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (prefixSum == 0)
+        {
+            prefixSum = 1;
+        }
+        if (suffixSum == 0)
+        {
+            suffixSum = 1;
+        }
+
+        prefixSum *= arr[i];
+        suffixSum *= arr[n - i - 1];
+
+        maxProduct = max(maxProduct, max(prefixSum, suffixSum));
+    }
+    return maxProduct;
+}
+
 int main()
 {
     cout << "Hello World";
