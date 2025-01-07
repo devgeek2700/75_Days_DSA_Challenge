@@ -1052,8 +1052,466 @@ int subarrayWithMaxProduct(vector<int> &arr)
     return maxProduct;
 }
 
+// ************************* STRINGS EASY ***************************
+// sort the string --> lexicographically
+string sortlexicographically(string str)
+{
+    sort(str.begin(), str.end());
+    return str;
+}
+
+// Valid Anagram -->  rearranging letters of a word to get another word
+bool isAnagram(string s, string t)
+{
+    if (s.length() != t.length())
+    {
+        return false;
+    }
+
+    sort(s.begin(), s.end());
+    sort(t.begin(), t.end());
+
+    return s == t;
+}
+
+// Check Isomorphic --> 1 to 1 mapping
+bool isIsomorphic(string s, string t)
+{
+    if (s.length() != t.length())
+    {
+        return false;
+    }
+
+    vector<int> s1(128, -1);
+    vector<int> s2(128, -1);
+
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (s1[s[i]] != s2[t[i]])
+        {
+            return false;
+        }
+        s1[s[i]] = i;
+        s2[t[i]] = i;
+    }
+    return true;
+}
+
+// Longest Common Prefix
+string longestCommonPrefix(vector<string> &strs)
+{
+    if (strs.empty())
+    {
+        return "";
+    }
+
+    string mainStr = strs[0];
+    int lonngestCount = mainStr.size();
+
+    for (int i = 1; i < strs.size(); i++)
+    {
+        int j = 0;
+        while (j < mainStr.size() && j < strs[i].size() && mainStr[j] == strs[i][j])
+        {
+            j++;
+        }
+        lonngestCount = min(lonngestCount, j);
+    }
+
+    string ans = mainStr.substr(0, lonngestCount);
+    return ans;
+}
+
+// Maximum consecutive 1's fliped k times
+int maxConsecutive1sKtimes(string str, int k) // TC --> O(N^2) SC --> O(1)
+{
+    int n = str.length();
+    int maxLen = INT_MIN;
+
+    for (int i = 0; i < n; i++)
+    {
+        int currZero = 0;
+        for (int j = i; j < n; j++)
+        {
+            if (str[j] == '0')
+            {
+                currZero--;
+            }
+
+            if (currZero <= k)
+            {
+                maxLen = max(maxLen, j - i + 1);
+            }
+        }
+    }
+    return maxLen;
+}
+
+// Remove Outermost Parentheses
+string removeOuterParentheses(string s)
+{
+    int n = s.length();
+    int balance = 0;
+    string ans = "";
+
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '(')
+        {
+            if (balance > 0)
+            {
+                ans.push_back(s[i]);
+            }
+            balance++;
+        }
+        else if (s[i] == ')')
+        {
+            balance--;
+            if (balance > 0)
+            {
+                ans.push_back(s[i]);
+            }
+        }
+    }
+    return ans;
+}
+
+// Reverse Words in a String
+string reverseWords(string s)
+{
+    int n = s.length();
+    string ans = "";
+    string finalAns = "";
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if (s[i] == !' ')
+        {
+            ans += s[i];
+        }
+        else
+        {
+            if (!ans.empty())
+            {
+                reverse(ans.begin(), ans.end());
+                if (!finalAns.empty())
+                {
+                    finalAns += " ";
+                }
+                finalAns += ans;
+                ans = "";
+            }
+        }
+    }
+
+    if (!ans.empty())
+    {
+        reverse(ans.begin(), ans.end());
+        if (!finalAns.empty())
+        {
+            finalAns += " ";
+        }
+        finalAns += ans;
+    }
+    return finalAns;
+}
+
+// Largest Odd Number in String
+string largestOddNumber(string str) // TC --> O(N) SC --> O(1)
+{
+    int n = str.length();
+    string largestOdd = "";
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if ((str[i] - '0') % 2 != 0)
+        {
+            largestOdd = str.substr(0, i + 1);
+            break;
+        }
+    }
+    return largestOdd;
+}
+
+// Rotate String
+bool rotateString(string str, string goal)
+{
+    int n = str.length();
+    int m = goal.length();
+
+    if (n != m)
+    {
+        return false;
+    }
+
+    string doubleStr = str + str;
+    return (doubleStr.find(goal) != string::npos);
+}
+
+// ************************* STRINGS MEDIUM ***************************
+
+// Sort Characters By Frequency
+string frequencySort(string s) // TC --> O(n+nlogn)  SC --> O(n+m)
+{
+    int n = s.length();
+    unordered_map<char, int> freq;
+
+    for (int i = 0; i < n; i++)
+    {
+        freq[s[i]]++;
+    }
+
+    vector<pair<char, int>> freqList(freq.begin(), freq.end());
+
+    sort(freqList.begin(), freqList.end(), [](const pair<char, int> &a, const pair<char, int> &b)
+         { return a.second > b.second; });
+
+    string result;
+    for (auto &pair : freqList)
+    {
+        result.append(pair.second, pair.first);
+    }
+    return result;
+}
+
+// Maximum Nesting Depth of the Parentheses
+int maxDepth(string s) // TC --> O(N) SC --> O(1)
+{
+    int n = s.length();
+    int maxDepth = INT_MIN;
+    int currDepth = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '(')
+        {
+            currDepth++;
+            maxDepth = max(maxDepth, currDepth);
+        }
+        else if (s[i] == ')')
+        {
+            currDepth--;
+        }
+    }
+    return maxDepth;
+}
+
+// Roman to Integer
+int romanToInt(string str) // TC --> O(N) SC --> O(1)
+{
+    int n = str.length();
+    int total = 0;
+
+    unordered_map<char, int> roman{{'I', 1}, {'V', 5}, {'X', 10}, {'L', 50}, {'C', 100}, {'D', 500}, {'M', 1000}};
+    for (int i = 0; i < n; i++)
+    {
+        if (i + 1 < n && roman[str[i]] < roman[str[i + 1]])
+        {
+            total -= roman[i];
+        }
+        else
+        {
+            total += roman[i];
+        }
+    }
+    return total;
+}
+
+//  String to Integer (atoi)
+int myAtoi(string str) // TC --> O(N) SC --> O(1)
+{
+    int n = str.length();
+    int i = 0;
+
+    while (i <= n && str[i] == ' ')
+    {
+        i++;
+    }
+
+    int sign = 1;
+    if (i < n && (str[i] == '-' || str[i] == '+'))
+    {
+        if (str[i] == '-')
+        {
+            sign = -1;
+        }
+        else
+        {
+            sign = 1;
+        }
+        i++;
+    }
+
+    long long ans = 0;
+
+    while (i < n && isdigit(str[i]))
+    {
+        ans = ans * 10 + (str[i] - '0');
+
+        if (sign * ans <= INT_MIN)
+        {
+            return INT_MIN;
+        }
+
+        if (sign * ans >= INT_MAX)
+        {
+            return INT_MAX;
+        }
+        i++;
+    }
+    return sign * ans;
+}
+
+// Count number of substrings
+long long int atMostKDistinct(string s, int k) // TC --> O(N^2) SC --> O(1)
+{
+    int n = s.length();
+    int count = 0;
+    int left = 0;
+    int right = 0;
+    map<char, int> mpp;
+    while (right < n)
+    {
+        mpp[s[right]]++;
+        while (mpp.size() > k)
+        {
+            mpp[s[left]]--;
+            if (mpp[s[left]] == 0)
+            {
+                mpp.erase(s[left]);
+            }
+            left++;
+        }
+
+        count += (right - left + 1);
+        right++;
+    }
+
+    return count;
+}
+
+long long int substrCount1(string s, int k)
+{
+    if (k == 0)
+    {
+        return 0;
+    }
+
+    return atMostKDistinct(s, k) - atMostKDistinct(s, k - 1);
+}
+
+// Longest Palindromic Substring
+string longestPalindrome(string s) // TC --> O(N^2) SC --> O(1)
+{
+    int n = s.length();
+    int start = 0;
+    int maxLen = 1;
+
+    if (n == 0)
+    {
+        return "";
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        int left = i - 1;
+        int right = i + 1;
+
+        // Odd length palindromes
+        while (left >= 0 && right < n && s[left] == s[right])
+        {
+            if ((right - left + 1) > maxLen)
+            {
+                maxLen = right - left + 1;
+                start = left;
+            }
+            left--;
+            right++;
+        }
+
+        // Even length palindromes
+        left = i;
+        right = i + 1;
+        while (left >= 0 && right < n && s[left] == s[right])
+        {
+            if ((right - left + 1) > maxLen)
+            {
+                maxLen = right - left + 1;
+                start = left;
+            }
+            left--;
+            right++;
+        }
+    }
+
+    return s.substr(start, maxLen);
+}
+
+// Sum of Beauty of All Substrings
+int beautySum(string s) // TC --> O(N^2) SC -- O(1)
+{
+    int n = s.length();
+    unordered_map<char, int> mpp;
+    int diffFreq;
+    int beatySum = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        mpp.clear();
+
+        for (int j = i; j < n; j++)
+        {
+            mpp[s[j]]++;
+
+            if (mpp.size() >= 2)
+            {
+                int maxFreq = 0, minFreq = INT_MAX;
+                for (auto it = mpp.begin(); it != mpp.end(); it++)
+                {
+                    maxFreq = max(maxFreq, it->second);
+                    minFreq = min(minFreq, it->second);
+                }
+                diffFreq = maxFreq - minFreq;
+                beatySum += diffFreq;
+            }
+        }
+    }
+    return beatySum;
+}
+
+// Minimum Add to Make Parentheses Valid
+int minAddToMakeValid(string s)
+{
+    int openNeeded = 0;
+    int closeNeeded = 0;
+
+    for (char ch : s)
+    {
+        if (ch == '(')
+        {
+            openNeeded++;
+        }
+        else
+        {
+            if (openNeeded > 0)
+            {
+                openNeeded--;
+            }
+            else
+            {
+                closeNeeded++;
+            }
+        }
+    }
+    return openNeeded + closeNeeded;
+}
+
 int main()
 {
-    cout << "Hello World";
+    // cout << "Hello World";
+
+    string str = "())";
+    cout << minAddToMakeValid(str);
+    
     return 0;
 }

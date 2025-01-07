@@ -33,7 +33,7 @@ int maxDepth(string s) // TC --> O(N) SC --> O(1)
     int maxDepth = INT_MIN;
     int currDepth = 0;
 
-    for (int i = 0; i < s.length(); i++)
+    for (int i = 0; i < n; i++)
     {
         if (s[i] == '(')
         {
