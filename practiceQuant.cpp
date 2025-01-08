@@ -1506,12 +1506,118 @@ int minAddToMakeValid(string s)
     return openNeeded + closeNeeded;
 }
 
+// Count and Say
+string countAndSay(int n)
+{
+    if (n == 1)
+    {
+        return "1";
+    }
+
+    string prev = countAndSay(n - 1);
+    string res = "";
+
+    int count = 1;
+    for (int i = 1; i < prev.length(); i++)
+    {
+        if (prev[i] == prev[i - 1])
+        {
+            count++;
+        }
+        else
+        {
+            res += to_string(count) + prev[i - 1];
+            count = 1;
+        }
+    }
+    res += to_string(count) + prev.back();
+    return res;
+}
+
+// Index of the First Occurrence of pattern in a text
+int findMatching(string text, string pat)
+{
+    int n = text.length();
+    int m = pat.length();
+
+    for (int i = 0; i <= n - m; i++)
+    {
+        if (text.substr(i, m) == pat)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// Rabin-Karp algorithm
+int repeatedStringMatchrabinkarp(string a, string b)
+{
+    int n = a.length();
+    int m = b.length();
+
+    string repeated = a;
+    int count = 1;
+
+    while (repeated.length() < m)
+    {
+        repeated += a;
+        count++;
+    }
+
+    if (repeated.find(b) != string::npos)
+    {
+        return count;
+    }
+
+    repeated += a;
+    count++;
+
+    if (repeated.find(b) != string::npos)
+    {
+        return count;
+    }
+
+    return -1;
+}
+
+//  Find the Index of the First Occurrence in a String
+int strStr(string haystack, string needle)
+{
+    int n = haystack.length();
+    int m = needle.length();
+
+    for (int i = 0; i <= n - m; i++)
+    {
+        if (haystack.substr(i, m) == needle)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
 int main()
 {
     // cout << "Hello World";
 
-    string str = "())";
-    cout << minAddToMakeValid(str);
-    
+    // string str = "())";
+    // cout << minAddToMakeValid(str);
+
+    // int n = 4;
+    // cout << countAndSay(n);
+
+    // string text = "gffggg";
+    // string pat = "gfg";
+    // cout << findMatching(text, pat);
+
+    // string a = "abcd";
+    // string b = "cdabcdab";
+    // cout << repeatedStringMatchrabinkarp(a, b);
+
+    string haystack = "leetcode";
+    string needle = "leeto";
+    cout << strStr(haystack, needle);
+
     return 0;
 }
